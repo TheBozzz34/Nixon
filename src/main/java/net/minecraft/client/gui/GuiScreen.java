@@ -43,6 +43,8 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import tv.twitch.chat.ChatUserInfo;
+import xyz.necrozma.Client;
+import xyz.necrozma.event.impl.input.EventKey;
 
 public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 {
@@ -104,7 +106,10 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
      */
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        if (keyCode == 1)
+
+        Client.BUS.post(new EventKey(keyCode));
+
+        if (keyCode == 1 || keyCode == 41)
         {
             this.mc.displayGuiScreen((GuiScreen)null);
 

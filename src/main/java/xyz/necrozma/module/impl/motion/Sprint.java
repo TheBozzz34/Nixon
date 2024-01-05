@@ -18,13 +18,11 @@ public final class Sprint extends Module {
     @Override
     public void onEnable() {
         super.onEnable();
-        ChatUtil.sendMessage("Sprint enabled!", true);
     }
 
     @Override
     public void onDisable() {
         super.onDisable();
-        ChatUtil.sendMessage("Sprint disabled!", true);
     }
 
     @Subscribe

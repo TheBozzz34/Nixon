@@ -94,6 +94,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
+import xyz.necrozma.Client;
+import xyz.necrozma.event.impl.update.RenderEvent;
 
 public class EntityRenderer implements IResourceManagerReloadListener
 {
@@ -1424,6 +1426,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 }
             }
         }
+
+
+        // Render hook goes here
+
+        Client.INSTANCE.onRender();
+
 
         this.frameFinish();
         this.waitForServerThread();

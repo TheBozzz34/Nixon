@@ -20,14 +20,12 @@ public final class Fullbright extends Module {
     @Override
     public void onEnable() {
         super.onEnable();
-        ChatUtil.sendMessage("Fullbright enabled!", true);
         oldGamma = mc.gameSettings.gammaSetting;
     }
 
     @Override
     public void onDisable() {
         super.onDisable();
-        ChatUtil.sendMessage("Fullbright disabled!", true);
         mc.gameSettings.gammaSetting = oldGamma;
 
     }
