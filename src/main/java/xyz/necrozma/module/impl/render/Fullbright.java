@@ -33,7 +33,7 @@ public final class Fullbright extends Module {
     @Subscribe
     private final Listener<EventUpdate> listener = new Listener<>(e -> {
         if (mc.thePlayer != null) {
-            mc.gameSettings.gammaSetting = 3f;
+            mc.gameSettings.gammaSetting = 5f;
         }
     });
 }

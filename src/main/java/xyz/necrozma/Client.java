@@ -10,19 +10,16 @@ import me.zero.alpine.listener.Subscribe;
 import me.zero.alpine.listener.Subscriber;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.server.S3FPacketCustomPayload;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
 import xyz.necrozma.event.impl.input.EventKey;
 import xyz.necrozma.gui.ModGui;
 import xyz.necrozma.module.ModuleManager;
 import xyz.necrozma.command.CommandManager;
-import xyz.necrozma.util.ChatUtil;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static net.minecraft.client.gui.Gui.drawRect;
@@ -83,6 +80,7 @@ public enum Client implements Subscriber {
             });
 
             drawChromaString("Nixon Client", scaledResolution.getScaledWidth() - MC.fontRendererObj.getStringWidth("Nixon Client") - 2, 2, false);
+
         }
     }
 
@@ -102,9 +100,6 @@ public enum Client implements Subscriber {
             MC.fontRendererObj.drawString(text, x, y, color);
         }
     }
-
-
-
 
     public final void shutdown() {
         BUS.unsubscribe(this);
