@@ -68,8 +68,8 @@ public enum Client implements Subscriber {
 
         int centerX = scaledResolution.getScaledWidth() / 2;
         int centerY = scaledResolution.getScaledHeight() / 2;
-        if (MC.inGameHasFocus) {
-            drawRect(centerX - squareSize / 2, centerY - squareSize / 2, centerX + squareSize / 2, centerY + squareSize / 2, 0xFFFF0000);
+        if (MC.inGameHasFocus && !MC.gameSettings.showDebugInfo) {
+            // drawRect(centerX - squareSize / 2, centerY - squareSize / 2, centerX + squareSize / 2, centerY + squareSize / 2, 0xFFFF0000);
             MM.getModules().values().forEach(module -> {
                 int width = MC.fontRendererObj.getStringWidth(module.getName()) + 2;
                 if (module.isToggled()) {
@@ -81,9 +81,29 @@ public enum Client implements Subscriber {
                 }
                 yOffSet.addAndGet(yOffsetInc);
             });
-        }
 
+            drawChromaString("Nixon Client", scaledResolution.getScaledWidth() - MC.fontRendererObj.getStringWidth("Nixon Client") - 2, 2, false);
+        }
     }
+
+    private void drawChromaString(String text, int x, int y, boolean shadow) {
+        int updateCounter = MC.ingameGUI.getUpdateCounter() / 5;
+        double frequency = 0.2; // speed
+
+        int red = (int) (Math.sin(frequency * updateCounter + 0) * 127 + 128);
+        int green = (int) (Math.sin(frequency * updateCounter + 2) * 127 + 128);
+        int blue = (int) (Math.sin(frequency * updateCounter + 4) * 127 + 128);
+
+        int color = (red << 16) + (green << 8) + blue;
+
+        if (shadow) {
+            MC.fontRendererObj.drawStringWithShadow(text, x, y, color);
+        } else {
+            MC.fontRendererObj.drawString(text, x, y, color);
+        }
+    }
+
+
 
 
     public final void shutdown() {
