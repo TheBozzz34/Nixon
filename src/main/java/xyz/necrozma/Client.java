@@ -25,16 +25,14 @@ import xyz.necrozma.gui.ModGui;
 import xyz.necrozma.module.ModuleManager;
 import xyz.necrozma.command.CommandManager;
 import xyz.necrozma.module.impl.render.Xray;
-import xyz.necrozma.util.FileUtil;
-import xyz.necrozma.util.PacketHandler;
-import xyz.necrozma.util.PresenceManager;
-import xyz.necrozma.util.SocketManager;
+import xyz.necrozma.util.*;
 
 
 import java.io.File;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
@@ -60,6 +58,8 @@ public enum Client implements Subscriber {
     private PacketHandler PH;
     private SocketManager SM;
 
+    private boolean authed;
+
     private DiscordRichPresence rich;
 
     public static final EventBus BUS = EventManager.builder()
@@ -75,6 +75,12 @@ public enum Client implements Subscriber {
             author = "Necrozma";
 
     public final void init() throws IOException {
+
+        authed = HWID.checkHWID();
+
+        logger.info(authed ? "Logged in!" : "Not authed!");
+
+
         Display.setTitle(name + " -> " + version);
         BUS.subscribe(this);
 
@@ -120,6 +126,16 @@ public enum Client implements Subscriber {
 
         int centerX = scaledResolution.getScaledWidth() / 2;
         int centerY = scaledResolution.getScaledHeight() / 2;
+
+        if(!MC.inGameHasFocus) {
+            if(authed) {
+                MC.ingameGUI.drawString(MC.fontRendererObj, "Logged in!", 2, 2, 0xFF00FF00);
+            } else {
+                MC.ingameGUI.drawString(MC.fontRendererObj, "Not logged in!", 2, 2, 0xFFFF0000);
+            }
+        }
+
+
         if (MC.inGameHasFocus && !MC.gameSettings.showDebugInfo) {
             // drawRect(centerX - squareSize / 2, centerY - squareSize / 2, centerX + squareSize / 2, centerY + squareSize / 2, 0xFFFF0000);
             MM.getModules().values().forEach(module -> {
