@@ -48,8 +48,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
+import xyz.necrozma.Client;
 import xyz.necrozma.event.EventFlow;
 import xyz.necrozma.event.impl.packet.EventPacket;
+import xyz.necrozma.util.PacketHandler;
 
 public class NetworkManager extends SimpleChannelInboundHandler<Packet>
 {
@@ -150,6 +152,8 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
 
     protected void channelRead0(ChannelHandlerContext p_channelRead0_1_, Packet p_channelRead0_2_) throws Exception
     {
+        Client.INSTANCE.getPH().handlePacket(p_channelRead0_1_, p_channelRead0_2_);
+
         if (this.channel.isOpen())
         {
             try

@@ -1,7 +1,5 @@
 package xyz.necrozma;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import lombok.Getter;
 import me.zero.alpine.bus.EventBus;
 import me.zero.alpine.bus.EventManager;
@@ -13,24 +11,21 @@ import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 import net.arikia.dev.drpc.DiscordUser;
 import net.arikia.dev.drpc.callbacks.ReadyCallback;
-import net.minecraft.block.Block;
+import net.azurewebsites.thehen101.coremod.forgepacketmanagement.ForgePacketManagement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
 import xyz.necrozma.event.impl.input.EventKey;
 import xyz.necrozma.event.impl.update.EventUpdate;
 import xyz.necrozma.gui.ModGui;
 import xyz.necrozma.module.ModuleManager;
 import xyz.necrozma.command.CommandManager;
 import xyz.necrozma.module.impl.render.Xray;
-import xyz.necrozma.util.ChatUtil;
+import xyz.necrozma.util.PacketHandler;
 
 
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static net.minecraft.client.gui.Gui.drawRect;
 
 @Getter
 public enum Client implements Subscriber {
@@ -46,6 +41,7 @@ public enum Client implements Subscriber {
 
     private ModuleManager MM;
     private CommandManager CM;
+    private PacketHandler PH;
 
     private DiscordRichPresence rich;
 
@@ -67,6 +63,8 @@ public enum Client implements Subscriber {
 
         MM = new ModuleManager();
         CM = new CommandManager();
+        PH = new PacketHandler();
+
 
         clickGui = new ModGui();
         xray = new Xray();
@@ -127,6 +125,7 @@ public enum Client implements Subscriber {
     }
 
     public final void shutdown() {
+
         BUS.unsubscribe(this);
     }
 
