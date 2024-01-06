@@ -3,7 +3,11 @@ package xyz.necrozma.gui;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import xyz.necrozma.Client;
+import xyz.necrozma.module.impl.misc.Nuker;
 import xyz.necrozma.module.impl.render.Xray;
+import xyz.necrozma.settings.Settings;
+import xyz.necrozma.settings.impl.NumberSetting;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -28,7 +32,6 @@ public class ModGui extends GuiScreen {
 
         drawDefaultBackground();
 
-
         drawString(mc.fontRendererObj, "Xrayed blocks:", 4, 2, 0xFFFFFFFF);
 
         drawHorizontalLine(0, scaledResolution.getScaledWidth(), 12, 0xFFFFFFFF);
@@ -39,6 +42,8 @@ public class ModGui extends GuiScreen {
         }
 
         // drawBouncingBox(); Just for fun
+
+        drawNukerInfo();
 
 
     }
@@ -67,5 +72,22 @@ public class ModGui extends GuiScreen {
         }
         // Draw the rectangle at the updated position
         drawRect(x, y, x + squareSize, y + squareSize, 0xFFFF0000); // Change the color as needed
+    }
+
+    private void drawNukerInfo() {
+        Settings Settings = Client.INSTANCE.getMM().getModule(Nuker.class).getSetting("Range");
+
+        final double radius = ((NumberSetting) Settings).getValue() - 1;
+        final int range = (int) radius * 2;
+
+        int screenWidth = new ScaledResolution(mc).getScaledWidth();
+        String text = "Nuker range: " + range + "x" + range + "x" + range;
+        int textWidth = mc.fontRendererObj.getStringWidth(text);
+        int x = screenWidth - textWidth - 2;
+
+        if (Settings instanceof NumberSetting) {
+            NumberSetting numberSetting = (NumberSetting) Settings;
+            drawString(mc.fontRendererObj, text, x, 2, 0xFFFFFFFF);
+        }
     }
 }
