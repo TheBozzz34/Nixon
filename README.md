@@ -1,4 +1,4 @@
-
+[![Java CI with Maven](https://github.com/TheBozzz34/Nixon/actions/workflows/maven.yml/badge.svg)](https://github.com/TheBozzz34/Nixon/actions/workflows/maven.yml)
 
 # Nixon is a free and open-source 1.8.9 client using the Forge API for Minecraft.
 
@@ -6,7 +6,7 @@ I am learning client development with this project, it is in no way meant to be 
 
 Settings system and parts of the Nuker module are borrowed from Rise.
 
-![image](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/kgehuunv.png)
+![image](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/nnwgbbpw.png)
 
 ![image2](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/5no97ix2.png)
 
@@ -54,3 +54,4 @@ Nixon is powered by the [MavenMCP](https://github.com/Marcelektro/MavenMCP-1.8.9
 I appreciate contributions. So if you want to support Nixon, feel free to make changes to the  source code by
 submitting a pull request.
 
+![Alt](https://repobeats.axiom.co/api/embed/cbdce41dcce816788648bf9539097fe018f00dcc.svg "Repobeats analytics image")
