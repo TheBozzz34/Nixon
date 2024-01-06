@@ -4,11 +4,13 @@
 
 I am learning client development with this project, it is in no way meant to be actually useful.
 
-Nuker is skidded from Rise
+Partly skidded from Rise
 
 ![image](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/kgehuunv.png)
 
 ![image2](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/5no97ix2.png)
+
+![image3](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/1c08gxkc.png)
 
 ## Issues
 
