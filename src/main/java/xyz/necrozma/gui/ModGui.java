@@ -77,17 +77,14 @@ public class ModGui extends GuiScreen {
     private void drawNukerInfo() {
         Settings Settings = Client.INSTANCE.getMM().getModule(Nuker.class).getSetting("Range");
 
-        final double radius = ((NumberSetting) Settings).getValue() - 1;
+        final double radius = ((NumberSetting) Settings).getValue();
         final int range = (int) radius * 2;
 
         int screenWidth = new ScaledResolution(mc).getScaledWidth();
-        String text = "Nuker range: " + range + "x" + range + "x" + range;
+        String text = "Nuker radius: " + radius + " (" + range + "x" + range + "x" + range + ")";
         int textWidth = mc.fontRendererObj.getStringWidth(text);
         int x = screenWidth - textWidth - 2;
 
-        if (Settings instanceof NumberSetting) {
-            NumberSetting numberSetting = (NumberSetting) Settings;
-            drawString(mc.fontRendererObj, text, x, 2, 0xFFFFFFFF);
-        }
+        drawString(mc.fontRendererObj, text, x, 2, 0xFFFFFFFF);
     }
 }

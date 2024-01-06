@@ -20,6 +20,15 @@ public final class ModuleManager {
         return modules.get(mod);
     }
 
+    public final Module getModuleFromString(String name) {
+        for (Module module : modules.values()) {
+            if (module.getName().equalsIgnoreCase(name)) {
+                return module;
+            }
+        }
+        return null;
+    }
+
     public final void register() {
         final Reflections refl = new Reflections("xyz.necrozma.module.impl");
 
