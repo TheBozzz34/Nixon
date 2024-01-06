@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import xyz.necrozma.Client;
 import xyz.necrozma.module.impl.misc.Nuker;
+import xyz.necrozma.module.impl.render.Fullbright;
 import xyz.necrozma.module.impl.render.Xray;
 import xyz.necrozma.settings.Settings;
 import xyz.necrozma.settings.impl.NumberSetting;
@@ -32,7 +33,7 @@ public class ModGui extends GuiScreen {
 
         drawDefaultBackground();
 
-        drawString(mc.fontRendererObj, "Xrayed blocks:", 4, 2, 0xFFFFFFFF);
+        drawString(mc.fontRendererObj, "Xrayed blocks", 4, 2, 0xFFFFFFFF);
 
         drawHorizontalLine(0, scaledResolution.getScaledWidth(), 12, 0xFFFFFFFF);
 
@@ -43,7 +44,11 @@ public class ModGui extends GuiScreen {
 
         // drawBouncingBox(); Just for fun
 
+        drawString(mc.fontRendererObj, "Settings", scaledResolution.getScaledWidth() - mc.fontRendererObj.getStringWidth("Settings") - 2, 2, 0xFFFFFFFF);
+
         drawNukerInfo();
+
+        drawFullbrightInfo();
 
 
     }
@@ -85,6 +90,19 @@ public class ModGui extends GuiScreen {
         int textWidth = mc.fontRendererObj.getStringWidth(text);
         int x = screenWidth - textWidth - 2;
 
-        drawString(mc.fontRendererObj, text, x, 2, 0xFFFFFFFF);
+        drawString(mc.fontRendererObj, text, x, 14, 0xFFFFFFFF);
+    }
+
+    private void drawFullbrightInfo() {
+        Settings Settings = Client.INSTANCE.getMM().getModule(Fullbright.class).getSetting("Gamma");
+
+        final double gamma = ((NumberSetting) Settings).getValue();
+
+        int screenWidth = new ScaledResolution(mc).getScaledWidth();
+        String text = "Fullbright gamma: " + gamma;
+        int textWidth = mc.fontRendererObj.getStringWidth(text);
+        int x = screenWidth - textWidth - 2;
+
+        drawString(mc.fontRendererObj, text, x, 24, 0xFFFFFFFF);
     }
 }

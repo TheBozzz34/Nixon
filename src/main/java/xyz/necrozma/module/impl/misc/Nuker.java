@@ -23,10 +23,8 @@ import xyz.necrozma.util.PacketUtil;
 @ModuleInfo(name = "Nuker", description = "Breaks blocks around you", category = Category.MISC)
 public class Nuker extends Module {
 
-    @Getter
     private final NumberSetting range = new NumberSetting("Range", this, 4, 1, 7, 0.5);
 
-    @Getter
     private final BooleanSetting swing = new BooleanSetting("Swing", this, true);
 
     public Nuker() {
