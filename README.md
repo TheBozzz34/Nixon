@@ -4,6 +4,8 @@
 
 I am learning client development with this project, it is in no way meant to be actually useful.
 
+![image](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/y0bc73a8.png)
+
 ## Issues
 
 If you notice any bugs or missing features, you can let us know by opening an
