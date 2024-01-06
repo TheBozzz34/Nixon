@@ -7,6 +7,10 @@ import net.minecraft.client.Minecraft;
 import org.apache.commons.lang3.Validate;
 import org.lwjgl.input.Keyboard;
 import xyz.necrozma.Client;
+import xyz.necrozma.settings.Settings;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public abstract class Module implements Subscriber {
@@ -18,6 +22,8 @@ public abstract class Module implements Subscriber {
     private final String description;
 
     private final Category category;
+
+    public List<Settings> settings = new ArrayList<>();
 
     @Setter
     private int key;
@@ -64,5 +70,27 @@ public abstract class Module implements Subscriber {
             this.toggled = true;
             onEnable();
         }
+    }
+
+    public Settings getSetting(final String name) {
+        for (final Settings setting : settings) {
+            if (setting.name.equalsIgnoreCase(name)) {
+                return setting;
+            }
+        }
+
+        return null;
+    }
+
+    public Settings getSettingAlternative(final String name) {
+        for (final Settings setting : settings) {
+            final String comparingName = setting.name.replaceAll(" ", "");
+
+            if (comparingName.equalsIgnoreCase(name)) {
+                return setting;
+            }
+        }
+
+        return null;
     }
 }

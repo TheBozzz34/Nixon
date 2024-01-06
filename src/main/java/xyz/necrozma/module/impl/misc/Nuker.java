@@ -1,5 +1,6 @@
 package xyz.necrozma.module.impl.misc;
 
+import lombok.Getter;
 import me.zero.alpine.listener.Listener;
 import me.zero.alpine.listener.Subscribe;
 import net.minecraft.block.Block;
@@ -14,11 +15,19 @@ import xyz.necrozma.module.ModuleInfo;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.server.S02PacketChat;
+import xyz.necrozma.settings.impl.BooleanSetting;
+import xyz.necrozma.settings.impl.NumberSetting;
 import xyz.necrozma.util.ChatUtil;
 import xyz.necrozma.util.PacketUtil;
 
 @ModuleInfo(name = "Nuker", description = "Breaks blocks around you", category = Category.MISC)
 public class Nuker extends Module {
+
+    @Getter
+    private final NumberSetting range = new NumberSetting("Range", this, 4, 1, 7, 0.5);
+
+    @Getter
+    private final BooleanSetting swing = new BooleanSetting("Swing", this, true);
 
     public Nuker() {
         setKey(Keyboard.KEY_N);
@@ -42,7 +51,8 @@ public class Nuker extends Module {
     @Subscribe
     private final Listener<EventUpdate> listener = new Listener<>(e -> {
         if ((mc.thePlayer.ticksExisted % 20 == 0)) {
-            nuke(5, mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
+            final double radius = this.range.getValue() - 1;
+            nuke(radius, mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
         }
     });
 
@@ -57,8 +67,8 @@ public class Nuker extends Module {
             PacketUtil.sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, blockPos, EnumFacing.UP));
             PacketUtil.sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.STOP_DESTROY_BLOCK, blockPos, EnumFacing.UP));
 
-            //if (swing.isEnabled())
-             //   mc.thePlayer.swingItem();
+            if (swing.isEnabled())
+                mc.thePlayer.swingItem();
         } else {
             for (double x = -range; x < range; x++) {
                 for (double y = range; y > -range; y--) {
@@ -75,8 +85,8 @@ public class Nuker extends Module {
                         PacketUtil.sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, blockPos, EnumFacing.UP));
                         PacketUtil.sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.STOP_DESTROY_BLOCK, blockPos, EnumFacing.UP));
 
-                        //if (swing.isEnabled())
-                         //   mc.thePlayer.swingItem();
+                        if (swing.isEnabled())
+                            mc.thePlayer.swingItem();
                     }
                 }
             }
