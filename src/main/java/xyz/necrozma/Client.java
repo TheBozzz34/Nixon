@@ -17,7 +17,7 @@ import xyz.necrozma.event.impl.input.EventKey;
 import xyz.necrozma.gui.ModGui;
 import xyz.necrozma.module.ModuleManager;
 import xyz.necrozma.command.CommandManager;
-
+import xyz.necrozma.module.impl.render.Xray;
 
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,6 +29,7 @@ public enum Client implements Subscriber {
     INSTANCE;
 
     private ModGui clickGui;
+    private Xray xray;
 
     private final Minecraft MC = Minecraft.getMinecraft();
 
@@ -55,6 +56,7 @@ public enum Client implements Subscriber {
         CM = new CommandManager();
 
         clickGui = new ModGui();
+        xray = new Xray();
     }
 
     public final void onRender() {

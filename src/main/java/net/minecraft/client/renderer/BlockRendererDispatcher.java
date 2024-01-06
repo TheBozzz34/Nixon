@@ -16,6 +16,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldType;
+import xyz.necrozma.Client;
+import xyz.necrozma.module.impl.render.Xray;
 
 public class BlockRendererDispatcher implements IResourceManagerReloadListener
 {
@@ -52,6 +54,13 @@ public class BlockRendererDispatcher implements IResourceManagerReloadListener
 
     public boolean renderBlock(IBlockState state, BlockPos pos, IBlockAccess blockAccess, WorldRenderer worldRendererIn)
     {
+
+        if(Client.INSTANCE.getMM().getModule(Xray.class).isToggled()) {
+            if(!Xray.BLOCKS.contains(state.getBlock())) {
+                return false;
+            }
+        }
+
         try
         {
             int i = state.getBlock().getRenderType();

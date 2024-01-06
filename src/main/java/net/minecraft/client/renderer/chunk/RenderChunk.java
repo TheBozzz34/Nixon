@@ -44,6 +44,8 @@ import net.optifine.reflect.ReflectorForge;
 import net.optifine.render.AabbFrame;
 import net.optifine.render.RenderEnv;
 import net.optifine.shaders.SVertexBuilder;
+import xyz.necrozma.Client;
+import xyz.necrozma.module.impl.render.Xray;
 
 public class RenderChunk
 {
@@ -204,6 +206,7 @@ public class RenderChunk
                 IBlockState iblockstate = chunkcacheof.getBlockState(blockposm);
                 Block block = iblockstate.getBlock();
 
+
                 if (block.isOpaqueCube())
                 {
                     lvt_10_1_.func_178606_a(blockposm);
@@ -271,6 +274,17 @@ public class RenderChunk
                             compiledchunk.setLayerStarted(enumworldblocklayer);
                             this.preRenderBlocks(worldrenderer, blockpos);
                         }
+
+                        /*
+                        if (Client.INSTANCE.getMM().getModule(Xray.class).isToggled()) {
+                            if (Xray.isXrayBlock(block)) {
+                                aboolean[k] |= blockrendererdispatcher.renderBlock(iblockstate, blockposm, chunkcacheof, worldrenderer);
+                            }
+                        } else {
+                            aboolean[k] |= blockrendererdispatcher.renderBlock(iblockstate, blockposm, chunkcacheof, worldrenderer);
+                        }
+
+                         */
 
                         aboolean[k] |= blockrendererdispatcher.renderBlock(iblockstate, blockposm, chunkcacheof, worldrenderer);
 
