@@ -1,9 +1,9 @@
 package xyz.necrozma.gui;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import xyz.necrozma.Client;
-import xyz.necrozma.module.Module;
+import xyz.necrozma.module.impl.render.Xray;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -20,7 +20,7 @@ public class ModGui extends GuiScreen {
 
         int squareSize = 50;
 
-        AtomicInteger yOffSet = new AtomicInteger(4);
+        AtomicInteger yOffSet = new AtomicInteger(14);
         int yOffsetInc = 10;
 
 
@@ -28,29 +28,21 @@ public class ModGui extends GuiScreen {
 
         drawDefaultBackground();
 
-        Client.INSTANCE.getMM().getModules().values().forEach(module -> {
-            if (module.isToggled()) {
-                drawBounds(module, 2, yOffSet.get());
-                drawString(mc.fontRendererObj, module.getName(),2, yOffSet.get() + 2, 0xFF00FF00);
-                yOffSet.addAndGet(yOffsetInc);
-            } else {
-                drawBounds(module, 2, yOffSet.get());
-                drawString(mc.fontRendererObj, module.getName(),  2, yOffSet.get() + 2, 0xFFFF0000);
-                yOffSet.addAndGet(yOffsetInc);
-            }
-        });
+
+        drawString(mc.fontRendererObj, "Xrayed blocks:", 4, 2, 0xFFFFFFFF);
+
+        drawHorizontalLine(0, scaledResolution.getScaledWidth(), 12, 0xFFFFFFFF);
+
+        for (Block block : Xray.BLOCKS) {
+            drawString(mc.fontRendererObj, block.getLocalizedName(), 4, yOffSet.get(), 0xFFFFFFFF);
+            yOffSet.addAndGet(yOffsetInc);
+        }
 
         // drawBouncingBox(); Just for fun
 
 
     }
 
-    private void drawBounds(Module module, int x, int y) {
-        int textWidth = mc.fontRendererObj.getStringWidth(module.getName());
-        int width = textWidth + 2;
-        int height = 12;
-        drawRect(x, y, x + width, y + height, 0x90000000);
-    }
 
 
     private int x = 0;

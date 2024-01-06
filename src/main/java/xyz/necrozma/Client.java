@@ -8,6 +8,7 @@ import me.zero.alpine.bus.EventManager;
 import me.zero.alpine.listener.Listener;
 import me.zero.alpine.listener.Subscribe;
 import me.zero.alpine.listener.Subscriber;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Keyboard;
@@ -57,6 +58,8 @@ public enum Client implements Subscriber {
 
         clickGui = new ModGui();
         xray = new Xray();
+
+        xray.addBlocks();
     }
 
     public final void onRender() {

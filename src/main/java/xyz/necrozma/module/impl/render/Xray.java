@@ -22,53 +22,37 @@ import java.util.List;
 public class Xray extends Module {
 
     public static final List<Block> BLOCKS = new ArrayList<>();
-        public Xray() {
-            setKey(Keyboard.KEY_X);
 
-            BLOCKS.add(Block.getBlockById(16));
-            BLOCKS.add(Block.getBlockById(15));
-            BLOCKS.add(Block.getBlockById(14));
-            BLOCKS.add(Block.getBlockById(56));
-            BLOCKS.add(Block.getBlockById(73));
-            BLOCKS.add(Block.getBlockById(129));
-            BLOCKS.add(Block.getBlockById(21));
-            BLOCKS.add(Block.getBlockById(129));
-            BLOCKS.add(Block.getBlockById(73));
-            BLOCKS.add(Block.getBlockById(129));
-            BLOCKS.add(Block.getBlockById(73));
-            // Lavas
-            BLOCKS.add(Block.getBlockById(10));
-            BLOCKS.add(Block.getBlockById(11));
-        }
+    public Xray() {
+        setKey(Keyboard.KEY_X);
+    }
 
-        @Override
-        public void onEnable() {
-            super.onEnable();
-            mc.renderGlobal.loadRenderers();
-        }
+    @Override
+    public void onEnable() {
+        super.onEnable();
+    }
 
-        @Override
-        public void onDisable() {
-            super.onDisable();
-            mc.renderGlobal.loadRenderers();
-        }
+    @Override
+    public void onDisable() {
+        super.onDisable();
+    }
 
-        @Override
-        public void onToggle() {
-            super.onToggle();
-            mc.renderGlobal.loadRenderers();
-        }
+    @Override
+    public void onToggle() {
+        super.onToggle();
+        mc.renderGlobal.loadRenderers();
+    }
 
-        @Subscribe
-        private final Listener<EventUpdate> listener = new Listener<>(e -> {
-
-        });
-
-
-        private void changeAlpha(BlockPos pos, int alpha) {
-            IBlockState blockState = mc.theWorld.getBlockState(pos);
-            mc.theWorld.setBlockState(pos, blockState.getBlock().getStateFromMeta(alpha));
-        }
-
-
+    public void addBlocks() {
+        BLOCKS.add(Block.getBlockById(16));
+        BLOCKS.add(Block.getBlockById(15));
+        BLOCKS.add(Block.getBlockById(14));
+        BLOCKS.add(Block.getBlockById(56));
+        BLOCKS.add(Block.getBlockById(73));
+        BLOCKS.add(Block.getBlockById(129));
+        BLOCKS.add(Block.getBlockById(21));
+        BLOCKS.add(Block.getBlockById(73));
+        BLOCKS.add(Block.getBlockById(10));
+        BLOCKS.add(Block.getBlockById(11));
+    }
 }
