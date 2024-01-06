@@ -1,5 +1,6 @@
 package xyz.necrozma;
 
+import com.google.gson.Gson;
 import lombok.Getter;
 import me.zero.alpine.bus.EventBus;
 import me.zero.alpine.bus.EventManager;
@@ -14,6 +15,8 @@ import net.arikia.dev.drpc.callbacks.ReadyCallback;
 import net.azurewebsites.thehen101.coremod.forgepacketmanagement.ForgePacketManagement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import xyz.necrozma.event.impl.input.EventKey;
@@ -22,17 +25,30 @@ import xyz.necrozma.gui.ModGui;
 import xyz.necrozma.module.ModuleManager;
 import xyz.necrozma.command.CommandManager;
 import xyz.necrozma.module.impl.render.Xray;
+import xyz.necrozma.util.FileUtil;
 import xyz.necrozma.util.PacketHandler;
+import xyz.necrozma.util.PresenceManager;
+import xyz.necrozma.util.SocketManager;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 public enum Client implements Subscriber {
     INSTANCE;
 
+    private static final Logger logger = LogManager.getLogger();
+
     private ModGui clickGui;
     private Xray xray;
+    private Gson gson;
+
+    private String exePath = "";
+    private String dllPath = "";
 
     private final Minecraft MC = Minecraft.getMinecraft();
 
@@ -42,6 +58,7 @@ public enum Client implements Subscriber {
     private ModuleManager MM;
     private CommandManager CM;
     private PacketHandler PH;
+    private SocketManager SM;
 
     private DiscordRichPresence rich;
 
@@ -57,13 +74,16 @@ public enum Client implements Subscriber {
             clientPrefix = "&7[&cNixon&7]&r ",
             author = "Necrozma";
 
-    public final void init() {
+    public final void init() throws IOException {
         Display.setTitle(name + " -> " + version);
         BUS.subscribe(this);
+
+        gson = new Gson();
 
         MM = new ModuleManager();
         CM = new CommandManager();
         PH = new PacketHandler();
+        SM = new SocketManager();
 
 
         clickGui = new ModGui();
@@ -71,13 +91,25 @@ public enum Client implements Subscriber {
 
         xray.addBlocks();
 
-        DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler((user) -> {
-            System.out.println("Welcome " + user.username + "#" + user.discriminator + "!");
-        }).build();
+        try {
+            exePath = FileUtil.ExportResource("/DiscordRPC.exe");
+            dllPath = FileUtil.ExportResource("/discord_game_sdk.dll");
 
-        DiscordRPC.discordInitialize("824317166357577728", handlers, true);
+            logger.info("Exported DiscordRPC.exe to " + exePath + " and discord_game_sdk.dll to " + dllPath);
+            logger.info("Rich presence will now start");
 
-        createNewPresence();
+            boolean success = FileUtil.StartExe(exePath);
+
+            if (success) {
+                logger.info("Successfully started DiscordRPC.exe");
+                PresenceManager.setPresence("In main menu", "Playing version " + MC.getVersion(), "cover", MC.getVersion());
+            } else {
+                logger.error("Failed to start DiscordRPC.exe");
+            }
+        } catch (Exception e) {
+            logger.error("Failed to export DiscordRPC.exe, rich presence will not work", e);
+        }
+
     }
 
     public final void onRender() {
@@ -125,8 +157,18 @@ public enum Client implements Subscriber {
     }
 
     public final void shutdown() {
-
         BUS.unsubscribe(this);
+
+        logger.info("Shutting down Discord RPC");
+
+        boolean success = FileUtil.KillProcess("DiscordRPC.exe");
+        if (success) {
+            logger.info("Successfully killed DiscordRPC.exe");
+        } else {
+            logger.error("Failed to kill DiscordRPC.exe");
+        }
+
+        SM.close();
     }
 
     @Subscribe
@@ -151,41 +193,32 @@ public enum Client implements Subscriber {
                     State = "In Singleplayer";
                     Details = "Playing on " + MC.getIntegratedServer().getWorldName();
 
-                    updatePresence(rich, State, Details);
+                    try {
+                        PresenceManager.setPresence(State, Details, "cover", MC.getVersion());
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 } else {
                     State = "In Multiplayer";
                     Details = "Playing on " + MC.getCurrentServerData().serverName;
 
-                    updatePresence(rich, State, Details);
+                    try {
+                        PresenceManager.setPresence(State, Details, "cover", MC.getVersion());
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
 
             } else {
                 State = "Game Paused";
                 Details = "Playing version " + MC.getVersion();
 
-                updatePresence(rich, State, Details);
+                try {
+                    PresenceManager.setPresence(State, Details, "cover", MC.getVersion());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }
     });
-
-    public static class ReadyEvent implements ReadyCallback {
-        @Override
-        public void apply(DiscordUser discordUser) {
-            System.out.println("Discord's ready!");
-        }
-    }
-
-    public void createNewPresence() {
-        rich = new DiscordRichPresence.Builder(State).setDetails(Details).build();
-        rich.largeImageKey = "cover";
-        rich.largeImageText = MC.getVersion();
-        DiscordRPC.discordUpdatePresence(rich);
-    }
-
-    public void updatePresence(DiscordRichPresence rich, String State, String Details) {
-        rich.state = State;
-        rich.details = Details;
-        DiscordRPC.discordUpdatePresence(rich);
-    }
-
 }
