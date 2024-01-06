@@ -54,3 +54,4 @@ Nixon is powered by the [MavenMCP](https://github.com/Marcelektro/MavenMCP-1.8.9
 I appreciate contributions. So if you want to support Nixon, feel free to make changes to the  source code by
 submitting a pull request.
 
+![Alt](https://repobeats.axiom.co/api/embed/cbdce41dcce816788648bf9539097fe018f00dcc.svg "Repobeats analytics image")
