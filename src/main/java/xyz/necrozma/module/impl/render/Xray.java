@@ -36,6 +36,9 @@ public class Xray extends Module {
             BLOCKS.add(Block.getBlockById(73));
             BLOCKS.add(Block.getBlockById(129));
             BLOCKS.add(Block.getBlockById(73));
+            // Lavas
+            BLOCKS.add(Block.getBlockById(10));
+            BLOCKS.add(Block.getBlockById(11));
         }
 
         @Override
@@ -61,9 +64,6 @@ public class Xray extends Module {
 
         });
 
-        public static boolean isXrayBlock(Block block) {
-            return BLOCKS.contains(block);
-        }
 
         private void changeAlpha(BlockPos pos, int alpha) {
             IBlockState blockState = mc.theWorld.getBlockState(pos);

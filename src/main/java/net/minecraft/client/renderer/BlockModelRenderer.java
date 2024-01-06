@@ -27,6 +27,7 @@ import net.optifine.reflect.Reflector;
 import net.optifine.render.RenderEnv;
 import net.optifine.shaders.SVertexBuilder;
 import net.optifine.shaders.Shaders;
+import xyz.necrozma.module.impl.render.Xray;
 
 public class BlockModelRenderer
 {
@@ -107,7 +108,7 @@ public class BlockModelRenderer
             {
                 BlockPos blockpos = p_renderModelSmooth_4_.offset(enumfacing);
 
-                if (!p_renderModelSmooth_6_ || block.shouldSideBeRendered(p_renderModelSmooth_1_, blockpos, enumfacing))
+                if (!p_renderModelSmooth_6_ || block.shouldSideBeRendered(p_renderModelSmooth_1_, blockpos, enumfacing) || Xray.BLOCKS.contains(block))
                 {
                     list = BlockModelCustomizer.getRenderQuads(list, p_renderModelSmooth_1_, p_renderModelSmooth_3_, p_renderModelSmooth_4_, enumfacing, enumworldblocklayer, 0L, renderenv);
                     this.renderQuadsSmooth(p_renderModelSmooth_1_, p_renderModelSmooth_3_, p_renderModelSmooth_4_, p_renderModelSmooth_5_, list, renderenv);
@@ -196,8 +197,15 @@ public class BlockModelRenderer
 
         for (BakedQuad bakedquad : p_renderQuadsSmooth_5_)
         {
+
             this.fillQuadBounds(block, bakedquad.getVertexData(), bakedquad.getFace(), afloat, bitset);
             blockmodelrenderer$ambientocclusionface.updateVertexBrightness(p_renderQuadsSmooth_1_, block, p_renderQuadsSmooth_3_, bakedquad.getFace(), afloat, bitset);
+
+            if(Xray.BLOCKS.contains(block)) {
+                if (block instanceof net.minecraft.block.BlockOre) {
+                    blockmodelrenderer$ambientocclusionface.setMaxBlockLight();
+                }
+            }
 
             if (bakedquad.getSprite().isEmissive)
             {
