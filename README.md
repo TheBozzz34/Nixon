@@ -1,4 +1,4 @@
-
+[![Java CI with Maven](https://github.com/TheBozzz34/Nixon/actions/workflows/maven.yml/badge.svg)](https://github.com/TheBozzz34/Nixon/actions/workflows/maven.yml)
 
 # Nixon is a free and open-source 1.8.9 client using the Forge API for Minecraft.
 
