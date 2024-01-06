@@ -134,6 +134,13 @@ public enum Client implements Subscriber {
                 yOffSet.addAndGet(yOffsetInc);
             });
 
+            String location = "X: " + MC.thePlayer.getPosition().getX() + " Y: " + MC.thePlayer.getPosition().getY() + " Z: " + MC.thePlayer.getPosition().getZ();
+
+            MC.ingameGUI.drawString(MC.fontRendererObj, location, 2, scaledResolution.getScaledHeight() - 10, 0xFFFFFFFF);
+
+            String fps = "FPS: " + Minecraft.getDebugFPS();
+            MC.ingameGUI.drawString(MC.fontRendererObj, fps, scaledResolution.getScaledWidth() - MC.fontRendererObj.getStringWidth(fps) - 2, scaledResolution.getScaledHeight() - 10, 0xFFFFFFFF);
+
             drawChromaString("Nixon Client", scaledResolution.getScaledWidth() - MC.fontRendererObj.getStringWidth("Nixon Client") - 2, 2, false);
 
         }
