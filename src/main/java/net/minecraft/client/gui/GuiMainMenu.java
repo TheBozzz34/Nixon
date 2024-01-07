@@ -73,7 +73,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
     /** Link to the Mojang Support about minimum requirements */
     private String openGLWarningLink;
     private static final ResourceLocation splashTexts = new ResourceLocation("texts/splashes.txt");
-    private static final ResourceLocation minecraftTitleTextures = new ResourceLocation("textures/gui/title/minecraft.png");
+    private static final ResourceLocation minecraftTitleTextures = new ResourceLocation("textures/gui/title/wave.png");
 
     /** An array of all the paths to the panorama pictures. */
     private static final ResourceLocation[] titlePanoramaPaths = new ResourceLocation[] {new ResourceLocation("textures/gui/title/background/panorama_0.png"), new ResourceLocation("textures/gui/title/background/panorama_1.png"), new ResourceLocation("textures/gui/title/background/panorama_2.png"), new ResourceLocation("textures/gui/title/background/panorama_3.png"), new ResourceLocation("textures/gui/title/background/panorama_4.png"), new ResourceLocation("textures/gui/title/background/panorama_5.png")};
@@ -611,6 +611,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
             this.drawGradientRect(0, 0, this.width, this.height, j1, k1);
         }
 
+        /*
         this.mc.getTextureManager().bindTexture(minecraftTitleTextures);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -628,6 +629,20 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
             this.drawTexturedModalRect(j + 155, k + 0, 0, 45, 155, 44);
         }
 
+         */
+
+
+
+        GlStateManager.pushMatrix();
+        this.mc.getTextureManager().bindTexture(minecraftTitleTextures);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.translate((float)(this.width)/16, -16, 0.0F);
+        GlStateManager.scale(1.5F, 1F, 1F);
+        this.drawTexturedModalRect(0, 0, 0, 0, 256, 256);
+        GlStateManager.popMatrix();
+
+
+        /*
         GlStateManager.pushMatrix();
         GlStateManager.translate((float)(this.width / 2 + 90), 70.0F, 0.0F);
         GlStateManager.rotate(-20.0F, 0.0F, 0.0F, 1.0F);
@@ -636,6 +651,8 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         GlStateManager.scale(f, f, f);
         this.drawCenteredString(this.fontRendererObj, this.splashText, 0, -8, -256);
         GlStateManager.popMatrix();
+
+         */
         String s = "Minecraft 1.8.9";
 
         if (this.mc.isDemo())
@@ -668,8 +685,8 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
             this.drawString(this.fontRendererObj, s, 2, this.height - 10, -1);
         }
 
-        String s2 = "Copyright Mojang AB. Do not distribute!";
-        this.drawString(this.fontRendererObj, s2, this.width - this.fontRendererObj.getStringWidth(s2) - 2, this.height - 10, -1);
+        String s2 = "nixon.necrozma.xyz";
+        this.drawString(this.fontRendererObj, s2, this.width - this.fontRendererObj.getStringWidth(s2) - 2, this.height - 10, 0xFF00FFFF);
 
         if (this.openGLWarning1 != null && this.openGLWarning1.length() > 0)
         {

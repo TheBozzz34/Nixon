@@ -77,9 +77,6 @@ public enum Client implements Subscriber {
 
         authed = HWID.checkHWID();
 
-        logger.info(authed ? "Logged in!" : "Not authed!");
-
-
         Display.setTitle(name + " -> " + version);
         BUS.subscribe(this);
 
