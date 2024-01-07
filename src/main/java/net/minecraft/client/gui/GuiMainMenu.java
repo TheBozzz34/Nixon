@@ -73,7 +73,8 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
     /** Link to the Mojang Support about minimum requirements */
     private String openGLWarningLink;
     private static final ResourceLocation splashTexts = new ResourceLocation("texts/splashes.txt");
-    private static final ResourceLocation minecraftTitleTextures = new ResourceLocation("textures/gui/title/wave.png");
+    //private static final ResourceLocation minecraftTitleTextures = new ResourceLocation("textures/gui/title/wave.png");
+    private static final ResourceLocation minecraftTitleTextures = new ResourceLocation("textures/gui/title/minecraft.png");
 
     /** An array of all the paths to the panorama pictures. */
     private static final ResourceLocation[] titlePanoramaPaths = new ResourceLocation[] {new ResourceLocation("textures/gui/title/background/panorama_0.png"), new ResourceLocation("textures/gui/title/background/panorama_1.png"), new ResourceLocation("textures/gui/title/background/panorama_2.png"), new ResourceLocation("textures/gui/title/background/panorama_3.png"), new ResourceLocation("textures/gui/title/background/panorama_4.png"), new ResourceLocation("textures/gui/title/background/panorama_5.png")};
@@ -270,12 +271,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
 
         if (Reflector.GuiModList_Constructor.exists())
         {
-            this.buttonList.add(this.realmsButton = new GuiButton(14, this.width / 2 + 2, p_73969_1_ + p_73969_2_ * 2, 98, 20, I18n.format("menu.online", new Object[0]).replace("Minecraft", "").trim()));
             this.buttonList.add(this.modButton = new GuiButton(6, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, 98, 20, I18n.format("fml.menu.mods", new Object[0])));
-        }
-        else
-        {
-            this.buttonList.add(this.realmsButton = new GuiButton(14, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, I18n.format("menu.online", new Object[0])));
         }
     }
 
@@ -579,9 +575,16 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
+        /*
         GlStateManager.disableAlpha();
         this.renderSkybox(mouseX, mouseY, partialTicks);
+
+
         GlStateManager.enableAlpha();
+
+         */
+
+        this.drawGradientRect(0, 0, this.width, this.height, 0xFFA63F9F, 0xFF2621A6);
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         int i = 274;
@@ -611,7 +614,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
             this.drawGradientRect(0, 0, this.width, this.height, j1, k1);
         }
 
-        /*
+
         this.mc.getTextureManager().bindTexture(minecraftTitleTextures);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -629,10 +632,10 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
             this.drawTexturedModalRect(j + 155, k + 0, 0, 45, 155, 44);
         }
 
-         */
 
 
 
+/*
         GlStateManager.pushMatrix();
         this.mc.getTextureManager().bindTexture(minecraftTitleTextures);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -642,7 +645,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         GlStateManager.popMatrix();
 
 
-        /*
+
         GlStateManager.pushMatrix();
         GlStateManager.translate((float)(this.width / 2 + 90), 70.0F, 0.0F);
         GlStateManager.rotate(-20.0F, 0.0F, 0.0F, 1.0F);
