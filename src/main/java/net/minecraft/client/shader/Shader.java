@@ -89,11 +89,11 @@ public class Shader
         GlStateManager.colorMask(true, true, true, true);
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181706_f);
-        worldrenderer.func_181662_b(0.0D, (double)f1, 500.0D).func_181669_b(255, 255, 255, 255).func_181675_d();
-        worldrenderer.func_181662_b((double)f, (double)f1, 500.0D).func_181669_b(255, 255, 255, 255).func_181675_d();
-        worldrenderer.func_181662_b((double)f, 0.0D, 500.0D).func_181669_b(255, 255, 255, 255).func_181675_d();
-        worldrenderer.func_181662_b(0.0D, 0.0D, 500.0D).func_181669_b(255, 255, 255, 255).func_181675_d();
+        worldrenderer.begin(7, DefaultVertexFormats.field_181706_f);
+        worldrenderer.pos(0.0D, (double)f1, 500.0D).func_181669_b(255, 255, 255, 255).endVertex();
+        worldrenderer.pos((double)f, (double)f1, 500.0D).func_181669_b(255, 255, 255, 255).endVertex();
+        worldrenderer.pos((double)f, 0.0D, 500.0D).func_181669_b(255, 255, 255, 255).endVertex();
+        worldrenderer.pos(0.0D, 0.0D, 500.0D).func_181669_b(255, 255, 255, 255).endVertex();
         tessellator.draw();
         GlStateManager.depthMask(true);
         GlStateManager.colorMask(true, true, true, true);

@@ -7,11 +7,6 @@ import me.zero.alpine.bus.EventManager;
 import me.zero.alpine.listener.Listener;
 import me.zero.alpine.listener.Subscribe;
 import me.zero.alpine.listener.Subscriber;
-import net.arikia.dev.drpc.DiscordEventHandlers;
-import net.arikia.dev.drpc.DiscordRPC;
-import net.arikia.dev.drpc.DiscordRichPresence;
-import net.arikia.dev.drpc.DiscordUser;
-import net.arikia.dev.drpc.callbacks.ReadyCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import xyz.necrozma.event.impl.input.EventKey;
-import xyz.necrozma.event.impl.update.EventUpdate;
 import xyz.necrozma.gui.ModGui;
 import xyz.necrozma.module.ModuleManager;
 import xyz.necrozma.command.CommandManager;
@@ -27,11 +21,7 @@ import xyz.necrozma.module.impl.render.Xray;
 import xyz.necrozma.util.*;
 
 
-import java.io.File;
 import java.io.IOException;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
@@ -44,22 +34,16 @@ public enum Client implements Subscriber {
     private Xray xray;
     private Gson gson;
 
-    private String exePath = "";
-    private String dllPath = "";
 
     private final Minecraft MC = Minecraft.getMinecraft();
 
-    private String State = "Playing version " + MC.getVersion();
-    private String Details = "In main menu";
 
     private ModuleManager MM;
     private CommandManager CM;
     private PacketHandler PH;
-    private SocketManager SM;
 
     private boolean authed;
 
-    private DiscordRichPresence rich;
 
     public static final EventBus BUS = EventManager.builder()
             .setName("root/Shit")
@@ -75,7 +59,7 @@ public enum Client implements Subscriber {
 
     public final void init() throws IOException {
 
-        authed = HWID.checkHWID();
+        // authed = HWID.checkHWID(); el broken
 
         Display.setTitle(name + " -> " + version);
         BUS.subscribe(this);
@@ -85,7 +69,6 @@ public enum Client implements Subscriber {
         MM = new ModuleManager();
         CM = new CommandManager();
         PH = new PacketHandler();
-        SM = new SocketManager();
 
 
         clickGui = new ModGui();
@@ -93,24 +76,6 @@ public enum Client implements Subscriber {
 
         xray.addBlocks();
 
-        try {
-            exePath = FileUtil.ExportResource("/DiscordRPC.exe");
-            dllPath = FileUtil.ExportResource("/discord_game_sdk.dll");
-
-            logger.info("Exported DiscordRPC.exe to " + exePath + " and discord_game_sdk.dll to " + dllPath);
-            logger.info("Rich presence will now start");
-
-            boolean success = FileUtil.StartExe(exePath);
-
-            if (success) {
-                logger.info("Successfully started DiscordRPC.exe");
-                PresenceManager.setPresence("In main menu", "Playing version " + MC.getVersion(), "cover", MC.getVersion());
-            } else {
-                logger.error("Failed to start DiscordRPC.exe");
-            }
-        } catch (Exception e) {
-            logger.error("Failed to export DiscordRPC.exe, rich presence will not work", e);
-        }
 
     }
 
@@ -132,6 +97,7 @@ public enum Client implements Subscriber {
         }
 
 
+/*
         if (MC.inGameHasFocus && !MC.gameSettings.showDebugInfo) {
             // drawRect(centerX - squareSize / 2, centerY - squareSize / 2, centerX + squareSize / 2, centerY + squareSize / 2, 0xFFFF0000);
             MM.getModules().values().forEach(module -> {
@@ -154,8 +120,9 @@ public enum Client implements Subscriber {
             MC.ingameGUI.drawString(MC.fontRendererObj, fps, scaledResolution.getScaledWidth() - MC.fontRendererObj.getStringWidth(fps) - 2, scaledResolution.getScaledHeight() - 10, 0xFFFFFFFF);
 
             drawChromaString("Nixon Client", scaledResolution.getScaledWidth() - MC.fontRendererObj.getStringWidth("Nixon Client") - 2, 2, false);
-
         }
+
+ */
     }
 
     private void drawChromaString(String text, int x, int y, boolean shadow) {
@@ -173,21 +140,13 @@ public enum Client implements Subscriber {
         } else {
             MC.fontRendererObj.drawString(text, x, y, color);
         }
+
+
     }
 
     public final void shutdown() {
         BUS.unsubscribe(this);
 
-        logger.info("Shutting down Discord RPC");
-
-        boolean success = FileUtil.KillProcess("DiscordRPC.exe");
-        if (success) {
-            logger.info("Successfully killed DiscordRPC.exe");
-        } else {
-            logger.error("Failed to kill DiscordRPC.exe");
-        }
-
-        SM.close();
     }
 
     @Subscribe
@@ -201,43 +160,6 @@ public enum Client implements Subscriber {
         }
         if (e.getKey() == Keyboard.KEY_GRAVE) {
             MC.displayGuiScreen(clickGui);
-        }
-    });
-
-    @Subscribe
-    private final Listener<EventUpdate> listener2 = new Listener<>(e -> {
-        if (MC.thePlayer != null) {
-            if(MC.inGameHasFocus) {
-                if (MC.isSingleplayer()) {
-                    State = "In Singleplayer";
-                    Details = "Playing on " + MC.getIntegratedServer().getWorldName();
-
-                    try {
-                        PresenceManager.setPresence(State, Details, "cover", MC.getVersion());
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                } else {
-                    State = "In Multiplayer";
-                    Details = "Playing on " + MC.getCurrentServerData().serverName;
-
-                    try {
-                        PresenceManager.setPresence(State, Details, "cover", MC.getVersion());
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
-
-            } else {
-                State = "Game Paused";
-                Details = "Playing version " + MC.getVersion();
-
-                try {
-                    PresenceManager.setPresence(State, Details, "cover", MC.getVersion());
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
         }
     });
 }

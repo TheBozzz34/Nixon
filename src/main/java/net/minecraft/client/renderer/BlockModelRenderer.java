@@ -482,7 +482,7 @@ public class BlockModelRenderer
 
         for (BakedQuad bakedquad : p_178264_5_)
         {
-            worldrenderer.func_181668_a(7, DefaultVertexFormats.ITEM);
+            worldrenderer.begin(7, DefaultVertexFormats.ITEM);
             worldrenderer.addVertexData(bakedquad.getVertexData());
             worldrenderer.putSprite(bakedquad.getSprite());
 
@@ -531,7 +531,7 @@ public class BlockModelRenderer
 
                         if (!worldrenderer.isDrawing())
                         {
-                            worldrenderer.func_181668_a(7, DefaultVertexFormats.BLOCK);
+                            worldrenderer.begin(7, DefaultVertexFormats.BLOCK);
                             worldrenderer.setTranslation(p_renderOverlayModels_5_.getXOffset(), p_renderOverlayModels_5_.getYOffset(), p_renderOverlayModels_5_.getZOffset());
                         }
 

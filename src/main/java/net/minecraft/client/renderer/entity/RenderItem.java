@@ -150,7 +150,7 @@ public class RenderItem implements IResourceManagerReloadListener
             worldrenderer.setBlockLayer(EnumWorldBlockLayer.SOLID);
         }
 
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.ITEM);
+        worldrenderer.begin(7, DefaultVertexFormats.ITEM);
 
         for (EnumFacing enumfacing : EnumFacing.VALUES)
         {
@@ -648,11 +648,11 @@ public class RenderItem implements IResourceManagerReloadListener
 
     private void func_181565_a(WorldRenderer p_181565_1_, int p_181565_2_, int p_181565_3_, int p_181565_4_, int p_181565_5_, int p_181565_6_, int p_181565_7_, int p_181565_8_, int p_181565_9_)
     {
-        p_181565_1_.func_181668_a(7, DefaultVertexFormats.field_181706_f);
-        p_181565_1_.func_181662_b((double)(p_181565_2_ + 0), (double)(p_181565_3_ + 0), 0.0D).func_181669_b(p_181565_6_, p_181565_7_, p_181565_8_, p_181565_9_).func_181675_d();
-        p_181565_1_.func_181662_b((double)(p_181565_2_ + 0), (double)(p_181565_3_ + p_181565_5_), 0.0D).func_181669_b(p_181565_6_, p_181565_7_, p_181565_8_, p_181565_9_).func_181675_d();
-        p_181565_1_.func_181662_b((double)(p_181565_2_ + p_181565_4_), (double)(p_181565_3_ + p_181565_5_), 0.0D).func_181669_b(p_181565_6_, p_181565_7_, p_181565_8_, p_181565_9_).func_181675_d();
-        p_181565_1_.func_181662_b((double)(p_181565_2_ + p_181565_4_), (double)(p_181565_3_ + 0), 0.0D).func_181669_b(p_181565_6_, p_181565_7_, p_181565_8_, p_181565_9_).func_181675_d();
+        p_181565_1_.begin(7, DefaultVertexFormats.field_181706_f);
+        p_181565_1_.pos((double)(p_181565_2_ + 0), (double)(p_181565_3_ + 0), 0.0D).func_181669_b(p_181565_6_, p_181565_7_, p_181565_8_, p_181565_9_).endVertex();
+        p_181565_1_.pos((double)(p_181565_2_ + 0), (double)(p_181565_3_ + p_181565_5_), 0.0D).func_181669_b(p_181565_6_, p_181565_7_, p_181565_8_, p_181565_9_).endVertex();
+        p_181565_1_.pos((double)(p_181565_2_ + p_181565_4_), (double)(p_181565_3_ + p_181565_5_), 0.0D).func_181669_b(p_181565_6_, p_181565_7_, p_181565_8_, p_181565_9_).endVertex();
+        p_181565_1_.pos((double)(p_181565_2_ + p_181565_4_), (double)(p_181565_3_ + 0), 0.0D).func_181669_b(p_181565_6_, p_181565_7_, p_181565_8_, p_181565_9_).endVertex();
         Tessellator.getInstance().draw();
     }
 

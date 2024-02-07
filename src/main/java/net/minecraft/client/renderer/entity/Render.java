@@ -147,7 +147,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
             worldrenderer.setBlockLayer(EnumWorldBlockLayer.SOLID);
         }
 
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181707_g);
+        worldrenderer.begin(7, DefaultVertexFormats.field_181707_g);
 
         while (f3 > 0.0F)
         {
@@ -166,10 +166,10 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
                 f6 = f10;
             }
 
-            worldrenderer.func_181662_b((double)(f1 - f2), (double)(0.0F - f4), (double)f5).func_181673_a((double)f8, (double)f9).func_181675_d();
-            worldrenderer.func_181662_b((double)(-f1 - f2), (double)(0.0F - f4), (double)f5).func_181673_a((double)f6, (double)f9).func_181675_d();
-            worldrenderer.func_181662_b((double)(-f1 - f2), (double)(1.4F - f4), (double)f5).func_181673_a((double)f6, (double)f7).func_181675_d();
-            worldrenderer.func_181662_b((double)(f1 - f2), (double)(1.4F - f4), (double)f5).func_181673_a((double)f8, (double)f7).func_181675_d();
+            worldrenderer.pos((double)(f1 - f2), (double)(0.0F - f4), (double)f5).func_181673_a((double)f8, (double)f9).endVertex();
+            worldrenderer.pos((double)(-f1 - f2), (double)(0.0F - f4), (double)f5).func_181673_a((double)f6, (double)f9).endVertex();
+            worldrenderer.pos((double)(-f1 - f2), (double)(1.4F - f4), (double)f5).func_181673_a((double)f6, (double)f7).endVertex();
+            worldrenderer.pos((double)(f1 - f2), (double)(1.4F - f4), (double)f5).func_181673_a((double)f8, (double)f7).endVertex();
             f3 -= 0.45F;
             f4 -= 0.45F;
             f1 *= 0.9F;
@@ -229,7 +229,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
             double d4 = z - d1;
             Tessellator tessellator = Tessellator.getInstance();
             WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-            worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
+            worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
 
             for (BlockPos blockpos : BlockPos.getAllInBoxMutable(new BlockPos(i, k, i1), new BlockPos(j, l, j1)))
             {
@@ -280,10 +280,10 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
                 float f1 = (float)((p_180549_2_ - d2) / 2.0D / (double)p_180549_10_ + 0.5D);
                 float f2 = (float)((p_180549_6_ - d4) / 2.0D / (double)p_180549_10_ + 0.5D);
                 float f3 = (float)((p_180549_6_ - d5) / 2.0D / (double)p_180549_10_ + 0.5D);
-                worldrenderer.func_181662_b(d1, d3, d4).func_181673_a((double)f, (double)f2).func_181666_a(1.0F, 1.0F, 1.0F, (float)d0).func_181675_d();
-                worldrenderer.func_181662_b(d1, d3, d5).func_181673_a((double)f, (double)f3).func_181666_a(1.0F, 1.0F, 1.0F, (float)d0).func_181675_d();
-                worldrenderer.func_181662_b(d2, d3, d5).func_181673_a((double)f1, (double)f3).func_181666_a(1.0F, 1.0F, 1.0F, (float)d0).func_181675_d();
-                worldrenderer.func_181662_b(d2, d3, d4).func_181673_a((double)f1, (double)f2).func_181666_a(1.0F, 1.0F, 1.0F, (float)d0).func_181675_d();
+                worldrenderer.pos(d1, d3, d4).func_181673_a((double)f, (double)f2).func_181666_a(1.0F, 1.0F, 1.0F, (float)d0).endVertex();
+                worldrenderer.pos(d1, d3, d5).func_181673_a((double)f, (double)f3).func_181666_a(1.0F, 1.0F, 1.0F, (float)d0).endVertex();
+                worldrenderer.pos(d2, d3, d5).func_181673_a((double)f1, (double)f3).func_181666_a(1.0F, 1.0F, 1.0F, (float)d0).endVertex();
+                worldrenderer.pos(d2, d3, d4).func_181673_a((double)f1, (double)f2).func_181666_a(1.0F, 1.0F, 1.0F, (float)d0).endVertex();
             }
         }
     }
@@ -298,31 +298,31 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         worldrenderer.setTranslation(x, y, z);
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181708_h);
-        worldrenderer.func_181662_b(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).func_181663_c(0.0F, 0.0F, -1.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).func_181663_c(0.0F, 0.0F, -1.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).func_181663_c(0.0F, 0.0F, -1.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.minX, boundingBox.minY, boundingBox.minZ).func_181663_c(0.0F, 0.0F, -1.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).func_181663_c(0.0F, 0.0F, 1.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).func_181663_c(0.0F, 0.0F, 1.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).func_181663_c(0.0F, 0.0F, 1.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).func_181663_c(0.0F, 0.0F, 1.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.minX, boundingBox.minY, boundingBox.minZ).func_181663_c(0.0F, -1.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).func_181663_c(0.0F, -1.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).func_181663_c(0.0F, -1.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).func_181663_c(0.0F, -1.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).func_181663_c(0.0F, 1.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).func_181663_c(0.0F, 1.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).func_181663_c(0.0F, 1.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).func_181663_c(0.0F, 1.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).func_181663_c(-1.0F, 0.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).func_181663_c(-1.0F, 0.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).func_181663_c(-1.0F, 0.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.minX, boundingBox.minY, boundingBox.minZ).func_181663_c(-1.0F, 0.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).func_181663_c(1.0F, 0.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).func_181663_c(1.0F, 0.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).func_181663_c(1.0F, 0.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).func_181663_c(1.0F, 0.0F, 0.0F).func_181675_d();
+        worldrenderer.begin(7, DefaultVertexFormats.field_181708_h);
+        worldrenderer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
         tessellator.draw();
         worldrenderer.setTranslation(0.0D, 0.0D, 0.0D);
         GlStateManager.enableTexture2D();
@@ -395,11 +395,11 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
 
             int j = fontrenderer.getStringWidth(str) / 2;
             GlStateManager.disableTexture2D();
-            worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181706_f);
-            worldrenderer.func_181662_b((double)(-j - 1), (double)(-1 + i), 0.0D).func_181666_a(0.0F, 0.0F, 0.0F, 0.25F).func_181675_d();
-            worldrenderer.func_181662_b((double)(-j - 1), (double)(8 + i), 0.0D).func_181666_a(0.0F, 0.0F, 0.0F, 0.25F).func_181675_d();
-            worldrenderer.func_181662_b((double)(j + 1), (double)(8 + i), 0.0D).func_181666_a(0.0F, 0.0F, 0.0F, 0.25F).func_181675_d();
-            worldrenderer.func_181662_b((double)(j + 1), (double)(-1 + i), 0.0D).func_181666_a(0.0F, 0.0F, 0.0F, 0.25F).func_181675_d();
+            worldrenderer.begin(7, DefaultVertexFormats.field_181706_f);
+            worldrenderer.pos((double)(-j - 1), (double)(-1 + i), 0.0D).func_181666_a(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            worldrenderer.pos((double)(-j - 1), (double)(8 + i), 0.0D).func_181666_a(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            worldrenderer.pos((double)(j + 1), (double)(8 + i), 0.0D).func_181666_a(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            worldrenderer.pos((double)(j + 1), (double)(-1 + i), 0.0D).func_181666_a(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
             tessellator.draw();
             GlStateManager.enableTexture2D();
             fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, 553648127);

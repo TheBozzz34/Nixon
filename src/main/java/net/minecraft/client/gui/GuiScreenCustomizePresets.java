@@ -218,11 +218,11 @@ public class GuiScreenCustomizePresets extends GuiScreen
             int k = 32;
             Tessellator tessellator = Tessellator.getInstance();
             WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-            worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181707_g);
-            worldrenderer.func_181662_b((double)(i + 0), (double)(p_178051_2_ + 32), 0.0D).func_181673_a(0.0D, 1.0D).func_181675_d();
-            worldrenderer.func_181662_b((double)(i + 32), (double)(p_178051_2_ + 32), 0.0D).func_181673_a(1.0D, 1.0D).func_181675_d();
-            worldrenderer.func_181662_b((double)(i + 32), (double)(p_178051_2_ + 0), 0.0D).func_181673_a(1.0D, 0.0D).func_181675_d();
-            worldrenderer.func_181662_b((double)(i + 0), (double)(p_178051_2_ + 0), 0.0D).func_181673_a(0.0D, 0.0D).func_181675_d();
+            worldrenderer.begin(7, DefaultVertexFormats.field_181707_g);
+            worldrenderer.pos((double)(i + 0), (double)(p_178051_2_ + 32), 0.0D).func_181673_a(0.0D, 1.0D).endVertex();
+            worldrenderer.pos((double)(i + 32), (double)(p_178051_2_ + 32), 0.0D).func_181673_a(1.0D, 1.0D).endVertex();
+            worldrenderer.pos((double)(i + 32), (double)(p_178051_2_ + 0), 0.0D).func_181673_a(1.0D, 0.0D).endVertex();
+            worldrenderer.pos((double)(i + 0), (double)(p_178051_2_ + 0), 0.0D).func_181673_a(0.0D, 0.0D).endVertex();
             tessellator.draw();
         }
 

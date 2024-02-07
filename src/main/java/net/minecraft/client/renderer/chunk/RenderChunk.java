@@ -44,8 +44,6 @@ import net.optifine.reflect.ReflectorForge;
 import net.optifine.render.AabbFrame;
 import net.optifine.render.RenderEnv;
 import net.optifine.shaders.SVertexBuilder;
-import xyz.necrozma.Client;
-import xyz.necrozma.module.impl.render.Xray;
 
 public class RenderChunk
 {
@@ -428,7 +426,7 @@ public class RenderChunk
 
     private void preRenderBlocks(WorldRenderer worldRendererIn, BlockPos pos)
     {
-        worldRendererIn.func_181668_a(7, DefaultVertexFormats.BLOCK);
+        worldRendererIn.begin(7, DefaultVertexFormats.BLOCK);
 
         if (Config.isRenderRegions())
         {

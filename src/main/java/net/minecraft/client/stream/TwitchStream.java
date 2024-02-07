@@ -241,11 +241,11 @@ public class TwitchStream implements BroadcastController.BroadcastListener, Chat
                 GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, 9729.0F);
                 Tessellator tessellator = Tessellator.getInstance();
                 WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-                worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181707_g);
-                worldrenderer.func_181662_b(0.0D, (double)f1, 0.0D).func_181673_a(0.0D, (double)f3).func_181675_d();
-                worldrenderer.func_181662_b((double)f, (double)f1, 0.0D).func_181673_a((double)f2, (double)f3).func_181675_d();
-                worldrenderer.func_181662_b((double)f, 0.0D, 0.0D).func_181673_a((double)f2, 0.0D).func_181675_d();
-                worldrenderer.func_181662_b(0.0D, 0.0D, 0.0D).func_181673_a(0.0D, 0.0D).func_181675_d();
+                worldrenderer.begin(7, DefaultVertexFormats.field_181707_g);
+                worldrenderer.pos(0.0D, (double)f1, 0.0D).func_181673_a(0.0D, (double)f3).endVertex();
+                worldrenderer.pos((double)f, (double)f1, 0.0D).func_181673_a((double)f2, (double)f3).endVertex();
+                worldrenderer.pos((double)f, 0.0D, 0.0D).func_181673_a((double)f2, 0.0D).endVertex();
+                worldrenderer.pos(0.0D, 0.0D, 0.0D).func_181673_a(0.0D, 0.0D).endVertex();
                 tessellator.draw();
                 framebuffer1.unbindFramebufferTexture();
                 GlStateManager.popMatrix();

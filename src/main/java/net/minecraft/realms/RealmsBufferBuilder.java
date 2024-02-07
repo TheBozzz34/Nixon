@@ -56,7 +56,7 @@ public class RealmsBufferBuilder
 
     public void endVertex()
     {
-        this.b.func_181675_d();
+        this.b.endVertex();
     }
 
     public RealmsBufferBuilder normal(float p_normal_1_, float p_normal_2_, float p_normal_3_)
@@ -71,7 +71,7 @@ public class RealmsBufferBuilder
 
     public void begin(int p_begin_1_, VertexFormat p_begin_2_)
     {
-        this.b.func_181668_a(p_begin_1_, p_begin_2_);
+        this.b.begin(p_begin_1_, p_begin_2_);
     }
 
     public RealmsBufferBuilder color(int p_color_1_, int p_color_2_, int p_color_3_, int p_color_4_)
@@ -136,7 +136,7 @@ public class RealmsBufferBuilder
 
     public RealmsBufferBuilder vertex(double p_vertex_1_, double p_vertex_3_, double p_vertex_5_)
     {
-        return this.from(this.b.func_181662_b(p_vertex_1_, p_vertex_3_, p_vertex_5_));
+        return this.from(this.b.pos(p_vertex_1_, p_vertex_3_, p_vertex_5_));
     }
 
     public void fixupQuadColor(float p_fixupQuadColor_1_, float p_fixupQuadColor_2_, float p_fixupQuadColor_3_)

@@ -626,11 +626,11 @@ public class GuiTextField extends Gui
         GlStateManager.disableTexture2D();
         GlStateManager.enableColorLogic();
         GlStateManager.colorLogicOp(5387);
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181705_e);
-        worldrenderer.func_181662_b((double)p_146188_1_, (double)p_146188_4_, 0.0D).func_181675_d();
-        worldrenderer.func_181662_b((double)p_146188_3_, (double)p_146188_4_, 0.0D).func_181675_d();
-        worldrenderer.func_181662_b((double)p_146188_3_, (double)p_146188_2_, 0.0D).func_181675_d();
-        worldrenderer.func_181662_b((double)p_146188_1_, (double)p_146188_2_, 0.0D).func_181675_d();
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        worldrenderer.pos((double)p_146188_1_, (double)p_146188_4_, 0.0D).endVertex();
+        worldrenderer.pos((double)p_146188_3_, (double)p_146188_4_, 0.0D).endVertex();
+        worldrenderer.pos((double)p_146188_3_, (double)p_146188_2_, 0.0D).endVertex();
+        worldrenderer.pos((double)p_146188_1_, (double)p_146188_2_, 0.0D).endVertex();
         tessellator.draw();
         GlStateManager.disableColorLogic();
         GlStateManager.enableTexture2D();

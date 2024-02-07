@@ -989,11 +989,11 @@ public class GuiCustomizeWorldScreen extends GuiScreen implements GuiSlider.Form
             this.mc.getTextureManager().bindTexture(optionsBackground);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             float f2 = 32.0F;
-            worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
-            worldrenderer.func_181662_b((double)(this.width / 2 - 90), 185.0D, 0.0D).func_181673_a(0.0D, 2.65625D).func_181669_b(64, 64, 64, 64).func_181675_d();
-            worldrenderer.func_181662_b((double)(this.width / 2 + 90), 185.0D, 0.0D).func_181673_a(5.625D, 2.65625D).func_181669_b(64, 64, 64, 64).func_181675_d();
-            worldrenderer.func_181662_b((double)(this.width / 2 + 90), 100.0D, 0.0D).func_181673_a(5.625D, 0.0D).func_181669_b(64, 64, 64, 64).func_181675_d();
-            worldrenderer.func_181662_b((double)(this.width / 2 - 90), 100.0D, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(64, 64, 64, 64).func_181675_d();
+            worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
+            worldrenderer.pos((double)(this.width / 2 - 90), 185.0D, 0.0D).func_181673_a(0.0D, 2.65625D).func_181669_b(64, 64, 64, 64).endVertex();
+            worldrenderer.pos((double)(this.width / 2 + 90), 185.0D, 0.0D).func_181673_a(5.625D, 2.65625D).func_181669_b(64, 64, 64, 64).endVertex();
+            worldrenderer.pos((double)(this.width / 2 + 90), 100.0D, 0.0D).func_181673_a(5.625D, 0.0D).func_181669_b(64, 64, 64, 64).endVertex();
+            worldrenderer.pos((double)(this.width / 2 - 90), 100.0D, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(64, 64, 64, 64).endVertex();
             tessellator.draw();
             this.drawCenteredString(this.fontRendererObj, I18n.format("createWorld.customize.custom.confirmTitle", new Object[0]), this.width / 2, 105, 16777215);
             this.drawCenteredString(this.fontRendererObj, I18n.format("createWorld.customize.custom.confirm1", new Object[0]), this.width / 2, 125, 16777215);

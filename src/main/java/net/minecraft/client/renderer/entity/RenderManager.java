@@ -113,9 +113,9 @@ public class RenderManager
 
     /** Renders fonts */
     private FontRenderer textRenderer;
-    private double renderPosX;
-    private double renderPosY;
-    private double renderPosZ;
+    public double renderPosX;
+    public double renderPosY;
+    public double renderPosZ;
     public TextureManager renderEngine;
 
     /** Reference to the World object. */
@@ -473,9 +473,9 @@ public class RenderManager
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         Vec3 vec3 = entityIn.getLook(p_85094_9_);
-        worldrenderer.func_181668_a(3, DefaultVertexFormats.field_181706_f);
-        worldrenderer.func_181662_b(p_85094_2_, p_85094_4_ + (double)entityIn.getEyeHeight(), p_85094_6_).func_181669_b(0, 0, 255, 255).func_181675_d();
-        worldrenderer.func_181662_b(p_85094_2_ + vec3.xCoord * 2.0D, p_85094_4_ + (double)entityIn.getEyeHeight() + vec3.yCoord * 2.0D, p_85094_6_ + vec3.zCoord * 2.0D).func_181669_b(0, 0, 255, 255).func_181675_d();
+        worldrenderer.begin(3, DefaultVertexFormats.field_181706_f);
+        worldrenderer.pos(p_85094_2_, p_85094_4_ + (double)entityIn.getEyeHeight(), p_85094_6_).func_181669_b(0, 0, 255, 255).endVertex();
+        worldrenderer.pos(p_85094_2_ + vec3.xCoord * 2.0D, p_85094_4_ + (double)entityIn.getEyeHeight() + vec3.yCoord * 2.0D, p_85094_6_ + vec3.zCoord * 2.0D).func_181669_b(0, 0, 255, 255).endVertex();
         tessellator.draw();
         GlStateManager.enableTexture2D();
         GlStateManager.enableLighting();

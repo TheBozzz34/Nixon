@@ -46,12 +46,12 @@ public class LayerEnderDragonDeath implements LayerRenderer<EntityDragon>
                 GlStateManager.rotate(random.nextFloat() * 360.0F + f * 90.0F, 0.0F, 0.0F, 1.0F);
                 float f2 = random.nextFloat() * 20.0F + 5.0F + f1 * 10.0F;
                 float f3 = random.nextFloat() * 2.0F + 1.0F + f1 * 2.0F;
-                worldrenderer.func_181668_a(6, DefaultVertexFormats.field_181706_f);
-                worldrenderer.func_181662_b(0.0D, 0.0D, 0.0D).func_181669_b(255, 255, 255, (int)(255.0F * (1.0F - f1))).func_181675_d();
-                worldrenderer.func_181662_b(-0.866D * (double)f3, (double)f2, (double)(-0.5F * f3)).func_181669_b(255, 0, 255, 0).func_181675_d();
-                worldrenderer.func_181662_b(0.866D * (double)f3, (double)f2, (double)(-0.5F * f3)).func_181669_b(255, 0, 255, 0).func_181675_d();
-                worldrenderer.func_181662_b(0.0D, (double)f2, (double)(1.0F * f3)).func_181669_b(255, 0, 255, 0).func_181675_d();
-                worldrenderer.func_181662_b(-0.866D * (double)f3, (double)f2, (double)(-0.5F * f3)).func_181669_b(255, 0, 255, 0).func_181675_d();
+                worldrenderer.begin(6, DefaultVertexFormats.field_181706_f);
+                worldrenderer.pos(0.0D, 0.0D, 0.0D).func_181669_b(255, 255, 255, (int)(255.0F * (1.0F - f1))).endVertex();
+                worldrenderer.pos(-0.866D * (double)f3, (double)f2, (double)(-0.5F * f3)).func_181669_b(255, 0, 255, 0).endVertex();
+                worldrenderer.pos(0.866D * (double)f3, (double)f2, (double)(-0.5F * f3)).func_181669_b(255, 0, 255, 0).endVertex();
+                worldrenderer.pos(0.0D, (double)f2, (double)(1.0F * f3)).func_181669_b(255, 0, 255, 0).endVertex();
+                worldrenderer.pos(-0.866D * (double)f3, (double)f2, (double)(-0.5F * f3)).func_181669_b(255, 0, 255, 0).endVertex();
                 tessellator.draw();
             }
 

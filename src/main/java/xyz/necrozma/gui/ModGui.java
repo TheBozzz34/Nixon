@@ -12,6 +12,7 @@ import xyz.necrozma.settings.impl.NumberSetting;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+
 public class ModGui extends GuiScreen {
 
     @Override

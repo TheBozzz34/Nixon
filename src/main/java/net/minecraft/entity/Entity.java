@@ -1468,7 +1468,7 @@ public abstract class Entity implements ICommandSender
      * @param pitch The rotational pitch of the entity.
      * @param yaw The rotational yaw of the entity.
      */
-    protected final Vec3 getVectorForRotation(float pitch, float yaw)
+    public final Vec3 getVectorForRotation(float pitch, float yaw)
     {
         float f = MathHelper.cos(-yaw * 0.017453292F - (float)Math.PI);
         float f1 = MathHelper.sin(-yaw * 0.017453292F - (float)Math.PI);

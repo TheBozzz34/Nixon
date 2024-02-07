@@ -136,17 +136,17 @@ public class BlockFluidRenderer
                     float f24 = f4 * f;
                     float f25 = f4 * f1;
                     float f26 = f4 * f2;
-                    worldRendererIn.func_181662_b(d0 + 0.0D, d1 + (double)f7, d2 + 0.0D).func_181666_a(f24, f25, f26, 1.0F).func_181673_a((double)f13, (double)f17).func_181671_a(l2, i3).func_181675_d();
-                    worldRendererIn.func_181662_b(d0 + 0.0D, d1 + (double)f8, d2 + 1.0D).func_181666_a(f24, f25, f26, 1.0F).func_181673_a((double)f14, (double)f18).func_181671_a(l2, i3).func_181675_d();
-                    worldRendererIn.func_181662_b(d0 + 1.0D, d1 + (double)f9, d2 + 1.0D).func_181666_a(f24, f25, f26, 1.0F).func_181673_a((double)f15, (double)f19).func_181671_a(l2, i3).func_181675_d();
-                    worldRendererIn.func_181662_b(d0 + 1.0D, d1 + (double)f10, d2 + 0.0D).func_181666_a(f24, f25, f26, 1.0F).func_181673_a((double)f16, (double)f20).func_181671_a(l2, i3).func_181675_d();
+                    worldRendererIn.pos(d0 + 0.0D, d1 + (double)f7, d2 + 0.0D).func_181666_a(f24, f25, f26, 1.0F).func_181673_a((double)f13, (double)f17).func_181671_a(l2, i3).endVertex();
+                    worldRendererIn.pos(d0 + 0.0D, d1 + (double)f8, d2 + 1.0D).func_181666_a(f24, f25, f26, 1.0F).func_181673_a((double)f14, (double)f18).func_181671_a(l2, i3).endVertex();
+                    worldRendererIn.pos(d0 + 1.0D, d1 + (double)f9, d2 + 1.0D).func_181666_a(f24, f25, f26, 1.0F).func_181673_a((double)f15, (double)f19).func_181671_a(l2, i3).endVertex();
+                    worldRendererIn.pos(d0 + 1.0D, d1 + (double)f10, d2 + 0.0D).func_181666_a(f24, f25, f26, 1.0F).func_181673_a((double)f16, (double)f20).func_181671_a(l2, i3).endVertex();
 
                     if (blockliquid.func_176364_g(blockAccess, blockPosIn.up()))
                     {
-                        worldRendererIn.func_181662_b(d0 + 0.0D, d1 + (double)f7, d2 + 0.0D).func_181666_a(f24, f25, f26, 1.0F).func_181673_a((double)f13, (double)f17).func_181671_a(l2, i3).func_181675_d();
-                        worldRendererIn.func_181662_b(d0 + 1.0D, d1 + (double)f10, d2 + 0.0D).func_181666_a(f24, f25, f26, 1.0F).func_181673_a((double)f16, (double)f20).func_181671_a(l2, i3).func_181675_d();
-                        worldRendererIn.func_181662_b(d0 + 1.0D, d1 + (double)f9, d2 + 1.0D).func_181666_a(f24, f25, f26, 1.0F).func_181673_a((double)f15, (double)f19).func_181671_a(l2, i3).func_181675_d();
-                        worldRendererIn.func_181662_b(d0 + 0.0D, d1 + (double)f8, d2 + 1.0D).func_181666_a(f24, f25, f26, 1.0F).func_181673_a((double)f14, (double)f18).func_181671_a(l2, i3).func_181675_d();
+                        worldRendererIn.pos(d0 + 0.0D, d1 + (double)f7, d2 + 0.0D).func_181666_a(f24, f25, f26, 1.0F).func_181673_a((double)f13, (double)f17).func_181671_a(l2, i3).endVertex();
+                        worldRendererIn.pos(d0 + 1.0D, d1 + (double)f10, d2 + 0.0D).func_181666_a(f24, f25, f26, 1.0F).func_181673_a((double)f16, (double)f20).func_181671_a(l2, i3).endVertex();
+                        worldRendererIn.pos(d0 + 1.0D, d1 + (double)f9, d2 + 1.0D).func_181666_a(f24, f25, f26, 1.0F).func_181673_a((double)f15, (double)f19).func_181671_a(l2, i3).endVertex();
+                        worldRendererIn.pos(d0 + 0.0D, d1 + (double)f8, d2 + 1.0D).func_181666_a(f24, f25, f26, 1.0F).func_181673_a((double)f14, (double)f18).func_181671_a(l2, i3).endVertex();
                     }
                 }
 
@@ -161,10 +161,10 @@ public class BlockFluidRenderer
                     int i2 = l1 >> 16 & 65535;
                     int j2 = l1 & 65535;
                     float f41 = FaceBakery.getFaceBrightness(EnumFacing.DOWN);
-                    worldRendererIn.func_181662_b(d0, d1, d2 + 1.0D).func_181666_a(f * f41, f1 * f41, f2 * f41, 1.0F).func_181673_a((double)f35, (double)f38).func_181671_a(i2, j2).func_181675_d();
-                    worldRendererIn.func_181662_b(d0, d1, d2).func_181666_a(f * f41, f1 * f41, f2 * f41, 1.0F).func_181673_a((double)f35, (double)f37).func_181671_a(i2, j2).func_181675_d();
-                    worldRendererIn.func_181662_b(d0 + 1.0D, d1, d2).func_181666_a(f * f41, f1 * f41, f2 * f41, 1.0F).func_181673_a((double)f36, (double)f37).func_181671_a(i2, j2).func_181675_d();
-                    worldRendererIn.func_181662_b(d0 + 1.0D, d1, d2 + 1.0D).func_181666_a(f * f41, f1 * f41, f2 * f41, 1.0F).func_181673_a((double)f36, (double)f38).func_181671_a(i2, j2).func_181675_d();
+                    worldRendererIn.pos(d0, d1, d2 + 1.0D).func_181666_a(f * f41, f1 * f41, f2 * f41, 1.0F).func_181673_a((double)f35, (double)f38).func_181671_a(i2, j2).endVertex();
+                    worldRendererIn.pos(d0, d1, d2).func_181666_a(f * f41, f1 * f41, f2 * f41, 1.0F).func_181673_a((double)f35, (double)f37).func_181671_a(i2, j2).endVertex();
+                    worldRendererIn.pos(d0 + 1.0D, d1, d2).func_181666_a(f * f41, f1 * f41, f2 * f41, 1.0F).func_181673_a((double)f36, (double)f37).func_181671_a(i2, j2).endVertex();
+                    worldRendererIn.pos(d0 + 1.0D, d1, d2 + 1.0D).func_181666_a(f * f41, f1 * f41, f2 * f41, 1.0F).func_181673_a((double)f36, (double)f38).func_181671_a(i2, j2).endVertex();
                     flag2 = true;
                 }
 
@@ -256,14 +256,14 @@ public class BlockFluidRenderer
                         float f32 = f4 * f31 * f;
                         float f33 = f4 * f31 * f1;
                         float f34 = f4 * f31 * f2;
-                        worldRendererIn.func_181662_b(d3, d1 + (double)f39, d4).func_181666_a(f32, f33, f34, 1.0F).func_181673_a((double)f42, (double)f28).func_181671_a(k, l).func_181675_d();
-                        worldRendererIn.func_181662_b(d5, d1 + (double)f40, d6).func_181666_a(f32, f33, f34, 1.0F).func_181673_a((double)f27, (double)f29).func_181671_a(k, l).func_181675_d();
-                        worldRendererIn.func_181662_b(d5, d1 + 0.0D, d6).func_181666_a(f32, f33, f34, 1.0F).func_181673_a((double)f27, (double)f30).func_181671_a(k, l).func_181675_d();
-                        worldRendererIn.func_181662_b(d3, d1 + 0.0D, d4).func_181666_a(f32, f33, f34, 1.0F).func_181673_a((double)f42, (double)f30).func_181671_a(k, l).func_181675_d();
-                        worldRendererIn.func_181662_b(d3, d1 + 0.0D, d4).func_181666_a(f32, f33, f34, 1.0F).func_181673_a((double)f42, (double)f30).func_181671_a(k, l).func_181675_d();
-                        worldRendererIn.func_181662_b(d5, d1 + 0.0D, d6).func_181666_a(f32, f33, f34, 1.0F).func_181673_a((double)f27, (double)f30).func_181671_a(k, l).func_181675_d();
-                        worldRendererIn.func_181662_b(d5, d1 + (double)f40, d6).func_181666_a(f32, f33, f34, 1.0F).func_181673_a((double)f27, (double)f29).func_181671_a(k, l).func_181675_d();
-                        worldRendererIn.func_181662_b(d3, d1 + (double)f39, d4).func_181666_a(f32, f33, f34, 1.0F).func_181673_a((double)f42, (double)f28).func_181671_a(k, l).func_181675_d();
+                        worldRendererIn.pos(d3, d1 + (double)f39, d4).func_181666_a(f32, f33, f34, 1.0F).func_181673_a((double)f42, (double)f28).func_181671_a(k, l).endVertex();
+                        worldRendererIn.pos(d5, d1 + (double)f40, d6).func_181666_a(f32, f33, f34, 1.0F).func_181673_a((double)f27, (double)f29).func_181671_a(k, l).endVertex();
+                        worldRendererIn.pos(d5, d1 + 0.0D, d6).func_181666_a(f32, f33, f34, 1.0F).func_181673_a((double)f27, (double)f30).func_181671_a(k, l).endVertex();
+                        worldRendererIn.pos(d3, d1 + 0.0D, d4).func_181666_a(f32, f33, f34, 1.0F).func_181673_a((double)f42, (double)f30).func_181671_a(k, l).endVertex();
+                        worldRendererIn.pos(d3, d1 + 0.0D, d4).func_181666_a(f32, f33, f34, 1.0F).func_181673_a((double)f42, (double)f30).func_181671_a(k, l).endVertex();
+                        worldRendererIn.pos(d5, d1 + 0.0D, d6).func_181666_a(f32, f33, f34, 1.0F).func_181673_a((double)f27, (double)f30).func_181671_a(k, l).endVertex();
+                        worldRendererIn.pos(d5, d1 + (double)f40, d6).func_181666_a(f32, f33, f34, 1.0F).func_181673_a((double)f27, (double)f29).func_181671_a(k, l).endVertex();
+                        worldRendererIn.pos(d3, d1 + (double)f39, d4).func_181666_a(f32, f33, f34, 1.0F).func_181673_a((double)f42, (double)f28).func_181671_a(k, l).endVertex();
                     }
                 }
 

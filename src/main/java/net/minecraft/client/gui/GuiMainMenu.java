@@ -2,6 +2,8 @@ package net.minecraft.client.gui;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -36,6 +38,7 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
+import xyz.necrozma.gui.font.CustomFont;
 
 public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
 {
@@ -462,13 +465,13 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
                 }
 
                 this.mc.getTextureManager().bindTexture(aresourcelocation[l]);
-                worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
+                worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
                 int i1 = 255 / (k + 1);
                 float f3 = 0.0F;
-                worldrenderer.func_181662_b(-1.0D, -1.0D, 1.0D).func_181673_a(0.0D, 0.0D).func_181669_b(255, 255, 255, i1).func_181675_d();
-                worldrenderer.func_181662_b(1.0D, -1.0D, 1.0D).func_181673_a(1.0D, 0.0D).func_181669_b(255, 255, 255, i1).func_181675_d();
-                worldrenderer.func_181662_b(1.0D, 1.0D, 1.0D).func_181673_a(1.0D, 1.0D).func_181669_b(255, 255, 255, i1).func_181675_d();
-                worldrenderer.func_181662_b(-1.0D, 1.0D, 1.0D).func_181673_a(0.0D, 1.0D).func_181669_b(255, 255, 255, i1).func_181675_d();
+                worldrenderer.pos(-1.0D, -1.0D, 1.0D).func_181673_a(0.0D, 0.0D).func_181669_b(255, 255, 255, i1).endVertex();
+                worldrenderer.pos(1.0D, -1.0D, 1.0D).func_181673_a(1.0D, 0.0D).func_181669_b(255, 255, 255, i1).endVertex();
+                worldrenderer.pos(1.0D, 1.0D, 1.0D).func_181673_a(1.0D, 1.0D).func_181669_b(255, 255, 255, i1).endVertex();
+                worldrenderer.pos(-1.0D, 1.0D, 1.0D).func_181673_a(0.0D, 1.0D).func_181669_b(255, 255, 255, i1).endVertex();
                 tessellator.draw();
                 GlStateManager.popMatrix();
             }
@@ -502,7 +505,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         GlStateManager.colorMask(true, true, true, false);
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
+        worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
         GlStateManager.disableAlpha();
         int i = 3;
         int j = 3;
@@ -519,10 +522,10 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
             int l = this.width;
             int i1 = this.height;
             float f1 = (float)(k - i / 2) / 256.0F;
-            worldrenderer.func_181662_b((double)l, (double)i1, (double)this.zLevel).func_181673_a((double)(0.0F + f1), 1.0D).func_181666_a(1.0F, 1.0F, 1.0F, f).func_181675_d();
-            worldrenderer.func_181662_b((double)l, 0.0D, (double)this.zLevel).func_181673_a((double)(1.0F + f1), 1.0D).func_181666_a(1.0F, 1.0F, 1.0F, f).func_181675_d();
-            worldrenderer.func_181662_b(0.0D, 0.0D, (double)this.zLevel).func_181673_a((double)(1.0F + f1), 0.0D).func_181666_a(1.0F, 1.0F, 1.0F, f).func_181675_d();
-            worldrenderer.func_181662_b(0.0D, (double)i1, (double)this.zLevel).func_181673_a((double)(0.0F + f1), 0.0D).func_181666_a(1.0F, 1.0F, 1.0F, f).func_181675_d();
+            worldrenderer.pos((double)l, (double)i1, (double)this.zLevel).func_181673_a((double)(0.0F + f1), 1.0D).func_181666_a(1.0F, 1.0F, 1.0F, f).endVertex();
+            worldrenderer.pos((double)l, 0.0D, (double)this.zLevel).func_181673_a((double)(1.0F + f1), 1.0D).func_181666_a(1.0F, 1.0F, 1.0F, f).endVertex();
+            worldrenderer.pos(0.0D, 0.0D, (double)this.zLevel).func_181673_a((double)(1.0F + f1), 0.0D).func_181666_a(1.0F, 1.0F, 1.0F, f).endVertex();
+            worldrenderer.pos(0.0D, (double)i1, (double)this.zLevel).func_181673_a((double)(0.0F + f1), 0.0D).func_181666_a(1.0F, 1.0F, 1.0F, f).endVertex();
         }
 
         tessellator.draw();
@@ -562,11 +565,11 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         int l = this.height;
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
-        worldrenderer.func_181662_b(0.0D, (double)l, (double)this.zLevel).func_181673_a((double)(0.5F - f), (double)(0.5F + f1)).func_181666_a(1.0F, 1.0F, 1.0F, 1.0F).func_181675_d();
-        worldrenderer.func_181662_b((double)k, (double)l, (double)this.zLevel).func_181673_a((double)(0.5F - f), (double)(0.5F - f1)).func_181666_a(1.0F, 1.0F, 1.0F, 1.0F).func_181675_d();
-        worldrenderer.func_181662_b((double)k, 0.0D, (double)this.zLevel).func_181673_a((double)(0.5F + f), (double)(0.5F - f1)).func_181666_a(1.0F, 1.0F, 1.0F, 1.0F).func_181675_d();
-        worldrenderer.func_181662_b(0.0D, 0.0D, (double)this.zLevel).func_181673_a((double)(0.5F + f), (double)(0.5F + f1)).func_181666_a(1.0F, 1.0F, 1.0F, 1.0F).func_181675_d();
+        worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
+        worldrenderer.pos(0.0D, (double)l, (double)this.zLevel).func_181673_a((double)(0.5F - f), (double)(0.5F + f1)).func_181666_a(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+        worldrenderer.pos((double)k, (double)l, (double)this.zLevel).func_181673_a((double)(0.5F - f), (double)(0.5F - f1)).func_181666_a(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+        worldrenderer.pos((double)k, 0.0D, (double)this.zLevel).func_181673_a((double)(0.5F + f), (double)(0.5F - f1)).func_181666_a(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+        worldrenderer.pos(0.0D, 0.0D, (double)this.zLevel).func_181673_a((double)(0.5F + f), (double)(0.5F + f1)).func_181666_a(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
         tessellator.draw();
     }
 
@@ -685,11 +688,13 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         }
         else
         {
-            this.drawString(this.fontRendererObj, s, 2, this.height - 10, -1);
+            // this.drawString(this.fontRendererObj, s, 2, this.height - 10, -1);
+            CustomFont.drawString(s, 2, this.height - 10, Color.RED.hashCode());
         }
 
         String s2 = "nixon.necrozma.xyz";
-        this.drawString(this.fontRendererObj, s2, this.width - this.fontRendererObj.getStringWidth(s2) - 2, this.height - 10, 0xFF00FFFF);
+        //this.drawString(this.fontRendererObj, s2, this.width - this.fontRendererObj.getStringWidth(s2) - 2, this.height - 10, 0xFF00FFFF);
+        CustomFont.drawString(s2,this.width - this.fontRendererObj.getStringWidth(s2) - 2,  this.height - 10, Color.WHITE.hashCode());
 
         if (this.openGLWarning1 != null && this.openGLWarning1.length() > 0)
         {

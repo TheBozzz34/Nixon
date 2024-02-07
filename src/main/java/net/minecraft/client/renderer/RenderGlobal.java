@@ -395,7 +395,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
     {
         int i = 64;
         int j = 6;
-        worldRendererIn.func_181668_a(7, DefaultVertexFormats.field_181705_e);
+        worldRendererIn.begin(7, DefaultVertexFormats.POSITION_COLOR);
         int k = (this.renderDistance / 64 + 1) * 64 + 64;
 
         for (int l = -k; l <= k; l += 64)
@@ -411,10 +411,10 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                     f = (float)(l + 64);
                 }
 
-                worldRendererIn.func_181662_b((double)f, (double)p_174968_2_, (double)i1).func_181675_d();
-                worldRendererIn.func_181662_b((double)f1, (double)p_174968_2_, (double)i1).func_181675_d();
-                worldRendererIn.func_181662_b((double)f1, (double)p_174968_2_, (double)(i1 + 64)).func_181675_d();
-                worldRendererIn.func_181662_b((double)f, (double)p_174968_2_, (double)(i1 + 64)).func_181675_d();
+                worldRendererIn.pos((double)f, (double)p_174968_2_, (double)i1).endVertex();
+                worldRendererIn.pos((double)f1, (double)p_174968_2_, (double)i1).endVertex();
+                worldRendererIn.pos((double)f1, (double)p_174968_2_, (double)(i1 + 64)).endVertex();
+                worldRendererIn.pos((double)f, (double)p_174968_2_, (double)(i1 + 64)).endVertex();
             }
         }
     }
@@ -458,7 +458,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
     private void renderStars(WorldRenderer worldRendererIn)
     {
         Random random = new Random(10842L);
-        worldRendererIn.func_181668_a(7, DefaultVertexFormats.field_181705_e);
+        worldRendererIn.begin(7, DefaultVertexFormats.POSITION_COLOR);
 
         for (int i = 0; i < 1500; ++i)
         {
@@ -499,7 +499,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                     double d24 = 0.0D * d12 - d21 * d13;
                     double d25 = d24 * d9 - d22 * d10;
                     double d26 = d22 * d9 + d24 * d10;
-                    worldRendererIn.func_181662_b(d5 + d25, d6 + d23, d7 + d26).func_181675_d();
+                    worldRendererIn.pos(d5 + d25, d6 + d23, d7 + d26).endVertex();
                 }
             }
         }
@@ -1619,7 +1619,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                     GlStateManager.rotate(-90.0F, 0.0F, 0.0F, 1.0F);
                 }
 
-                worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
+                worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
                 int j = 40;
                 int k = 40;
                 int l = 40;
@@ -1633,10 +1633,10 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                     l = (int)(vec3.zCoord * 255.0D);
                 }
 
-                worldrenderer.func_181662_b(-100.0D, -100.0D, -100.0D).func_181673_a(0.0D, 0.0D).func_181669_b(j, k, l, 255).func_181675_d();
-                worldrenderer.func_181662_b(-100.0D, -100.0D, 100.0D).func_181673_a(0.0D, 16.0D).func_181669_b(j, k, l, 255).func_181675_d();
-                worldrenderer.func_181662_b(100.0D, -100.0D, 100.0D).func_181673_a(16.0D, 16.0D).func_181669_b(j, k, l, 255).func_181675_d();
-                worldrenderer.func_181662_b(100.0D, -100.0D, -100.0D).func_181673_a(16.0D, 0.0D).func_181669_b(j, k, l, 255).func_181675_d();
+                worldrenderer.pos(-100.0D, -100.0D, -100.0D).func_181673_a(0.0D, 0.0D).func_181669_b(j, k, l, 255).endVertex();
+                worldrenderer.pos(-100.0D, -100.0D, 100.0D).func_181673_a(0.0D, 16.0D).func_181669_b(j, k, l, 255).endVertex();
+                worldrenderer.pos(100.0D, -100.0D, 100.0D).func_181673_a(16.0D, 16.0D).func_181669_b(j, k, l, 255).endVertex();
+                worldrenderer.pos(100.0D, -100.0D, -100.0D).func_181673_a(16.0D, 0.0D).func_181669_b(j, k, l, 255).endVertex();
                 tessellator.draw();
                 GlStateManager.popMatrix();
             }
@@ -1774,8 +1774,8 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                     f8 = f11;
                 }
 
-                worldrenderer.func_181668_a(6, DefaultVertexFormats.field_181706_f);
-                worldrenderer.func_181662_b(0.0D, 100.0D, 0.0D).func_181666_a(f6, f7, f8, afloat[3]).func_181675_d();
+                worldrenderer.begin(6, DefaultVertexFormats.field_181706_f);
+                worldrenderer.pos(0.0D, 100.0D, 0.0D).func_181666_a(f6, f7, f8, afloat[3]).endVertex();
                 int j = 16;
 
                 for (int l = 0; l <= 16; ++l)
@@ -1783,7 +1783,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                     float f18 = (float)l * (float)Math.PI * 2.0F / 16.0F;
                     float f12 = MathHelper.sin(f18);
                     float f13 = MathHelper.cos(f18);
-                    worldrenderer.func_181662_b((double)(f12 * 120.0F), (double)(f13 * 120.0F), (double)(-f13 * 40.0F * afloat[3])).func_181666_a(afloat[0], afloat[1], afloat[2], 0.0F).func_181675_d();
+                    worldrenderer.pos((double)(f12 * 120.0F), (double)(f13 * 120.0F), (double)(-f13 * 40.0F * afloat[3])).func_181666_a(afloat[0], afloat[1], afloat[2], 0.0F).endVertex();
                 }
 
                 tessellator.draw();
@@ -1822,11 +1822,11 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
             if (Config.isSunTexture())
             {
                 this.renderEngine.bindTexture(locationSunPng);
-                worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181707_g);
-                worldrenderer.func_181662_b((double)(-f16), 100.0D, (double)(-f16)).func_181673_a(0.0D, 0.0D).func_181675_d();
-                worldrenderer.func_181662_b((double)f16, 100.0D, (double)(-f16)).func_181673_a(1.0D, 0.0D).func_181675_d();
-                worldrenderer.func_181662_b((double)f16, 100.0D, (double)f16).func_181673_a(1.0D, 1.0D).func_181675_d();
-                worldrenderer.func_181662_b((double)(-f16), 100.0D, (double)f16).func_181673_a(0.0D, 1.0D).func_181675_d();
+                worldrenderer.begin(7, DefaultVertexFormats.field_181707_g);
+                worldrenderer.pos((double)(-f16), 100.0D, (double)(-f16)).func_181673_a(0.0D, 0.0D).endVertex();
+                worldrenderer.pos((double)f16, 100.0D, (double)(-f16)).func_181673_a(1.0D, 0.0D).endVertex();
+                worldrenderer.pos((double)f16, 100.0D, (double)f16).func_181673_a(1.0D, 1.0D).endVertex();
+                worldrenderer.pos((double)(-f16), 100.0D, (double)f16).func_181673_a(0.0D, 1.0D).endVertex();
                 tessellator.draw();
             }
 
@@ -1842,11 +1842,11 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                 float f21 = (float)(i1 + 0) / 2.0F;
                 float f23 = (float)(k + 1) / 4.0F;
                 float f14 = (float)(i1 + 1) / 2.0F;
-                worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181707_g);
-                worldrenderer.func_181662_b((double)(-f16), -100.0D, (double)f16).func_181673_a((double)f23, (double)f14).func_181675_d();
-                worldrenderer.func_181662_b((double)f16, -100.0D, (double)f16).func_181673_a((double)f19, (double)f14).func_181675_d();
-                worldrenderer.func_181662_b((double)f16, -100.0D, (double)(-f16)).func_181673_a((double)f19, (double)f21).func_181675_d();
-                worldrenderer.func_181662_b((double)(-f16), -100.0D, (double)(-f16)).func_181673_a((double)f23, (double)f21).func_181675_d();
+                worldrenderer.begin(7, DefaultVertexFormats.field_181707_g);
+                worldrenderer.pos((double)(-f16), -100.0D, (double)f16).func_181673_a((double)f23, (double)f14).endVertex();
+                worldrenderer.pos((double)f16, -100.0D, (double)f16).func_181673_a((double)f19, (double)f14).endVertex();
+                worldrenderer.pos((double)f16, -100.0D, (double)(-f16)).func_181673_a((double)f19, (double)f21).endVertex();
+                worldrenderer.pos((double)(-f16), -100.0D, (double)(-f16)).func_181673_a((double)f23, (double)f21).endVertex();
                 tessellator.draw();
             }
 
@@ -1922,27 +1922,27 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                 float f20 = 1.0F;
                 float f22 = -((float)(d0 + 65.0D));
                 float f24 = -1.0F;
-                worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181706_f);
-                worldrenderer.func_181662_b(-1.0D, (double)f22, 1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(1.0D, (double)f22, 1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(1.0D, -1.0D, 1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(-1.0D, -1.0D, 1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(-1.0D, -1.0D, -1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(1.0D, -1.0D, -1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(1.0D, (double)f22, -1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(-1.0D, (double)f22, -1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(1.0D, -1.0D, -1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(1.0D, -1.0D, 1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(1.0D, (double)f22, 1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(1.0D, (double)f22, -1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(-1.0D, (double)f22, -1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(-1.0D, (double)f22, 1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(-1.0D, -1.0D, 1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(-1.0D, -1.0D, -1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(-1.0D, -1.0D, -1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(-1.0D, -1.0D, 1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(1.0D, -1.0D, 1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b(1.0D, -1.0D, -1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
+                worldrenderer.begin(7, DefaultVertexFormats.field_181706_f);
+                worldrenderer.pos(-1.0D, (double)f22, 1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(1.0D, (double)f22, 1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(1.0D, -1.0D, 1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(-1.0D, -1.0D, 1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(-1.0D, -1.0D, -1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(1.0D, -1.0D, -1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(1.0D, (double)f22, -1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(-1.0D, (double)f22, -1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(1.0D, -1.0D, -1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(1.0D, -1.0D, 1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(1.0D, (double)f22, 1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(1.0D, (double)f22, -1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(-1.0D, (double)f22, -1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(-1.0D, (double)f22, 1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(-1.0D, -1.0D, 1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(-1.0D, -1.0D, -1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(-1.0D, -1.0D, -1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(-1.0D, -1.0D, 1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(1.0D, -1.0D, 1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos(1.0D, -1.0D, -1.0D).func_181669_b(0, 0, 0, 255).endVertex();
                 tessellator.draw();
             }
 
@@ -2064,16 +2064,16 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                         f6 = f6 + this.mc.gameSettings.ofCloudsHeight * 128.0F;
                         float f7 = (float)(d0 * 4.8828125E-4D);
                         float f8 = (float)(d1 * 4.8828125E-4D);
-                        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
+                        worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
 
                         for (int i1 = -256; i1 < 256; i1 += 32)
                         {
                             for (int j1 = -256; j1 < 256; j1 += 32)
                             {
-                                worldrenderer.func_181662_b((double)(i1 + 0), (double)f6, (double)(j1 + 32)).func_181673_a((double)((float)(i1 + 0) * 4.8828125E-4F + f7), (double)((float)(j1 + 32) * 4.8828125E-4F + f8)).func_181666_a(f, f1, f2, 0.8F).func_181675_d();
-                                worldrenderer.func_181662_b((double)(i1 + 32), (double)f6, (double)(j1 + 32)).func_181673_a((double)((float)(i1 + 32) * 4.8828125E-4F + f7), (double)((float)(j1 + 32) * 4.8828125E-4F + f8)).func_181666_a(f, f1, f2, 0.8F).func_181675_d();
-                                worldrenderer.func_181662_b((double)(i1 + 32), (double)f6, (double)(j1 + 0)).func_181673_a((double)((float)(i1 + 32) * 4.8828125E-4F + f7), (double)((float)(j1 + 0) * 4.8828125E-4F + f8)).func_181666_a(f, f1, f2, 0.8F).func_181675_d();
-                                worldrenderer.func_181662_b((double)(i1 + 0), (double)f6, (double)(j1 + 0)).func_181673_a((double)((float)(i1 + 0) * 4.8828125E-4F + f7), (double)((float)(j1 + 0) * 4.8828125E-4F + f8)).func_181666_a(f, f1, f2, 0.8F).func_181675_d();
+                                worldrenderer.pos((double)(i1 + 0), (double)f6, (double)(j1 + 32)).func_181673_a((double)((float)(i1 + 0) * 4.8828125E-4F + f7), (double)((float)(j1 + 32) * 4.8828125E-4F + f8)).func_181666_a(f, f1, f2, 0.8F).endVertex();
+                                worldrenderer.pos((double)(i1 + 32), (double)f6, (double)(j1 + 32)).func_181673_a((double)((float)(i1 + 32) * 4.8828125E-4F + f7), (double)((float)(j1 + 32) * 4.8828125E-4F + f8)).func_181666_a(f, f1, f2, 0.8F).endVertex();
+                                worldrenderer.pos((double)(i1 + 32), (double)f6, (double)(j1 + 0)).func_181673_a((double)((float)(i1 + 32) * 4.8828125E-4F + f7), (double)((float)(j1 + 0) * 4.8828125E-4F + f8)).func_181666_a(f, f1, f2, 0.8F).endVertex();
+                                worldrenderer.pos((double)(i1 + 0), (double)f6, (double)(j1 + 0)).func_181673_a((double)((float)(i1 + 0) * 4.8828125E-4F + f7), (double)((float)(j1 + 0) * 4.8828125E-4F + f8)).func_181666_a(f, f1, f2, 0.8F).endVertex();
                             }
                         }
 
@@ -2193,7 +2193,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
             {
                 for (int j1 = -3; j1 <= 4; ++j1)
                 {
-                    worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181712_l);
+                    worldrenderer.begin(7, DefaultVertexFormats.field_181712_l);
                     float f22 = (float)(l1 * 8);
                     float f23 = (float)(j1 * 8);
                     float f24 = f22 - f19;
@@ -2201,28 +2201,28 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
 
                     if (f3 > -5.0F)
                     {
-                        worldrenderer.func_181662_b((double)(f24 + 0.0F), (double)(f3 + 0.0F), (double)(f25 + 8.0F)).func_181673_a((double)((f22 + 0.0F) * 0.00390625F + f17), (double)((f23 + 8.0F) * 0.00390625F + f18)).func_181666_a(f10, f11, f12, 0.8F).func_181663_c(0.0F, -1.0F, 0.0F).func_181675_d();
-                        worldrenderer.func_181662_b((double)(f24 + 8.0F), (double)(f3 + 0.0F), (double)(f25 + 8.0F)).func_181673_a((double)((f22 + 8.0F) * 0.00390625F + f17), (double)((f23 + 8.0F) * 0.00390625F + f18)).func_181666_a(f10, f11, f12, 0.8F).func_181663_c(0.0F, -1.0F, 0.0F).func_181675_d();
-                        worldrenderer.func_181662_b((double)(f24 + 8.0F), (double)(f3 + 0.0F), (double)(f25 + 0.0F)).func_181673_a((double)((f22 + 8.0F) * 0.00390625F + f17), (double)((f23 + 0.0F) * 0.00390625F + f18)).func_181666_a(f10, f11, f12, 0.8F).func_181663_c(0.0F, -1.0F, 0.0F).func_181675_d();
-                        worldrenderer.func_181662_b((double)(f24 + 0.0F), (double)(f3 + 0.0F), (double)(f25 + 0.0F)).func_181673_a((double)((f22 + 0.0F) * 0.00390625F + f17), (double)((f23 + 0.0F) * 0.00390625F + f18)).func_181666_a(f10, f11, f12, 0.8F).func_181663_c(0.0F, -1.0F, 0.0F).func_181675_d();
+                        worldrenderer.pos((double)(f24 + 0.0F), (double)(f3 + 0.0F), (double)(f25 + 8.0F)).func_181673_a((double)((f22 + 0.0F) * 0.00390625F + f17), (double)((f23 + 8.0F) * 0.00390625F + f18)).func_181666_a(f10, f11, f12, 0.8F).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
+                        worldrenderer.pos((double)(f24 + 8.0F), (double)(f3 + 0.0F), (double)(f25 + 8.0F)).func_181673_a((double)((f22 + 8.0F) * 0.00390625F + f17), (double)((f23 + 8.0F) * 0.00390625F + f18)).func_181666_a(f10, f11, f12, 0.8F).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
+                        worldrenderer.pos((double)(f24 + 8.0F), (double)(f3 + 0.0F), (double)(f25 + 0.0F)).func_181673_a((double)((f22 + 8.0F) * 0.00390625F + f17), (double)((f23 + 0.0F) * 0.00390625F + f18)).func_181666_a(f10, f11, f12, 0.8F).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
+                        worldrenderer.pos((double)(f24 + 0.0F), (double)(f3 + 0.0F), (double)(f25 + 0.0F)).func_181673_a((double)((f22 + 0.0F) * 0.00390625F + f17), (double)((f23 + 0.0F) * 0.00390625F + f18)).func_181666_a(f10, f11, f12, 0.8F).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
                     }
 
                     if (f3 <= 5.0F)
                     {
-                        worldrenderer.func_181662_b((double)(f24 + 0.0F), (double)(f3 + 4.0F - 9.765625E-4F), (double)(f25 + 8.0F)).func_181673_a((double)((f22 + 0.0F) * 0.00390625F + f17), (double)((f23 + 8.0F) * 0.00390625F + f18)).func_181666_a(f4, f5, f6, 0.8F).func_181663_c(0.0F, 1.0F, 0.0F).func_181675_d();
-                        worldrenderer.func_181662_b((double)(f24 + 8.0F), (double)(f3 + 4.0F - 9.765625E-4F), (double)(f25 + 8.0F)).func_181673_a((double)((f22 + 8.0F) * 0.00390625F + f17), (double)((f23 + 8.0F) * 0.00390625F + f18)).func_181666_a(f4, f5, f6, 0.8F).func_181663_c(0.0F, 1.0F, 0.0F).func_181675_d();
-                        worldrenderer.func_181662_b((double)(f24 + 8.0F), (double)(f3 + 4.0F - 9.765625E-4F), (double)(f25 + 0.0F)).func_181673_a((double)((f22 + 8.0F) * 0.00390625F + f17), (double)((f23 + 0.0F) * 0.00390625F + f18)).func_181666_a(f4, f5, f6, 0.8F).func_181663_c(0.0F, 1.0F, 0.0F).func_181675_d();
-                        worldrenderer.func_181662_b((double)(f24 + 0.0F), (double)(f3 + 4.0F - 9.765625E-4F), (double)(f25 + 0.0F)).func_181673_a((double)((f22 + 0.0F) * 0.00390625F + f17), (double)((f23 + 0.0F) * 0.00390625F + f18)).func_181666_a(f4, f5, f6, 0.8F).func_181663_c(0.0F, 1.0F, 0.0F).func_181675_d();
+                        worldrenderer.pos((double)(f24 + 0.0F), (double)(f3 + 4.0F - 9.765625E-4F), (double)(f25 + 8.0F)).func_181673_a((double)((f22 + 0.0F) * 0.00390625F + f17), (double)((f23 + 8.0F) * 0.00390625F + f18)).func_181666_a(f4, f5, f6, 0.8F).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+                        worldrenderer.pos((double)(f24 + 8.0F), (double)(f3 + 4.0F - 9.765625E-4F), (double)(f25 + 8.0F)).func_181673_a((double)((f22 + 8.0F) * 0.00390625F + f17), (double)((f23 + 8.0F) * 0.00390625F + f18)).func_181666_a(f4, f5, f6, 0.8F).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+                        worldrenderer.pos((double)(f24 + 8.0F), (double)(f3 + 4.0F - 9.765625E-4F), (double)(f25 + 0.0F)).func_181673_a((double)((f22 + 8.0F) * 0.00390625F + f17), (double)((f23 + 0.0F) * 0.00390625F + f18)).func_181666_a(f4, f5, f6, 0.8F).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+                        worldrenderer.pos((double)(f24 + 0.0F), (double)(f3 + 4.0F - 9.765625E-4F), (double)(f25 + 0.0F)).func_181673_a((double)((f22 + 0.0F) * 0.00390625F + f17), (double)((f23 + 0.0F) * 0.00390625F + f18)).func_181666_a(f4, f5, f6, 0.8F).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
                     }
 
                     if (l1 > -1)
                     {
                         for (int k1 = 0; k1 < 8; ++k1)
                         {
-                            worldrenderer.func_181662_b((double)(f24 + (float)k1 + 0.0F), (double)(f3 + 0.0F), (double)(f25 + 8.0F)).func_181673_a((double)((f22 + (float)k1 + 0.5F) * 0.00390625F + f17), (double)((f23 + 8.0F) * 0.00390625F + f18)).func_181666_a(f26, f27, f28, 0.8F).func_181663_c(-1.0F, 0.0F, 0.0F).func_181675_d();
-                            worldrenderer.func_181662_b((double)(f24 + (float)k1 + 0.0F), (double)(f3 + 4.0F), (double)(f25 + 8.0F)).func_181673_a((double)((f22 + (float)k1 + 0.5F) * 0.00390625F + f17), (double)((f23 + 8.0F) * 0.00390625F + f18)).func_181666_a(f26, f27, f28, 0.8F).func_181663_c(-1.0F, 0.0F, 0.0F).func_181675_d();
-                            worldrenderer.func_181662_b((double)(f24 + (float)k1 + 0.0F), (double)(f3 + 4.0F), (double)(f25 + 0.0F)).func_181673_a((double)((f22 + (float)k1 + 0.5F) * 0.00390625F + f17), (double)((f23 + 0.0F) * 0.00390625F + f18)).func_181666_a(f26, f27, f28, 0.8F).func_181663_c(-1.0F, 0.0F, 0.0F).func_181675_d();
-                            worldrenderer.func_181662_b((double)(f24 + (float)k1 + 0.0F), (double)(f3 + 0.0F), (double)(f25 + 0.0F)).func_181673_a((double)((f22 + (float)k1 + 0.5F) * 0.00390625F + f17), (double)((f23 + 0.0F) * 0.00390625F + f18)).func_181666_a(f26, f27, f28, 0.8F).func_181663_c(-1.0F, 0.0F, 0.0F).func_181675_d();
+                            worldrenderer.pos((double)(f24 + (float)k1 + 0.0F), (double)(f3 + 0.0F), (double)(f25 + 8.0F)).func_181673_a((double)((f22 + (float)k1 + 0.5F) * 0.00390625F + f17), (double)((f23 + 8.0F) * 0.00390625F + f18)).func_181666_a(f26, f27, f28, 0.8F).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
+                            worldrenderer.pos((double)(f24 + (float)k1 + 0.0F), (double)(f3 + 4.0F), (double)(f25 + 8.0F)).func_181673_a((double)((f22 + (float)k1 + 0.5F) * 0.00390625F + f17), (double)((f23 + 8.0F) * 0.00390625F + f18)).func_181666_a(f26, f27, f28, 0.8F).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
+                            worldrenderer.pos((double)(f24 + (float)k1 + 0.0F), (double)(f3 + 4.0F), (double)(f25 + 0.0F)).func_181673_a((double)((f22 + (float)k1 + 0.5F) * 0.00390625F + f17), (double)((f23 + 0.0F) * 0.00390625F + f18)).func_181666_a(f26, f27, f28, 0.8F).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
+                            worldrenderer.pos((double)(f24 + (float)k1 + 0.0F), (double)(f3 + 0.0F), (double)(f25 + 0.0F)).func_181673_a((double)((f22 + (float)k1 + 0.5F) * 0.00390625F + f17), (double)((f23 + 0.0F) * 0.00390625F + f18)).func_181666_a(f26, f27, f28, 0.8F).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
                         }
                     }
 
@@ -2230,10 +2230,10 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                     {
                         for (int i2 = 0; i2 < 8; ++i2)
                         {
-                            worldrenderer.func_181662_b((double)(f24 + (float)i2 + 1.0F - 9.765625E-4F), (double)(f3 + 0.0F), (double)(f25 + 8.0F)).func_181673_a((double)((f22 + (float)i2 + 0.5F) * 0.00390625F + f17), (double)((f23 + 8.0F) * 0.00390625F + f18)).func_181666_a(f26, f27, f28, 0.8F).func_181663_c(1.0F, 0.0F, 0.0F).func_181675_d();
-                            worldrenderer.func_181662_b((double)(f24 + (float)i2 + 1.0F - 9.765625E-4F), (double)(f3 + 4.0F), (double)(f25 + 8.0F)).func_181673_a((double)((f22 + (float)i2 + 0.5F) * 0.00390625F + f17), (double)((f23 + 8.0F) * 0.00390625F + f18)).func_181666_a(f26, f27, f28, 0.8F).func_181663_c(1.0F, 0.0F, 0.0F).func_181675_d();
-                            worldrenderer.func_181662_b((double)(f24 + (float)i2 + 1.0F - 9.765625E-4F), (double)(f3 + 4.0F), (double)(f25 + 0.0F)).func_181673_a((double)((f22 + (float)i2 + 0.5F) * 0.00390625F + f17), (double)((f23 + 0.0F) * 0.00390625F + f18)).func_181666_a(f26, f27, f28, 0.8F).func_181663_c(1.0F, 0.0F, 0.0F).func_181675_d();
-                            worldrenderer.func_181662_b((double)(f24 + (float)i2 + 1.0F - 9.765625E-4F), (double)(f3 + 0.0F), (double)(f25 + 0.0F)).func_181673_a((double)((f22 + (float)i2 + 0.5F) * 0.00390625F + f17), (double)((f23 + 0.0F) * 0.00390625F + f18)).func_181666_a(f26, f27, f28, 0.8F).func_181663_c(1.0F, 0.0F, 0.0F).func_181675_d();
+                            worldrenderer.pos((double)(f24 + (float)i2 + 1.0F - 9.765625E-4F), (double)(f3 + 0.0F), (double)(f25 + 8.0F)).func_181673_a((double)((f22 + (float)i2 + 0.5F) * 0.00390625F + f17), (double)((f23 + 8.0F) * 0.00390625F + f18)).func_181666_a(f26, f27, f28, 0.8F).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
+                            worldrenderer.pos((double)(f24 + (float)i2 + 1.0F - 9.765625E-4F), (double)(f3 + 4.0F), (double)(f25 + 8.0F)).func_181673_a((double)((f22 + (float)i2 + 0.5F) * 0.00390625F + f17), (double)((f23 + 8.0F) * 0.00390625F + f18)).func_181666_a(f26, f27, f28, 0.8F).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
+                            worldrenderer.pos((double)(f24 + (float)i2 + 1.0F - 9.765625E-4F), (double)(f3 + 4.0F), (double)(f25 + 0.0F)).func_181673_a((double)((f22 + (float)i2 + 0.5F) * 0.00390625F + f17), (double)((f23 + 0.0F) * 0.00390625F + f18)).func_181666_a(f26, f27, f28, 0.8F).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
+                            worldrenderer.pos((double)(f24 + (float)i2 + 1.0F - 9.765625E-4F), (double)(f3 + 0.0F), (double)(f25 + 0.0F)).func_181673_a((double)((f22 + (float)i2 + 0.5F) * 0.00390625F + f17), (double)((f23 + 0.0F) * 0.00390625F + f18)).func_181666_a(f26, f27, f28, 0.8F).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
                         }
                     }
 
@@ -2241,10 +2241,10 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                     {
                         for (int j2 = 0; j2 < 8; ++j2)
                         {
-                            worldrenderer.func_181662_b((double)(f24 + 0.0F), (double)(f3 + 4.0F), (double)(f25 + (float)j2 + 0.0F)).func_181673_a((double)((f22 + 0.0F) * 0.00390625F + f17), (double)((f23 + (float)j2 + 0.5F) * 0.00390625F + f18)).func_181666_a(f13, f14, f15, 0.8F).func_181663_c(0.0F, 0.0F, -1.0F).func_181675_d();
-                            worldrenderer.func_181662_b((double)(f24 + 8.0F), (double)(f3 + 4.0F), (double)(f25 + (float)j2 + 0.0F)).func_181673_a((double)((f22 + 8.0F) * 0.00390625F + f17), (double)((f23 + (float)j2 + 0.5F) * 0.00390625F + f18)).func_181666_a(f13, f14, f15, 0.8F).func_181663_c(0.0F, 0.0F, -1.0F).func_181675_d();
-                            worldrenderer.func_181662_b((double)(f24 + 8.0F), (double)(f3 + 0.0F), (double)(f25 + (float)j2 + 0.0F)).func_181673_a((double)((f22 + 8.0F) * 0.00390625F + f17), (double)((f23 + (float)j2 + 0.5F) * 0.00390625F + f18)).func_181666_a(f13, f14, f15, 0.8F).func_181663_c(0.0F, 0.0F, -1.0F).func_181675_d();
-                            worldrenderer.func_181662_b((double)(f24 + 0.0F), (double)(f3 + 0.0F), (double)(f25 + (float)j2 + 0.0F)).func_181673_a((double)((f22 + 0.0F) * 0.00390625F + f17), (double)((f23 + (float)j2 + 0.5F) * 0.00390625F + f18)).func_181666_a(f13, f14, f15, 0.8F).func_181663_c(0.0F, 0.0F, -1.0F).func_181675_d();
+                            worldrenderer.pos((double)(f24 + 0.0F), (double)(f3 + 4.0F), (double)(f25 + (float)j2 + 0.0F)).func_181673_a((double)((f22 + 0.0F) * 0.00390625F + f17), (double)((f23 + (float)j2 + 0.5F) * 0.00390625F + f18)).func_181666_a(f13, f14, f15, 0.8F).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
+                            worldrenderer.pos((double)(f24 + 8.0F), (double)(f3 + 4.0F), (double)(f25 + (float)j2 + 0.0F)).func_181673_a((double)((f22 + 8.0F) * 0.00390625F + f17), (double)((f23 + (float)j2 + 0.5F) * 0.00390625F + f18)).func_181666_a(f13, f14, f15, 0.8F).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
+                            worldrenderer.pos((double)(f24 + 8.0F), (double)(f3 + 0.0F), (double)(f25 + (float)j2 + 0.0F)).func_181673_a((double)((f22 + 8.0F) * 0.00390625F + f17), (double)((f23 + (float)j2 + 0.5F) * 0.00390625F + f18)).func_181666_a(f13, f14, f15, 0.8F).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
+                            worldrenderer.pos((double)(f24 + 0.0F), (double)(f3 + 0.0F), (double)(f25 + (float)j2 + 0.0F)).func_181673_a((double)((f22 + 0.0F) * 0.00390625F + f17), (double)((f23 + (float)j2 + 0.5F) * 0.00390625F + f18)).func_181666_a(f13, f14, f15, 0.8F).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
                         }
                     }
 
@@ -2252,10 +2252,10 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                     {
                         for (int k2 = 0; k2 < 8; ++k2)
                         {
-                            worldrenderer.func_181662_b((double)(f24 + 0.0F), (double)(f3 + 4.0F), (double)(f25 + (float)k2 + 1.0F - 9.765625E-4F)).func_181673_a((double)((f22 + 0.0F) * 0.00390625F + f17), (double)((f23 + (float)k2 + 0.5F) * 0.00390625F + f18)).func_181666_a(f13, f14, f15, 0.8F).func_181663_c(0.0F, 0.0F, 1.0F).func_181675_d();
-                            worldrenderer.func_181662_b((double)(f24 + 8.0F), (double)(f3 + 4.0F), (double)(f25 + (float)k2 + 1.0F - 9.765625E-4F)).func_181673_a((double)((f22 + 8.0F) * 0.00390625F + f17), (double)((f23 + (float)k2 + 0.5F) * 0.00390625F + f18)).func_181666_a(f13, f14, f15, 0.8F).func_181663_c(0.0F, 0.0F, 1.0F).func_181675_d();
-                            worldrenderer.func_181662_b((double)(f24 + 8.0F), (double)(f3 + 0.0F), (double)(f25 + (float)k2 + 1.0F - 9.765625E-4F)).func_181673_a((double)((f22 + 8.0F) * 0.00390625F + f17), (double)((f23 + (float)k2 + 0.5F) * 0.00390625F + f18)).func_181666_a(f13, f14, f15, 0.8F).func_181663_c(0.0F, 0.0F, 1.0F).func_181675_d();
-                            worldrenderer.func_181662_b((double)(f24 + 0.0F), (double)(f3 + 0.0F), (double)(f25 + (float)k2 + 1.0F - 9.765625E-4F)).func_181673_a((double)((f22 + 0.0F) * 0.00390625F + f17), (double)((f23 + (float)k2 + 0.5F) * 0.00390625F + f18)).func_181666_a(f13, f14, f15, 0.8F).func_181663_c(0.0F, 0.0F, 1.0F).func_181675_d();
+                            worldrenderer.pos((double)(f24 + 0.0F), (double)(f3 + 4.0F), (double)(f25 + (float)k2 + 1.0F - 9.765625E-4F)).func_181673_a((double)((f22 + 0.0F) * 0.00390625F + f17), (double)((f23 + (float)k2 + 0.5F) * 0.00390625F + f18)).func_181666_a(f13, f14, f15, 0.8F).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
+                            worldrenderer.pos((double)(f24 + 8.0F), (double)(f3 + 4.0F), (double)(f25 + (float)k2 + 1.0F - 9.765625E-4F)).func_181673_a((double)((f22 + 8.0F) * 0.00390625F + f17), (double)((f23 + (float)k2 + 0.5F) * 0.00390625F + f18)).func_181666_a(f13, f14, f15, 0.8F).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
+                            worldrenderer.pos((double)(f24 + 8.0F), (double)(f3 + 0.0F), (double)(f25 + (float)k2 + 1.0F - 9.765625E-4F)).func_181673_a((double)((f22 + 8.0F) * 0.00390625F + f17), (double)((f23 + (float)k2 + 0.5F) * 0.00390625F + f18)).func_181666_a(f13, f14, f15, 0.8F).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
+                            worldrenderer.pos((double)(f24 + 0.0F), (double)(f3 + 0.0F), (double)(f25 + (float)k2 + 1.0F - 9.765625E-4F)).func_181673_a((double)((f22 + 0.0F) * 0.00390625F + f17), (double)((f23 + (float)k2 + 0.5F) * 0.00390625F + f18)).func_181666_a(f13, f14, f15, 0.8F).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
                         }
                     }
 
@@ -2388,7 +2388,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
             float f4 = 0.0F;
             float f5 = 0.0F;
             float f6 = 128.0F;
-            worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181707_g);
+            worldrenderer.begin(7, DefaultVertexFormats.field_181707_g);
             worldrenderer.setTranslation(-d2, -d3, -d4);
             double d5 = Math.max((double)MathHelper.floor_double(d4 - d0), worldborder.minZ());
             double d6 = Math.min((double)MathHelper.ceiling_double_int(d4 + d0), worldborder.maxZ());
@@ -2401,10 +2401,10 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                 {
                     double d8 = Math.min(1.0D, d6 - d7);
                     float f8 = (float)d8 * 0.5F;
-                    worldrenderer.func_181662_b(worldborder.maxX(), 256.0D, d7).func_181673_a((double)(f3 + f7), (double)(f3 + 0.0F)).func_181675_d();
-                    worldrenderer.func_181662_b(worldborder.maxX(), 256.0D, d7 + d8).func_181673_a((double)(f3 + f8 + f7), (double)(f3 + 0.0F)).func_181675_d();
-                    worldrenderer.func_181662_b(worldborder.maxX(), 0.0D, d7 + d8).func_181673_a((double)(f3 + f8 + f7), (double)(f3 + 128.0F)).func_181675_d();
-                    worldrenderer.func_181662_b(worldborder.maxX(), 0.0D, d7).func_181673_a((double)(f3 + f7), (double)(f3 + 128.0F)).func_181675_d();
+                    worldrenderer.pos(worldborder.maxX(), 256.0D, d7).func_181673_a((double)(f3 + f7), (double)(f3 + 0.0F)).endVertex();
+                    worldrenderer.pos(worldborder.maxX(), 256.0D, d7 + d8).func_181673_a((double)(f3 + f8 + f7), (double)(f3 + 0.0F)).endVertex();
+                    worldrenderer.pos(worldborder.maxX(), 0.0D, d7 + d8).func_181673_a((double)(f3 + f8 + f7), (double)(f3 + 128.0F)).endVertex();
+                    worldrenderer.pos(worldborder.maxX(), 0.0D, d7).func_181673_a((double)(f3 + f7), (double)(f3 + 128.0F)).endVertex();
                     ++d7;
                 }
             }
@@ -2417,10 +2417,10 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                 {
                     double d12 = Math.min(1.0D, d6 - d9);
                     float f12 = (float)d12 * 0.5F;
-                    worldrenderer.func_181662_b(worldborder.minX(), 256.0D, d9).func_181673_a((double)(f3 + f9), (double)(f3 + 0.0F)).func_181675_d();
-                    worldrenderer.func_181662_b(worldborder.minX(), 256.0D, d9 + d12).func_181673_a((double)(f3 + f12 + f9), (double)(f3 + 0.0F)).func_181675_d();
-                    worldrenderer.func_181662_b(worldborder.minX(), 0.0D, d9 + d12).func_181673_a((double)(f3 + f12 + f9), (double)(f3 + 128.0F)).func_181675_d();
-                    worldrenderer.func_181662_b(worldborder.minX(), 0.0D, d9).func_181673_a((double)(f3 + f9), (double)(f3 + 128.0F)).func_181675_d();
+                    worldrenderer.pos(worldborder.minX(), 256.0D, d9).func_181673_a((double)(f3 + f9), (double)(f3 + 0.0F)).endVertex();
+                    worldrenderer.pos(worldborder.minX(), 256.0D, d9 + d12).func_181673_a((double)(f3 + f12 + f9), (double)(f3 + 0.0F)).endVertex();
+                    worldrenderer.pos(worldborder.minX(), 0.0D, d9 + d12).func_181673_a((double)(f3 + f12 + f9), (double)(f3 + 128.0F)).endVertex();
+                    worldrenderer.pos(worldborder.minX(), 0.0D, d9).func_181673_a((double)(f3 + f9), (double)(f3 + 128.0F)).endVertex();
                     ++d9;
                 }
             }
@@ -2436,10 +2436,10 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                 {
                     double d13 = Math.min(1.0D, d6 - d10);
                     float f13 = (float)d13 * 0.5F;
-                    worldrenderer.func_181662_b(d10, 256.0D, worldborder.maxZ()).func_181673_a((double)(f3 + f10), (double)(f3 + 0.0F)).func_181675_d();
-                    worldrenderer.func_181662_b(d10 + d13, 256.0D, worldborder.maxZ()).func_181673_a((double)(f3 + f13 + f10), (double)(f3 + 0.0F)).func_181675_d();
-                    worldrenderer.func_181662_b(d10 + d13, 0.0D, worldborder.maxZ()).func_181673_a((double)(f3 + f13 + f10), (double)(f3 + 128.0F)).func_181675_d();
-                    worldrenderer.func_181662_b(d10, 0.0D, worldborder.maxZ()).func_181673_a((double)(f3 + f10), (double)(f3 + 128.0F)).func_181675_d();
+                    worldrenderer.pos(d10, 256.0D, worldborder.maxZ()).func_181673_a((double)(f3 + f10), (double)(f3 + 0.0F)).endVertex();
+                    worldrenderer.pos(d10 + d13, 256.0D, worldborder.maxZ()).func_181673_a((double)(f3 + f13 + f10), (double)(f3 + 0.0F)).endVertex();
+                    worldrenderer.pos(d10 + d13, 0.0D, worldborder.maxZ()).func_181673_a((double)(f3 + f13 + f10), (double)(f3 + 128.0F)).endVertex();
+                    worldrenderer.pos(d10, 0.0D, worldborder.maxZ()).func_181673_a((double)(f3 + f10), (double)(f3 + 128.0F)).endVertex();
                     ++d10;
                 }
             }
@@ -2452,10 +2452,10 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                 {
                     double d14 = Math.min(1.0D, d6 - d11);
                     float f14 = (float)d14 * 0.5F;
-                    worldrenderer.func_181662_b(d11, 256.0D, worldborder.minZ()).func_181673_a((double)(f3 + f11), (double)(f3 + 0.0F)).func_181675_d();
-                    worldrenderer.func_181662_b(d11 + d14, 256.0D, worldborder.minZ()).func_181673_a((double)(f3 + f14 + f11), (double)(f3 + 0.0F)).func_181675_d();
-                    worldrenderer.func_181662_b(d11 + d14, 0.0D, worldborder.minZ()).func_181673_a((double)(f3 + f14 + f11), (double)(f3 + 128.0F)).func_181675_d();
-                    worldrenderer.func_181662_b(d11, 0.0D, worldborder.minZ()).func_181673_a((double)(f3 + f11), (double)(f3 + 128.0F)).func_181675_d();
+                    worldrenderer.pos(d11, 256.0D, worldborder.minZ()).func_181673_a((double)(f3 + f11), (double)(f3 + 0.0F)).endVertex();
+                    worldrenderer.pos(d11 + d14, 256.0D, worldborder.minZ()).func_181673_a((double)(f3 + f14 + f11), (double)(f3 + 0.0F)).endVertex();
+                    worldrenderer.pos(d11 + d14, 0.0D, worldborder.minZ()).func_181673_a((double)(f3 + f14 + f11), (double)(f3 + 128.0F)).endVertex();
+                    worldrenderer.pos(d11, 0.0D, worldborder.minZ()).func_181673_a((double)(f3 + f11), (double)(f3 + 128.0F)).endVertex();
                     ++d11;
                 }
             }
@@ -2516,7 +2516,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
         {
             this.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
             this.preRenderDamagedBlocks();
-            worldRendererIn.func_181668_a(7, DefaultVertexFormats.BLOCK);
+            worldRendererIn.begin(7, DefaultVertexFormats.BLOCK);
             worldRendererIn.setTranslation(-d0, -d1, -d2);
             worldRendererIn.markDirty();
             Iterator<DestroyBlockProgress> iterator = this.damagedBlocks.values().iterator();
@@ -2635,29 +2635,29 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
     {
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.func_181668_a(3, DefaultVertexFormats.field_181705_e);
-        worldrenderer.func_181662_b(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.minZ).func_181675_d();
-        worldrenderer.func_181662_b(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.minZ).func_181675_d();
-        worldrenderer.func_181662_b(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.maxZ).func_181675_d();
-        worldrenderer.func_181662_b(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.maxZ).func_181675_d();
-        worldrenderer.func_181662_b(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.minZ).func_181675_d();
+        worldrenderer.begin(3, DefaultVertexFormats.POSITION_COLOR);
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.maxZ).endVertex();
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.maxZ).endVertex();
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
         tessellator.draw();
-        worldrenderer.func_181668_a(3, DefaultVertexFormats.field_181705_e);
-        worldrenderer.func_181662_b(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.minZ).func_181675_d();
-        worldrenderer.func_181662_b(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.minZ).func_181675_d();
-        worldrenderer.func_181662_b(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.maxZ).func_181675_d();
-        worldrenderer.func_181662_b(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.maxZ).func_181675_d();
-        worldrenderer.func_181662_b(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.minZ).func_181675_d();
+        worldrenderer.begin(3, DefaultVertexFormats.POSITION_COLOR);
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
         tessellator.draw();
-        worldrenderer.func_181668_a(1, DefaultVertexFormats.field_181705_e);
-        worldrenderer.func_181662_b(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.minZ).func_181675_d();
-        worldrenderer.func_181662_b(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.minZ).func_181675_d();
-        worldrenderer.func_181662_b(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.minZ).func_181675_d();
-        worldrenderer.func_181662_b(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.minZ).func_181675_d();
-        worldrenderer.func_181662_b(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.maxZ).func_181675_d();
-        worldrenderer.func_181662_b(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.maxZ).func_181675_d();
-        worldrenderer.func_181662_b(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.maxZ).func_181675_d();
-        worldrenderer.func_181662_b(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.maxZ).func_181675_d();
+        worldrenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.maxZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.maxZ).endVertex();
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
         tessellator.draw();
     }
 
@@ -2665,29 +2665,29 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
     {
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.func_181668_a(3, DefaultVertexFormats.field_181706_f);
-        worldrenderer.func_181662_b(p_181563_0_.minX, p_181563_0_.minY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
-        worldrenderer.func_181662_b(p_181563_0_.maxX, p_181563_0_.minY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
-        worldrenderer.func_181662_b(p_181563_0_.maxX, p_181563_0_.minY, p_181563_0_.maxZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
-        worldrenderer.func_181662_b(p_181563_0_.minX, p_181563_0_.minY, p_181563_0_.maxZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
-        worldrenderer.func_181662_b(p_181563_0_.minX, p_181563_0_.minY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
+        worldrenderer.begin(3, DefaultVertexFormats.field_181706_f);
+        worldrenderer.pos(p_181563_0_.minX, p_181563_0_.minY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
+        worldrenderer.pos(p_181563_0_.maxX, p_181563_0_.minY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
+        worldrenderer.pos(p_181563_0_.maxX, p_181563_0_.minY, p_181563_0_.maxZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
+        worldrenderer.pos(p_181563_0_.minX, p_181563_0_.minY, p_181563_0_.maxZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
+        worldrenderer.pos(p_181563_0_.minX, p_181563_0_.minY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
         tessellator.draw();
-        worldrenderer.func_181668_a(3, DefaultVertexFormats.field_181706_f);
-        worldrenderer.func_181662_b(p_181563_0_.minX, p_181563_0_.maxY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
-        worldrenderer.func_181662_b(p_181563_0_.maxX, p_181563_0_.maxY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
-        worldrenderer.func_181662_b(p_181563_0_.maxX, p_181563_0_.maxY, p_181563_0_.maxZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
-        worldrenderer.func_181662_b(p_181563_0_.minX, p_181563_0_.maxY, p_181563_0_.maxZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
-        worldrenderer.func_181662_b(p_181563_0_.minX, p_181563_0_.maxY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
+        worldrenderer.begin(3, DefaultVertexFormats.field_181706_f);
+        worldrenderer.pos(p_181563_0_.minX, p_181563_0_.maxY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
+        worldrenderer.pos(p_181563_0_.maxX, p_181563_0_.maxY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
+        worldrenderer.pos(p_181563_0_.maxX, p_181563_0_.maxY, p_181563_0_.maxZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
+        worldrenderer.pos(p_181563_0_.minX, p_181563_0_.maxY, p_181563_0_.maxZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
+        worldrenderer.pos(p_181563_0_.minX, p_181563_0_.maxY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
         tessellator.draw();
-        worldrenderer.func_181668_a(1, DefaultVertexFormats.field_181706_f);
-        worldrenderer.func_181662_b(p_181563_0_.minX, p_181563_0_.minY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
-        worldrenderer.func_181662_b(p_181563_0_.minX, p_181563_0_.maxY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
-        worldrenderer.func_181662_b(p_181563_0_.maxX, p_181563_0_.minY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
-        worldrenderer.func_181662_b(p_181563_0_.maxX, p_181563_0_.maxY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
-        worldrenderer.func_181662_b(p_181563_0_.maxX, p_181563_0_.minY, p_181563_0_.maxZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
-        worldrenderer.func_181662_b(p_181563_0_.maxX, p_181563_0_.maxY, p_181563_0_.maxZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
-        worldrenderer.func_181662_b(p_181563_0_.minX, p_181563_0_.minY, p_181563_0_.maxZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
-        worldrenderer.func_181662_b(p_181563_0_.minX, p_181563_0_.maxY, p_181563_0_.maxZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).func_181675_d();
+        worldrenderer.begin(1, DefaultVertexFormats.field_181706_f);
+        worldrenderer.pos(p_181563_0_.minX, p_181563_0_.minY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
+        worldrenderer.pos(p_181563_0_.minX, p_181563_0_.maxY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
+        worldrenderer.pos(p_181563_0_.maxX, p_181563_0_.minY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
+        worldrenderer.pos(p_181563_0_.maxX, p_181563_0_.maxY, p_181563_0_.minZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
+        worldrenderer.pos(p_181563_0_.maxX, p_181563_0_.minY, p_181563_0_.maxZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
+        worldrenderer.pos(p_181563_0_.maxX, p_181563_0_.maxY, p_181563_0_.maxZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
+        worldrenderer.pos(p_181563_0_.minX, p_181563_0_.minY, p_181563_0_.maxZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
+        worldrenderer.pos(p_181563_0_.minX, p_181563_0_.maxY, p_181563_0_.maxZ).func_181669_b(p_181563_1_, p_181563_2_, p_181563_3_, p_181563_4_).endVertex();
         tessellator.draw();
     }
 

@@ -252,17 +252,17 @@ public abstract class GuiSlot
             GlStateManager.disableAlpha();
             GlStateManager.shadeModel(7425);
             GlStateManager.disableTexture2D();
-            worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
-            worldrenderer.func_181662_b((double)this.left, (double)(this.top + i1), 0.0D).func_181673_a(0.0D, 1.0D).func_181669_b(0, 0, 0, 0).func_181675_d();
-            worldrenderer.func_181662_b((double)this.right, (double)(this.top + i1), 0.0D).func_181673_a(1.0D, 1.0D).func_181669_b(0, 0, 0, 0).func_181675_d();
-            worldrenderer.func_181662_b((double)this.right, (double)this.top, 0.0D).func_181673_a(1.0D, 0.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-            worldrenderer.func_181662_b((double)this.left, (double)this.top, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
+            worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
+            worldrenderer.pos((double)this.left, (double)(this.top + i1), 0.0D).func_181673_a(0.0D, 1.0D).func_181669_b(0, 0, 0, 0).endVertex();
+            worldrenderer.pos((double)this.right, (double)(this.top + i1), 0.0D).func_181673_a(1.0D, 1.0D).func_181669_b(0, 0, 0, 0).endVertex();
+            worldrenderer.pos((double)this.right, (double)this.top, 0.0D).func_181673_a(1.0D, 0.0D).func_181669_b(0, 0, 0, 255).endVertex();
+            worldrenderer.pos((double)this.left, (double)this.top, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(0, 0, 0, 255).endVertex();
             tessellator.draw();
-            worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
-            worldrenderer.func_181662_b((double)this.left, (double)this.bottom, 0.0D).func_181673_a(0.0D, 1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-            worldrenderer.func_181662_b((double)this.right, (double)this.bottom, 0.0D).func_181673_a(1.0D, 1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-            worldrenderer.func_181662_b((double)this.right, (double)(this.bottom - i1), 0.0D).func_181673_a(1.0D, 0.0D).func_181669_b(0, 0, 0, 0).func_181675_d();
-            worldrenderer.func_181662_b((double)this.left, (double)(this.bottom - i1), 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(0, 0, 0, 0).func_181675_d();
+            worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
+            worldrenderer.pos((double)this.left, (double)this.bottom, 0.0D).func_181673_a(0.0D, 1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+            worldrenderer.pos((double)this.right, (double)this.bottom, 0.0D).func_181673_a(1.0D, 1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+            worldrenderer.pos((double)this.right, (double)(this.bottom - i1), 0.0D).func_181673_a(1.0D, 0.0D).func_181669_b(0, 0, 0, 0).endVertex();
+            worldrenderer.pos((double)this.left, (double)(this.bottom - i1), 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(0, 0, 0, 0).endVertex();
             tessellator.draw();
             int j1 = this.func_148135_f();
 
@@ -277,23 +277,23 @@ public abstract class GuiSlot
                     l1 = this.top;
                 }
 
-                worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
-                worldrenderer.func_181662_b((double)i, (double)this.bottom, 0.0D).func_181673_a(0.0D, 1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b((double)j, (double)this.bottom, 0.0D).func_181673_a(1.0D, 1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b((double)j, (double)this.top, 0.0D).func_181673_a(1.0D, 0.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b((double)i, (double)this.top, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
+                worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
+                worldrenderer.pos((double)i, (double)this.bottom, 0.0D).func_181673_a(0.0D, 1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos((double)j, (double)this.bottom, 0.0D).func_181673_a(1.0D, 1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos((double)j, (double)this.top, 0.0D).func_181673_a(1.0D, 0.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos((double)i, (double)this.top, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(0, 0, 0, 255).endVertex();
                 tessellator.draw();
-                worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
-                worldrenderer.func_181662_b((double)i, (double)(l1 + k1), 0.0D).func_181673_a(0.0D, 1.0D).func_181669_b(128, 128, 128, 255).func_181675_d();
-                worldrenderer.func_181662_b((double)j, (double)(l1 + k1), 0.0D).func_181673_a(1.0D, 1.0D).func_181669_b(128, 128, 128, 255).func_181675_d();
-                worldrenderer.func_181662_b((double)j, (double)l1, 0.0D).func_181673_a(1.0D, 0.0D).func_181669_b(128, 128, 128, 255).func_181675_d();
-                worldrenderer.func_181662_b((double)i, (double)l1, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(128, 128, 128, 255).func_181675_d();
+                worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
+                worldrenderer.pos((double)i, (double)(l1 + k1), 0.0D).func_181673_a(0.0D, 1.0D).func_181669_b(128, 128, 128, 255).endVertex();
+                worldrenderer.pos((double)j, (double)(l1 + k1), 0.0D).func_181673_a(1.0D, 1.0D).func_181669_b(128, 128, 128, 255).endVertex();
+                worldrenderer.pos((double)j, (double)l1, 0.0D).func_181673_a(1.0D, 0.0D).func_181669_b(128, 128, 128, 255).endVertex();
+                worldrenderer.pos((double)i, (double)l1, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(128, 128, 128, 255).endVertex();
                 tessellator.draw();
-                worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
-                worldrenderer.func_181662_b((double)i, (double)(l1 + k1 - 1), 0.0D).func_181673_a(0.0D, 1.0D).func_181669_b(192, 192, 192, 255).func_181675_d();
-                worldrenderer.func_181662_b((double)(j - 1), (double)(l1 + k1 - 1), 0.0D).func_181673_a(1.0D, 1.0D).func_181669_b(192, 192, 192, 255).func_181675_d();
-                worldrenderer.func_181662_b((double)(j - 1), (double)l1, 0.0D).func_181673_a(1.0D, 0.0D).func_181669_b(192, 192, 192, 255).func_181675_d();
-                worldrenderer.func_181662_b((double)i, (double)l1, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(192, 192, 192, 255).func_181675_d();
+                worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
+                worldrenderer.pos((double)i, (double)(l1 + k1 - 1), 0.0D).func_181673_a(0.0D, 1.0D).func_181669_b(192, 192, 192, 255).endVertex();
+                worldrenderer.pos((double)(j - 1), (double)(l1 + k1 - 1), 0.0D).func_181673_a(1.0D, 1.0D).func_181669_b(192, 192, 192, 255).endVertex();
+                worldrenderer.pos((double)(j - 1), (double)l1, 0.0D).func_181673_a(1.0D, 0.0D).func_181669_b(192, 192, 192, 255).endVertex();
+                worldrenderer.pos((double)i, (double)l1, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(192, 192, 192, 255).endVertex();
                 tessellator.draw();
             }
 
@@ -464,15 +464,15 @@ public abstract class GuiSlot
                 int j1 = this.left + this.width / 2 + this.getListWidth() / 2;
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                 GlStateManager.disableTexture2D();
-                worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
-                worldrenderer.func_181662_b((double)i1, (double)(k + l + 2), 0.0D).func_181673_a(0.0D, 1.0D).func_181669_b(128, 128, 128, 255).func_181675_d();
-                worldrenderer.func_181662_b((double)j1, (double)(k + l + 2), 0.0D).func_181673_a(1.0D, 1.0D).func_181669_b(128, 128, 128, 255).func_181675_d();
-                worldrenderer.func_181662_b((double)j1, (double)(k - 2), 0.0D).func_181673_a(1.0D, 0.0D).func_181669_b(128, 128, 128, 255).func_181675_d();
-                worldrenderer.func_181662_b((double)i1, (double)(k - 2), 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(128, 128, 128, 255).func_181675_d();
-                worldrenderer.func_181662_b((double)(i1 + 1), (double)(k + l + 1), 0.0D).func_181673_a(0.0D, 1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b((double)(j1 - 1), (double)(k + l + 1), 0.0D).func_181673_a(1.0D, 1.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b((double)(j1 - 1), (double)(k - 1), 0.0D).func_181673_a(1.0D, 0.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
-                worldrenderer.func_181662_b((double)(i1 + 1), (double)(k - 1), 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(0, 0, 0, 255).func_181675_d();
+                worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
+                worldrenderer.pos((double)i1, (double)(k + l + 2), 0.0D).func_181673_a(0.0D, 1.0D).func_181669_b(128, 128, 128, 255).endVertex();
+                worldrenderer.pos((double)j1, (double)(k + l + 2), 0.0D).func_181673_a(1.0D, 1.0D).func_181669_b(128, 128, 128, 255).endVertex();
+                worldrenderer.pos((double)j1, (double)(k - 2), 0.0D).func_181673_a(1.0D, 0.0D).func_181669_b(128, 128, 128, 255).endVertex();
+                worldrenderer.pos((double)i1, (double)(k - 2), 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(128, 128, 128, 255).endVertex();
+                worldrenderer.pos((double)(i1 + 1), (double)(k + l + 1), 0.0D).func_181673_a(0.0D, 1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos((double)(j1 - 1), (double)(k + l + 1), 0.0D).func_181673_a(1.0D, 1.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos((double)(j1 - 1), (double)(k - 1), 0.0D).func_181673_a(1.0D, 0.0D).func_181669_b(0, 0, 0, 255).endVertex();
+                worldrenderer.pos((double)(i1 + 1), (double)(k - 1), 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(0, 0, 0, 255).endVertex();
                 tessellator.draw();
                 GlStateManager.enableTexture2D();
             }
@@ -499,11 +499,11 @@ public abstract class GuiSlot
         this.mc.getTextureManager().bindTexture(Gui.optionsBackground);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         float f = 32.0F;
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
-        worldrenderer.func_181662_b((double)this.left, (double)endY, 0.0D).func_181673_a(0.0D, (double)((float)endY / 32.0F)).func_181669_b(64, 64, 64, endAlpha).func_181675_d();
-        worldrenderer.func_181662_b((double)(this.left + this.width), (double)endY, 0.0D).func_181673_a((double)((float)this.width / 32.0F), (double)((float)endY / 32.0F)).func_181669_b(64, 64, 64, endAlpha).func_181675_d();
-        worldrenderer.func_181662_b((double)(this.left + this.width), (double)startY, 0.0D).func_181673_a((double)((float)this.width / 32.0F), (double)((float)startY / 32.0F)).func_181669_b(64, 64, 64, startAlpha).func_181675_d();
-        worldrenderer.func_181662_b((double)this.left, (double)startY, 0.0D).func_181673_a(0.0D, (double)((float)startY / 32.0F)).func_181669_b(64, 64, 64, startAlpha).func_181675_d();
+        worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
+        worldrenderer.pos((double)this.left, (double)endY, 0.0D).func_181673_a(0.0D, (double)((float)endY / 32.0F)).func_181669_b(64, 64, 64, endAlpha).endVertex();
+        worldrenderer.pos((double)(this.left + this.width), (double)endY, 0.0D).func_181673_a((double)((float)this.width / 32.0F), (double)((float)endY / 32.0F)).func_181669_b(64, 64, 64, endAlpha).endVertex();
+        worldrenderer.pos((double)(this.left + this.width), (double)startY, 0.0D).func_181673_a((double)((float)this.width / 32.0F), (double)((float)startY / 32.0F)).func_181669_b(64, 64, 64, startAlpha).endVertex();
+        worldrenderer.pos((double)this.left, (double)startY, 0.0D).func_181673_a(0.0D, (double)((float)startY / 32.0F)).func_181669_b(64, 64, 64, startAlpha).endVertex();
         tessellator.draw();
     }
 
@@ -527,11 +527,11 @@ public abstract class GuiSlot
         this.mc.getTextureManager().bindTexture(Gui.optionsBackground);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         float f = 32.0F;
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
-        worldrenderer.func_181662_b((double)this.left, (double)this.bottom, 0.0D).func_181673_a((double)((float)this.left / f), (double)((float)(this.bottom + (int)this.amountScrolled) / f)).func_181669_b(32, 32, 32, 255).func_181675_d();
-        worldrenderer.func_181662_b((double)this.right, (double)this.bottom, 0.0D).func_181673_a((double)((float)this.right / f), (double)((float)(this.bottom + (int)this.amountScrolled) / f)).func_181669_b(32, 32, 32, 255).func_181675_d();
-        worldrenderer.func_181662_b((double)this.right, (double)this.top, 0.0D).func_181673_a((double)((float)this.right / f), (double)((float)(this.top + (int)this.amountScrolled) / f)).func_181669_b(32, 32, 32, 255).func_181675_d();
-        worldrenderer.func_181662_b((double)this.left, (double)this.top, 0.0D).func_181673_a((double)((float)this.left / f), (double)((float)(this.top + (int)this.amountScrolled) / f)).func_181669_b(32, 32, 32, 255).func_181675_d();
+        worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
+        worldrenderer.pos((double)this.left, (double)this.bottom, 0.0D).func_181673_a((double)((float)this.left / f), (double)((float)(this.bottom + (int)this.amountScrolled) / f)).func_181669_b(32, 32, 32, 255).endVertex();
+        worldrenderer.pos((double)this.right, (double)this.bottom, 0.0D).func_181673_a((double)((float)this.right / f), (double)((float)(this.bottom + (int)this.amountScrolled) / f)).func_181669_b(32, 32, 32, 255).endVertex();
+        worldrenderer.pos((double)this.right, (double)this.top, 0.0D).func_181673_a((double)((float)this.right / f), (double)((float)(this.top + (int)this.amountScrolled) / f)).func_181669_b(32, 32, 32, 255).endVertex();
+        worldrenderer.pos((double)this.left, (double)this.top, 0.0D).func_181673_a((double)((float)this.left / f), (double)((float)(this.top + (int)this.amountScrolled) / f)).func_181669_b(32, 32, 32, 255).endVertex();
         p_drawContainerBackground_1_.draw();
     }
 }

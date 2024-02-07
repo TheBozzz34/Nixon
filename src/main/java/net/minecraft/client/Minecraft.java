@@ -40,19 +40,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiControls;
-import net.minecraft.client.gui.GuiGameOver;
-import net.minecraft.client.gui.GuiIngame;
-import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiMemoryErrorScreen;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiSleepMP;
-import net.minecraft.client.gui.GuiYesNo;
-import net.minecraft.client.gui.GuiYesNoCallback;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.*;
+//import net.minecraft.client.gui.GuiIngame;
+import xyz.necrozma.gui.IngameGUI;
 import net.minecraft.client.gui.achievement.GuiAchievement;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.gui.stream.GuiStreamUnavailable;
@@ -218,7 +208,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     public int displayWidth;
     public int displayHeight;
     private boolean field_181541_X = false;
-    private Timer timer = new Timer(20.0F);
+    public Timer timer = new Timer(20.0F);
 
     /** Instance of PlayerUsageSnooper. */
     private PlayerUsageSnooper usageSnooper = new PlayerUsageSnooper("client", this, MinecraftServer.getCurrentTimeMillis());
@@ -560,7 +550,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         GlStateManager.viewport(0, 0, this.displayWidth, this.displayHeight);
         this.effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
         this.checkGLError("Post startup");
-        this.ingameGUI = new GuiIngame(this);
+        this.ingameGUI = new IngameGUI(this);
 
         if (this.serverName != null)
         {
@@ -923,11 +913,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
-        worldrenderer.func_181662_b(0.0D, (double)this.displayHeight, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(255, 255, 255, 255).func_181675_d();
-        worldrenderer.func_181662_b((double)this.displayWidth, (double)this.displayHeight, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(255, 255, 255, 255).func_181675_d();
-        worldrenderer.func_181662_b((double)this.displayWidth, 0.0D, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(255, 255, 255, 255).func_181675_d();
-        worldrenderer.func_181662_b(0.0D, 0.0D, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(255, 255, 255, 255).func_181675_d();
+        worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
+        worldrenderer.pos(0.0D, (double)this.displayHeight, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(255, 255, 255, 255).endVertex();
+        worldrenderer.pos((double)this.displayWidth, (double)this.displayHeight, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(255, 255, 255, 255).endVertex();
+        worldrenderer.pos((double)this.displayWidth, 0.0D, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(255, 255, 255, 255).endVertex();
+        worldrenderer.pos(0.0D, 0.0D, 0.0D).func_181673_a(0.0D, 0.0D).func_181669_b(255, 255, 255, 255).endVertex();
         tessellator.draw();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         int j = 256;
@@ -947,11 +937,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         float f = 0.00390625F;
         float f1 = 0.00390625F;
         WorldRenderer worldrenderer = Tessellator.getInstance().getWorldRenderer();
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
-        worldrenderer.func_181662_b((double)p_181536_1_, (double)(p_181536_2_ + p_181536_6_), 0.0D).func_181673_a((double)((float)p_181536_3_ * f), (double)((float)(p_181536_4_ + p_181536_6_) * f1)).func_181669_b(p_181536_7_, p_181536_8_, p_181536_9_, p_181536_10_).func_181675_d();
-        worldrenderer.func_181662_b((double)(p_181536_1_ + p_181536_5_), (double)(p_181536_2_ + p_181536_6_), 0.0D).func_181673_a((double)((float)(p_181536_3_ + p_181536_5_) * f), (double)((float)(p_181536_4_ + p_181536_6_) * f1)).func_181669_b(p_181536_7_, p_181536_8_, p_181536_9_, p_181536_10_).func_181675_d();
-        worldrenderer.func_181662_b((double)(p_181536_1_ + p_181536_5_), (double)p_181536_2_, 0.0D).func_181673_a((double)((float)(p_181536_3_ + p_181536_5_) * f), (double)((float)p_181536_4_ * f1)).func_181669_b(p_181536_7_, p_181536_8_, p_181536_9_, p_181536_10_).func_181675_d();
-        worldrenderer.func_181662_b((double)p_181536_1_, (double)p_181536_2_, 0.0D).func_181673_a((double)((float)p_181536_3_ * f), (double)((float)p_181536_4_ * f1)).func_181669_b(p_181536_7_, p_181536_8_, p_181536_9_, p_181536_10_).func_181675_d();
+        worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
+        worldrenderer.pos((double)p_181536_1_, (double)(p_181536_2_ + p_181536_6_), 0.0D).func_181673_a((double)((float)p_181536_3_ * f), (double)((float)(p_181536_4_ + p_181536_6_) * f1)).func_181669_b(p_181536_7_, p_181536_8_, p_181536_9_, p_181536_10_).endVertex();
+        worldrenderer.pos((double)(p_181536_1_ + p_181536_5_), (double)(p_181536_2_ + p_181536_6_), 0.0D).func_181673_a((double)((float)(p_181536_3_ + p_181536_5_) * f), (double)((float)(p_181536_4_ + p_181536_6_) * f1)).func_181669_b(p_181536_7_, p_181536_8_, p_181536_9_, p_181536_10_).endVertex();
+        worldrenderer.pos((double)(p_181536_1_ + p_181536_5_), (double)p_181536_2_, 0.0D).func_181673_a((double)((float)(p_181536_3_ + p_181536_5_) * f), (double)((float)p_181536_4_ * f1)).func_181669_b(p_181536_7_, p_181536_8_, p_181536_9_, p_181536_10_).endVertex();
+        worldrenderer.pos((double)p_181536_1_, (double)p_181536_2_, 0.0D).func_181673_a((double)((float)p_181536_3_ * f), (double)((float)p_181536_4_ * f1)).func_181669_b(p_181536_7_, p_181536_8_, p_181536_9_, p_181536_10_).endVertex();
         Tessellator.getInstance().draw();
     }
 
@@ -1336,11 +1326,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             int j = this.displayWidth - i - 10;
             int k = this.displayHeight - i * 2;
             GlStateManager.enableBlend();
-            worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181706_f);
-            worldrenderer.func_181662_b((double)((float)j - (float)i * 1.1F), (double)((float)k - (float)i * 0.6F - 16.0F), 0.0D).func_181669_b(200, 0, 0, 0).func_181675_d();
-            worldrenderer.func_181662_b((double)((float)j - (float)i * 1.1F), (double)(k + i * 2), 0.0D).func_181669_b(200, 0, 0, 0).func_181675_d();
-            worldrenderer.func_181662_b((double)((float)j + (float)i * 1.1F), (double)(k + i * 2), 0.0D).func_181669_b(200, 0, 0, 0).func_181675_d();
-            worldrenderer.func_181662_b((double)((float)j + (float)i * 1.1F), (double)((float)k - (float)i * 0.6F - 16.0F), 0.0D).func_181669_b(200, 0, 0, 0).func_181675_d();
+            worldrenderer.begin(7, DefaultVertexFormats.field_181706_f);
+            worldrenderer.pos((double)((float)j - (float)i * 1.1F), (double)((float)k - (float)i * 0.6F - 16.0F), 0.0D).func_181669_b(200, 0, 0, 0).endVertex();
+            worldrenderer.pos((double)((float)j - (float)i * 1.1F), (double)(k + i * 2), 0.0D).func_181669_b(200, 0, 0, 0).endVertex();
+            worldrenderer.pos((double)((float)j + (float)i * 1.1F), (double)(k + i * 2), 0.0D).func_181669_b(200, 0, 0, 0).endVertex();
+            worldrenderer.pos((double)((float)j + (float)i * 1.1F), (double)((float)k - (float)i * 0.6F - 16.0F), 0.0D).func_181669_b(200, 0, 0, 0).endVertex();
             tessellator.draw();
             GlStateManager.disableBlend();
             double d0 = 0.0D;
@@ -1349,31 +1339,31 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             {
                 Profiler.Result profiler$result1 = (Profiler.Result)list.get(l);
                 int i1 = MathHelper.floor_double(profiler$result1.field_76332_a / 4.0D) + 1;
-                worldrenderer.func_181668_a(6, DefaultVertexFormats.field_181706_f);
+                worldrenderer.begin(6, DefaultVertexFormats.field_181706_f);
                 int j1 = profiler$result1.func_76329_a();
                 int k1 = j1 >> 16 & 255;
                 int l1 = j1 >> 8 & 255;
                 int i2 = j1 & 255;
-                worldrenderer.func_181662_b((double)j, (double)k, 0.0D).func_181669_b(k1, l1, i2, 255).func_181675_d();
+                worldrenderer.pos((double)j, (double)k, 0.0D).func_181669_b(k1, l1, i2, 255).endVertex();
 
                 for (int j2 = i1; j2 >= 0; --j2)
                 {
                     float f = (float)((d0 + profiler$result1.field_76332_a * (double)j2 / (double)i1) * Math.PI * 2.0D / 100.0D);
                     float f1 = MathHelper.sin(f) * (float)i;
                     float f2 = MathHelper.cos(f) * (float)i * 0.5F;
-                    worldrenderer.func_181662_b((double)((float)j + f1), (double)((float)k - f2), 0.0D).func_181669_b(k1, l1, i2, 255).func_181675_d();
+                    worldrenderer.pos((double)((float)j + f1), (double)((float)k - f2), 0.0D).func_181669_b(k1, l1, i2, 255).endVertex();
                 }
 
                 tessellator.draw();
-                worldrenderer.func_181668_a(5, DefaultVertexFormats.field_181706_f);
+                worldrenderer.begin(5, DefaultVertexFormats.field_181706_f);
 
                 for (int i3 = i1; i3 >= 0; --i3)
                 {
                     float f3 = (float)((d0 + profiler$result1.field_76332_a * (double)i3 / (double)i1) * Math.PI * 2.0D / 100.0D);
                     float f4 = MathHelper.sin(f3) * (float)i;
                     float f5 = MathHelper.cos(f3) * (float)i * 0.5F;
-                    worldrenderer.func_181662_b((double)((float)j + f4), (double)((float)k - f5), 0.0D).func_181669_b(k1 >> 1, l1 >> 1, i2 >> 1, 255).func_181675_d();
-                    worldrenderer.func_181662_b((double)((float)j + f4), (double)((float)k - f5 + 10.0F), 0.0D).func_181669_b(k1 >> 1, l1 >> 1, i2 >> 1, 255).func_181675_d();
+                    worldrenderer.pos((double)((float)j + f4), (double)((float)k - f5), 0.0D).func_181669_b(k1 >> 1, l1 >> 1, i2 >> 1, 255).endVertex();
+                    worldrenderer.pos((double)((float)j + f4), (double)((float)k - f5 + 10.0F), 0.0D).func_181669_b(k1 >> 1, l1 >> 1, i2 >> 1, 255).endVertex();
                 }
 
                 tessellator.draw();

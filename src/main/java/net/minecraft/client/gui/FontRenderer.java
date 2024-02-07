@@ -595,11 +595,11 @@ public class FontRenderer implements IResourceManagerReloadListener
             Tessellator tessellator = Tessellator.getInstance();
             WorldRenderer worldrenderer = tessellator.getWorldRenderer();
             GlStateManager.disableTexture2D();
-            worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181705_e);
-            worldrenderer.func_181662_b((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D).func_181675_d();
-            worldrenderer.func_181662_b((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D).func_181675_d();
-            worldrenderer.func_181662_b((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D).func_181675_d();
-            worldrenderer.func_181662_b((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D).func_181675_d();
+            worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+            worldrenderer.pos((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D).endVertex();
+            worldrenderer.pos((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D).endVertex();
+            worldrenderer.pos((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D).endVertex();
+            worldrenderer.pos((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D).endVertex();
             tessellator.draw();
             GlStateManager.enableTexture2D();
         }
@@ -609,12 +609,12 @@ public class FontRenderer implements IResourceManagerReloadListener
             Tessellator tessellator1 = Tessellator.getInstance();
             WorldRenderer worldrenderer1 = tessellator1.getWorldRenderer();
             GlStateManager.disableTexture2D();
-            worldrenderer1.func_181668_a(7, DefaultVertexFormats.field_181705_e);
+            worldrenderer1.begin(7, DefaultVertexFormats.POSITION_COLOR);
             int i = this.underlineStyle ? -1 : 0;
-            worldrenderer1.func_181662_b((double)(this.posX + (float)i), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D).func_181675_d();
-            worldrenderer1.func_181662_b((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D).func_181675_d();
-            worldrenderer1.func_181662_b((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D).func_181675_d();
-            worldrenderer1.func_181662_b((double)(this.posX + (float)i), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D).func_181675_d();
+            worldrenderer1.pos((double)(this.posX + (float)i), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D).endVertex();
+            worldrenderer1.pos((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D).endVertex();
+            worldrenderer1.pos((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D).endVertex();
+            worldrenderer1.pos((double)(this.posX + (float)i), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D).endVertex();
             tessellator1.draw();
             GlStateManager.enableTexture2D();
         }

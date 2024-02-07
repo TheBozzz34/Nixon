@@ -65,7 +65,7 @@ public class RenderXPOrb extends Render<EntityXPOrb>
         GlStateManager.scale(0.3F, 0.3F, 0.3F);
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181712_l);
+        worldrenderer.begin(7, DefaultVertexFormats.field_181712_l);
         int k1 = l;
         int l1 = 255;
         int i2 = j1;
@@ -82,10 +82,10 @@ public class RenderXPOrb extends Render<EntityXPOrb>
             }
         }
 
-        worldrenderer.func_181662_b((double)(0.0F - f5), (double)(0.0F - f6), 0.0D).func_181673_a((double)f, (double)f3).func_181669_b(k1, l1, i2, 128).func_181663_c(0.0F, 1.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b((double)(f4 - f5), (double)(0.0F - f6), 0.0D).func_181673_a((double)f1, (double)f3).func_181669_b(k1, l1, i2, 128).func_181663_c(0.0F, 1.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b((double)(f4 - f5), (double)(1.0F - f6), 0.0D).func_181673_a((double)f1, (double)f2).func_181669_b(k1, l1, i2, 128).func_181663_c(0.0F, 1.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b((double)(0.0F - f5), (double)(1.0F - f6), 0.0D).func_181673_a((double)f, (double)f2).func_181669_b(k1, l1, i2, 128).func_181663_c(0.0F, 1.0F, 0.0F).func_181675_d();
+        worldrenderer.pos((double)(0.0F - f5), (double)(0.0F - f6), 0.0D).func_181673_a((double)f, (double)f3).func_181669_b(k1, l1, i2, 128).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+        worldrenderer.pos((double)(f4 - f5), (double)(0.0F - f6), 0.0D).func_181673_a((double)f1, (double)f3).func_181669_b(k1, l1, i2, 128).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+        worldrenderer.pos((double)(f4 - f5), (double)(1.0F - f6), 0.0D).func_181673_a((double)f1, (double)f2).func_181669_b(k1, l1, i2, 128).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+        worldrenderer.pos((double)(0.0F - f5), (double)(1.0F - f6), 0.0D).func_181673_a((double)f, (double)f2).func_181669_b(k1, l1, i2, 128).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
         tessellator.draw();
         GlStateManager.disableBlend();
         GlStateManager.disableRescaleNormal();

@@ -5,6 +5,10 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+import xyz.necrozma.gui.font.CustomFont;
+import xyz.necrozma.gui.render.RenderUtil;
+
+import java.awt.*;
 
 public class GuiButton extends Gui
 {
@@ -87,8 +91,9 @@ public class GuiButton extends Gui
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
             GlStateManager.blendFunc(770, 771);
-            this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + i * 20, this.width / 2, this.height);
-            this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
+            RenderUtil.roundedRect(this.xPosition, this.yPosition, this.width, this.height, 8, new Color(0, 0, 0, 65));
+            //this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + i * 20, this.width / 2, this.height);
+            //this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
             this.mouseDragged(mc, mouseX, mouseY);
             int j = 14737632;
 
@@ -101,7 +106,8 @@ public class GuiButton extends Gui
                 j = 16777120;
             }
 
-            this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, j);
+            CustomFont.drawCenteredString(this.displayString, this.xPosition + this.width / 2.0F, this.yPosition + (this.height - 8) / 2.0F, Color.WHITE.hashCode());
+            // this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, j);
         }
     }
 

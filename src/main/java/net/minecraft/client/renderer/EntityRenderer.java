@@ -49,7 +49,6 @@ import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.event.ClickEvent;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -59,7 +58,6 @@ import net.minecraft.src.Config;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -95,7 +93,6 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
 import xyz.necrozma.Client;
-import xyz.necrozma.event.impl.update.RenderEvent;
 
 public class EntityRenderer implements IResourceManagerReloadListener
 {
@@ -2137,7 +2134,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
                                     j1 = 0;
                                     this.mc.getTextureManager().bindTexture(locationRainPng);
-                                    worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181704_d);
+                                    worldrenderer.begin(7, DefaultVertexFormats.field_181704_d);
                                 }
 
                                 double d5 = ((double)(this.rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + (double)partialTicks) / 32.0D * (3.0D + this.random.nextDouble());
@@ -2149,10 +2146,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
                                 int j3 = world.getCombinedLight(blockpos$mutableblockpos, 0);
                                 int k3 = j3 >> 16 & 65535;
                                 int l3 = j3 & 65535;
-                                worldrenderer.func_181662_b((double)l1 - d3 + 0.5D, (double)k2, (double)k1 - d4 + 0.5D).func_181673_a(0.0D, (double)k2 * 0.25D + d5).func_181666_a(1.0F, 1.0F, 1.0F, f3).func_181671_a(k3, l3).func_181675_d();
-                                worldrenderer.func_181662_b((double)l1 + d3 + 0.5D, (double)k2, (double)k1 + d4 + 0.5D).func_181673_a(1.0D, (double)k2 * 0.25D + d5).func_181666_a(1.0F, 1.0F, 1.0F, f3).func_181671_a(k3, l3).func_181675_d();
-                                worldrenderer.func_181662_b((double)l1 + d3 + 0.5D, (double)l2, (double)k1 + d4 + 0.5D).func_181673_a(1.0D, (double)l2 * 0.25D + d5).func_181666_a(1.0F, 1.0F, 1.0F, f3).func_181671_a(k3, l3).func_181675_d();
-                                worldrenderer.func_181662_b((double)l1 - d3 + 0.5D, (double)l2, (double)k1 - d4 + 0.5D).func_181673_a(0.0D, (double)l2 * 0.25D + d5).func_181666_a(1.0F, 1.0F, 1.0F, f3).func_181671_a(k3, l3).func_181675_d();
+                                worldrenderer.pos((double)l1 - d3 + 0.5D, (double)k2, (double)k1 - d4 + 0.5D).func_181673_a(0.0D, (double)k2 * 0.25D + d5).func_181666_a(1.0F, 1.0F, 1.0F, f3).func_181671_a(k3, l3).endVertex();
+                                worldrenderer.pos((double)l1 + d3 + 0.5D, (double)k2, (double)k1 + d4 + 0.5D).func_181673_a(1.0D, (double)k2 * 0.25D + d5).func_181666_a(1.0F, 1.0F, 1.0F, f3).func_181671_a(k3, l3).endVertex();
+                                worldrenderer.pos((double)l1 + d3 + 0.5D, (double)l2, (double)k1 + d4 + 0.5D).func_181673_a(1.0D, (double)l2 * 0.25D + d5).func_181666_a(1.0F, 1.0F, 1.0F, f3).func_181671_a(k3, l3).endVertex();
+                                worldrenderer.pos((double)l1 - d3 + 0.5D, (double)l2, (double)k1 - d4 + 0.5D).func_181673_a(0.0D, (double)l2 * 0.25D + d5).func_181666_a(1.0F, 1.0F, 1.0F, f3).func_181671_a(k3, l3).endVertex();
                             }
                             else
                             {
@@ -2165,7 +2162,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
                                     j1 = 1;
                                     this.mc.getTextureManager().bindTexture(locationSnowPng);
-                                    worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181704_d);
+                                    worldrenderer.begin(7, DefaultVertexFormats.field_181704_d);
                                 }
 
                                 double d8 = (double)(((float)(this.rendererUpdateCount & 511) + partialTicks) / 512.0F);
@@ -2179,10 +2176,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
                                 int i4 = (world.getCombinedLight(blockpos$mutableblockpos, 0) * 3 + 15728880) / 4;
                                 int j4 = i4 >> 16 & 65535;
                                 int k4 = i4 & 65535;
-                                worldrenderer.func_181662_b((double)l1 - d3 + 0.5D, (double)k2, (double)k1 - d4 + 0.5D).func_181673_a(0.0D + d9, (double)k2 * 0.25D + d8 + d10).func_181666_a(1.0F, 1.0F, 1.0F, f4).func_181671_a(j4, k4).func_181675_d();
-                                worldrenderer.func_181662_b((double)l1 + d3 + 0.5D, (double)k2, (double)k1 + d4 + 0.5D).func_181673_a(1.0D + d9, (double)k2 * 0.25D + d8 + d10).func_181666_a(1.0F, 1.0F, 1.0F, f4).func_181671_a(j4, k4).func_181675_d();
-                                worldrenderer.func_181662_b((double)l1 + d3 + 0.5D, (double)l2, (double)k1 + d4 + 0.5D).func_181673_a(1.0D + d9, (double)l2 * 0.25D + d8 + d10).func_181666_a(1.0F, 1.0F, 1.0F, f4).func_181671_a(j4, k4).func_181675_d();
-                                worldrenderer.func_181662_b((double)l1 - d3 + 0.5D, (double)l2, (double)k1 - d4 + 0.5D).func_181673_a(0.0D + d9, (double)l2 * 0.25D + d8 + d10).func_181666_a(1.0F, 1.0F, 1.0F, f4).func_181671_a(j4, k4).func_181675_d();
+                                worldrenderer.pos((double)l1 - d3 + 0.5D, (double)k2, (double)k1 - d4 + 0.5D).func_181673_a(0.0D + d9, (double)k2 * 0.25D + d8 + d10).func_181666_a(1.0F, 1.0F, 1.0F, f4).func_181671_a(j4, k4).endVertex();
+                                worldrenderer.pos((double)l1 + d3 + 0.5D, (double)k2, (double)k1 + d4 + 0.5D).func_181673_a(1.0D + d9, (double)k2 * 0.25D + d8 + d10).func_181666_a(1.0F, 1.0F, 1.0F, f4).func_181671_a(j4, k4).endVertex();
+                                worldrenderer.pos((double)l1 + d3 + 0.5D, (double)l2, (double)k1 + d4 + 0.5D).func_181673_a(1.0D + d9, (double)l2 * 0.25D + d8 + d10).func_181666_a(1.0F, 1.0F, 1.0F, f4).func_181671_a(j4, k4).endVertex();
+                                worldrenderer.pos((double)l1 - d3 + 0.5D, (double)l2, (double)k1 - d4 + 0.5D).func_181673_a(0.0D + d9, (double)l2 * 0.25D + d8 + d10).func_181666_a(1.0F, 1.0F, 1.0F, f4).func_181671_a(j4, k4).endVertex();
                             }
                         }
                     }

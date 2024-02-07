@@ -155,11 +155,11 @@ public class CustomLoadingScreen
                 d4 = 0.0D;
         }
 
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181709_i);
-        worldrenderer.func_181662_b(0.0D, (double)height, 0.0D).func_181673_a(d3, d4 + d2).func_181669_b(255, 255, 255, 255).func_181675_d();
-        worldrenderer.func_181662_b((double)width, (double)height, 0.0D).func_181673_a(d3 + d1, d4 + d2).func_181669_b(255, 255, 255, 255).func_181675_d();
-        worldrenderer.func_181662_b((double)width, 0.0D, 0.0D).func_181673_a(d3 + d1, d4).func_181669_b(255, 255, 255, 255).func_181675_d();
-        worldrenderer.func_181662_b(0.0D, 0.0D, 0.0D).func_181673_a(d3, d4).func_181669_b(255, 255, 255, 255).func_181675_d();
+        worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);
+        worldrenderer.pos(0.0D, (double)height, 0.0D).func_181673_a(d3, d4 + d2).func_181669_b(255, 255, 255, 255).endVertex();
+        worldrenderer.pos((double)width, (double)height, 0.0D).func_181673_a(d3 + d1, d4 + d2).func_181669_b(255, 255, 255, 255).endVertex();
+        worldrenderer.pos((double)width, 0.0D, 0.0D).func_181673_a(d3 + d1, d4).func_181669_b(255, 255, 255, 255).endVertex();
+        worldrenderer.pos(0.0D, 0.0D, 0.0D).func_181673_a(d3, d4).func_181669_b(255, 255, 255, 255).endVertex();
         tessellator.draw();
     }
 }

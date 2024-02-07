@@ -38,11 +38,11 @@ public class GuiStreamIndicator
                 Tessellator tessellator = Tessellator.getInstance();
                 WorldRenderer worldrenderer = tessellator.getWorldRenderer();
                 GlStateManager.color(0.0F, 0.0F, 0.0F, (0.65F + 0.35000002F * this.field_152443_c) / 2.0F);
-                worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181705_e);
-                worldrenderer.func_181662_b((double)l, (double)j1, 0.0D).func_181675_d();
-                worldrenderer.func_181662_b((double)p_152437_1_, (double)j1, 0.0D).func_181675_d();
-                worldrenderer.func_181662_b((double)p_152437_1_, (double)i1, 0.0D).func_181675_d();
-                worldrenderer.func_181662_b((double)l, (double)i1, 0.0D).func_181675_d();
+                worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+                worldrenderer.pos((double)l, (double)j1, 0.0D).endVertex();
+                worldrenderer.pos((double)p_152437_1_, (double)j1, 0.0D).endVertex();
+                worldrenderer.pos((double)p_152437_1_, (double)i1, 0.0D).endVertex();
+                worldrenderer.pos((double)l, (double)i1, 0.0D).endVertex();
                 tessellator.draw();
                 GlStateManager.enableTexture2D();
                 this.mc.fontRendererObj.drawString(s, p_152437_1_ - j, p_152437_2_ + 20, 16777215);
@@ -64,11 +64,11 @@ public class GuiStreamIndicator
         float f4 = (float)(p_152436_3_ + 16) * 0.015625F;
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181707_g);
-        worldrenderer.func_181662_b((double)(p_152436_1_ - 16 - p_152436_4_), (double)(p_152436_2_ + 16), (double)f).func_181673_a((double)f1, (double)f4).func_181675_d();
-        worldrenderer.func_181662_b((double)(p_152436_1_ - p_152436_4_), (double)(p_152436_2_ + 16), (double)f).func_181673_a((double)f3, (double)f4).func_181675_d();
-        worldrenderer.func_181662_b((double)(p_152436_1_ - p_152436_4_), (double)(p_152436_2_ + 0), (double)f).func_181673_a((double)f3, (double)f2).func_181675_d();
-        worldrenderer.func_181662_b((double)(p_152436_1_ - 16 - p_152436_4_), (double)(p_152436_2_ + 0), (double)f).func_181673_a((double)f1, (double)f2).func_181675_d();
+        worldrenderer.begin(7, DefaultVertexFormats.field_181707_g);
+        worldrenderer.pos((double)(p_152436_1_ - 16 - p_152436_4_), (double)(p_152436_2_ + 16), (double)f).func_181673_a((double)f1, (double)f4).endVertex();
+        worldrenderer.pos((double)(p_152436_1_ - p_152436_4_), (double)(p_152436_2_ + 16), (double)f).func_181673_a((double)f3, (double)f4).endVertex();
+        worldrenderer.pos((double)(p_152436_1_ - p_152436_4_), (double)(p_152436_2_ + 0), (double)f).func_181673_a((double)f3, (double)f2).endVertex();
+        worldrenderer.pos((double)(p_152436_1_ - 16 - p_152436_4_), (double)(p_152436_2_ + 0), (double)f).func_181673_a((double)f1, (double)f2).endVertex();
         tessellator.draw();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }

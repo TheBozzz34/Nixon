@@ -122,7 +122,7 @@ public abstract class RenderLiving<T extends EntityLiving> extends RendererLivin
 
                 int i = 24;
                 double d16 = 0.025D;
-                worldrenderer.func_181668_a(5, DefaultVertexFormats.field_181706_f);
+                worldrenderer.begin(5, DefaultVertexFormats.field_181706_f);
 
                 for (int j = 0; j <= 24; ++j)
                 {
@@ -138,12 +138,12 @@ public abstract class RenderLiving<T extends EntityLiving> extends RendererLivin
                     }
 
                     float f3 = (float)j / 24.0F;
-                    worldrenderer.func_181662_b(x + d13 * (double)f3 + 0.0D, y + d14 * (double)(f3 * f3 + f3) * 0.5D + (double)((24.0F - (float)j) / 18.0F + 0.125F), z + d15 * (double)f3).func_181666_a(f, f1, f2, 1.0F).func_181675_d();
-                    worldrenderer.func_181662_b(x + d13 * (double)f3 + 0.025D, y + d14 * (double)(f3 * f3 + f3) * 0.5D + (double)((24.0F - (float)j) / 18.0F + 0.125F) + 0.025D, z + d15 * (double)f3).func_181666_a(f, f1, f2, 1.0F).func_181675_d();
+                    worldrenderer.pos(x + d13 * (double)f3 + 0.0D, y + d14 * (double)(f3 * f3 + f3) * 0.5D + (double)((24.0F - (float)j) / 18.0F + 0.125F), z + d15 * (double)f3).func_181666_a(f, f1, f2, 1.0F).endVertex();
+                    worldrenderer.pos(x + d13 * (double)f3 + 0.025D, y + d14 * (double)(f3 * f3 + f3) * 0.5D + (double)((24.0F - (float)j) / 18.0F + 0.125F) + 0.025D, z + d15 * (double)f3).func_181666_a(f, f1, f2, 1.0F).endVertex();
                 }
 
                 tessellator.draw();
-                worldrenderer.func_181668_a(5, DefaultVertexFormats.field_181706_f);
+                worldrenderer.begin(5, DefaultVertexFormats.field_181706_f);
 
                 for (int k = 0; k <= 24; ++k)
                 {
@@ -159,8 +159,8 @@ public abstract class RenderLiving<T extends EntityLiving> extends RendererLivin
                     }
 
                     float f7 = (float)k / 24.0F;
-                    worldrenderer.func_181662_b(x + d13 * (double)f7 + 0.0D, y + d14 * (double)(f7 * f7 + f7) * 0.5D + (double)((24.0F - (float)k) / 18.0F + 0.125F) + 0.025D, z + d15 * (double)f7).func_181666_a(f4, f5, f6, 1.0F).func_181675_d();
-                    worldrenderer.func_181662_b(x + d13 * (double)f7 + 0.025D, y + d14 * (double)(f7 * f7 + f7) * 0.5D + (double)((24.0F - (float)k) / 18.0F + 0.125F), z + d15 * (double)f7 + 0.025D).func_181666_a(f4, f5, f6, 1.0F).func_181675_d();
+                    worldrenderer.pos(x + d13 * (double)f7 + 0.0D, y + d14 * (double)(f7 * f7 + f7) * 0.5D + (double)((24.0F - (float)k) / 18.0F + 0.125F) + 0.025D, z + d15 * (double)f7).func_181666_a(f4, f5, f6, 1.0F).endVertex();
+                    worldrenderer.pos(x + d13 * (double)f7 + 0.025D, y + d14 * (double)(f7 * f7 + f7) * 0.5D + (double)((24.0F - (float)k) / 18.0F + 0.125F), z + d15 * (double)f7 + 0.025D).func_181666_a(f4, f5, f6, 1.0F).endVertex();
                 }
 
                 tessellator.draw();

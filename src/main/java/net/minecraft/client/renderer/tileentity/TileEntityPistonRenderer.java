@@ -47,7 +47,7 @@ public class TileEntityPistonRenderer extends TileEntitySpecialRenderer<TileEnti
                 GlStateManager.shadeModel(7424);
             }
 
-            worldrenderer.func_181668_a(7, DefaultVertexFormats.BLOCK);
+            worldrenderer.begin(7, DefaultVertexFormats.BLOCK);
             worldrenderer.setTranslation((double)((float)x - (float)blockpos.getX() + te.getOffsetX(partialTicks)), (double)((float)y - (float)blockpos.getY() + te.getOffsetY(partialTicks)), (double)((float)z - (float)blockpos.getZ() + te.getOffsetZ(partialTicks)));
             World world = this.getWorld();
 

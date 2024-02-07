@@ -47,11 +47,11 @@ public class RenderFish extends Render<EntityFishHook>
         float f6 = 0.5F;
         GlStateManager.rotate(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181710_j);
-        worldrenderer.func_181662_b(-0.5D, -0.5D, 0.0D).func_181673_a(0.0625D, 0.1875D).func_181663_c(0.0F, 1.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(0.5D, -0.5D, 0.0D).func_181673_a(0.125D, 0.1875D).func_181663_c(0.0F, 1.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(0.5D, 0.5D, 0.0D).func_181673_a(0.125D, 0.125D).func_181663_c(0.0F, 1.0F, 0.0F).func_181675_d();
-        worldrenderer.func_181662_b(-0.5D, 0.5D, 0.0D).func_181673_a(0.0625D, 0.125D).func_181663_c(0.0F, 1.0F, 0.0F).func_181675_d();
+        worldrenderer.begin(7, DefaultVertexFormats.field_181710_j);
+        worldrenderer.pos(-0.5D, -0.5D, 0.0D).func_181673_a(0.0625D, 0.1875D).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+        worldrenderer.pos(0.5D, -0.5D, 0.0D).func_181673_a(0.125D, 0.1875D).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+        worldrenderer.pos(0.5D, 0.5D, 0.0D).func_181673_a(0.125D, 0.125D).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+        worldrenderer.pos(-0.5D, 0.5D, 0.0D).func_181673_a(0.0625D, 0.125D).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
         tessellator.draw();
         GlStateManager.disableRescaleNormal();
         GlStateManager.popMatrix();
@@ -91,13 +91,13 @@ public class RenderFish extends Render<EntityFishHook>
             double d12 = (double)((float)(d2 - d7));
             GlStateManager.disableTexture2D();
             GlStateManager.disableLighting();
-            worldrenderer.func_181668_a(3, DefaultVertexFormats.field_181706_f);
+            worldrenderer.begin(3, DefaultVertexFormats.field_181706_f);
             int k = 16;
 
             for (int l = 0; l <= 16; ++l)
             {
                 float f10 = (float)l / 16.0F;
-                worldrenderer.func_181662_b(x + d9 * (double)f10, y + d11 * (double)(f10 * f10 + f10) * 0.5D + 0.25D, z + d12 * (double)f10).func_181669_b(0, 0, 0, 255).func_181675_d();
+                worldrenderer.pos(x + d9 * (double)f10, y + d11 * (double)(f10 * f10 + f10) * 0.5D + 0.25D, z + d12 * (double)f10).func_181669_b(0, 0, 0, 255).endVertex();
             }
 
             tessellator.draw();

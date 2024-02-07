@@ -201,11 +201,11 @@ public class ItemRenderer
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         GL11.glNormal3f(0.0F, 0.0F, -1.0F);
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181707_g);
-        worldrenderer.func_181662_b(-7.0D, 135.0D, 0.0D).func_181673_a(0.0D, 1.0D).func_181675_d();
-        worldrenderer.func_181662_b(135.0D, 135.0D, 0.0D).func_181673_a(1.0D, 1.0D).func_181675_d();
-        worldrenderer.func_181662_b(135.0D, -7.0D, 0.0D).func_181673_a(1.0D, 0.0D).func_181675_d();
-        worldrenderer.func_181662_b(-7.0D, -7.0D, 0.0D).func_181673_a(0.0D, 0.0D).func_181675_d();
+        worldrenderer.begin(7, DefaultVertexFormats.field_181707_g);
+        worldrenderer.pos(-7.0D, 135.0D, 0.0D).func_181673_a(0.0D, 1.0D).endVertex();
+        worldrenderer.pos(135.0D, 135.0D, 0.0D).func_181673_a(1.0D, 1.0D).endVertex();
+        worldrenderer.pos(135.0D, -7.0D, 0.0D).func_181673_a(1.0D, 0.0D).endVertex();
+        worldrenderer.pos(-7.0D, -7.0D, 0.0D).func_181673_a(0.0D, 0.0D).endVertex();
         tessellator.draw();
         MapData mapdata = Items.filled_map.getMapData(this.itemToRender, this.mc.theWorld);
 
@@ -466,11 +466,11 @@ public class ItemRenderer
         float f7 = p_178108_2_.getMaxU();
         float f8 = p_178108_2_.getMinV();
         float f9 = p_178108_2_.getMaxV();
-        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181707_g);
-        worldrenderer.func_181662_b(-1.0D, -1.0D, -0.5D).func_181673_a((double)f7, (double)f9).func_181675_d();
-        worldrenderer.func_181662_b(1.0D, -1.0D, -0.5D).func_181673_a((double)f6, (double)f9).func_181675_d();
-        worldrenderer.func_181662_b(1.0D, 1.0D, -0.5D).func_181673_a((double)f6, (double)f8).func_181675_d();
-        worldrenderer.func_181662_b(-1.0D, 1.0D, -0.5D).func_181673_a((double)f7, (double)f8).func_181675_d();
+        worldrenderer.begin(7, DefaultVertexFormats.field_181707_g);
+        worldrenderer.pos(-1.0D, -1.0D, -0.5D).func_181673_a((double)f7, (double)f9).endVertex();
+        worldrenderer.pos(1.0D, -1.0D, -0.5D).func_181673_a((double)f6, (double)f9).endVertex();
+        worldrenderer.pos(1.0D, 1.0D, -0.5D).func_181673_a((double)f6, (double)f8).endVertex();
+        worldrenderer.pos(-1.0D, 1.0D, -0.5D).func_181673_a((double)f7, (double)f8).endVertex();
         tessellator.draw();
         GlStateManager.popMatrix();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -500,11 +500,11 @@ public class ItemRenderer
             float f6 = -0.5F;
             float f7 = -this.mc.thePlayer.rotationYaw / 64.0F;
             float f8 = this.mc.thePlayer.rotationPitch / 64.0F;
-            worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181707_g);
-            worldrenderer.func_181662_b(-1.0D, -1.0D, -0.5D).func_181673_a((double)(4.0F + f7), (double)(4.0F + f8)).func_181675_d();
-            worldrenderer.func_181662_b(1.0D, -1.0D, -0.5D).func_181673_a((double)(0.0F + f7), (double)(4.0F + f8)).func_181675_d();
-            worldrenderer.func_181662_b(1.0D, 1.0D, -0.5D).func_181673_a((double)(0.0F + f7), (double)(0.0F + f8)).func_181675_d();
-            worldrenderer.func_181662_b(-1.0D, 1.0D, -0.5D).func_181673_a((double)(4.0F + f7), (double)(0.0F + f8)).func_181675_d();
+            worldrenderer.begin(7, DefaultVertexFormats.field_181707_g);
+            worldrenderer.pos(-1.0D, -1.0D, -0.5D).func_181673_a((double)(4.0F + f7), (double)(4.0F + f8)).endVertex();
+            worldrenderer.pos(1.0D, -1.0D, -0.5D).func_181673_a((double)(0.0F + f7), (double)(4.0F + f8)).endVertex();
+            worldrenderer.pos(1.0D, 1.0D, -0.5D).func_181673_a((double)(0.0F + f7), (double)(0.0F + f8)).endVertex();
+            worldrenderer.pos(-1.0D, 1.0D, -0.5D).func_181673_a((double)(4.0F + f7), (double)(0.0F + f8)).endVertex();
             tessellator.draw();
             GlStateManager.popMatrix();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -542,12 +542,12 @@ public class ItemRenderer
             float f9 = -0.5F;
             GlStateManager.translate((float)(-(i * 2 - 1)) * 0.24F, -0.3F, 0.0F);
             GlStateManager.rotate((float)(i * 2 - 1) * 10.0F, 0.0F, 1.0F, 0.0F);
-            worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181707_g);
+            worldrenderer.begin(7, DefaultVertexFormats.field_181707_g);
             worldrenderer.setSprite(textureatlassprite);
-            worldrenderer.func_181662_b((double)f5, (double)f7, (double)f9).func_181673_a((double)f2, (double)f4).func_181675_d();
-            worldrenderer.func_181662_b((double)f6, (double)f7, (double)f9).func_181673_a((double)f1, (double)f4).func_181675_d();
-            worldrenderer.func_181662_b((double)f6, (double)f8, (double)f9).func_181673_a((double)f1, (double)f3).func_181675_d();
-            worldrenderer.func_181662_b((double)f5, (double)f8, (double)f9).func_181673_a((double)f2, (double)f3).func_181675_d();
+            worldrenderer.pos((double)f5, (double)f7, (double)f9).func_181673_a((double)f2, (double)f4).endVertex();
+            worldrenderer.pos((double)f6, (double)f7, (double)f9).func_181673_a((double)f1, (double)f4).endVertex();
+            worldrenderer.pos((double)f6, (double)f8, (double)f9).func_181673_a((double)f1, (double)f3).endVertex();
+            worldrenderer.pos((double)f5, (double)f8, (double)f9).func_181673_a((double)f2, (double)f3).endVertex();
             tessellator.draw();
             GlStateManager.popMatrix();
         }

@@ -275,7 +275,7 @@ public class WorldRenderer
         this.modeTriangles = false;
     }
 
-    public void func_181668_a(int p_181668_1_, VertexFormat p_181668_2_)
+    public void begin(int p_181668_1_, VertexFormat p_181668_2_)
     {
         if (this.isDrawing)
         {
@@ -580,7 +580,7 @@ public class WorldRenderer
         }
     }
 
-    public void func_181675_d()
+    public void endVertex()
     {
         ++this.vertexCount;
         this.func_181670_b(this.vertexFormat.func_181719_f());
@@ -593,7 +593,7 @@ public class WorldRenderer
         }
     }
 
-    public WorldRenderer func_181662_b(double p_181662_1_, double p_181662_3_, double p_181662_5_)
+    public WorldRenderer pos(double p_181662_1_, double p_181662_3_, double p_181662_5_)
     {
         if (Config.isShaders())
         {
@@ -1078,3 +1078,4 @@ public class WorldRenderer
         }
     }
 }
+

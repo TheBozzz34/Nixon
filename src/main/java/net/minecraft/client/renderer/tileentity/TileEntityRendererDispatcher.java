@@ -211,7 +211,7 @@ public class TileEntityRendererDispatcher
 
     public void preDrawBatch()
     {
-        this.batchBuffer.getWorldRenderer().func_181668_a(7, DefaultVertexFormats.BLOCK);
+        this.batchBuffer.getWorldRenderer().begin(7, DefaultVertexFormats.BLOCK);
         this.drawingBatch = true;
     }
 

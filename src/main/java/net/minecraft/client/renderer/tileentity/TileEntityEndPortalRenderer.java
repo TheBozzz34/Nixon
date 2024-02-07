@@ -93,7 +93,7 @@ public class TileEntityEndPortalRenderer extends TileEntitySpecialRenderer<TileE
                 GlStateManager.translate((float)ActiveRenderInfo.getPosition().xCoord * f4 / f8, (float)ActiveRenderInfo.getPosition().zCoord * f4 / f8, -f1);
                 Tessellator tessellator = Tessellator.getInstance();
                 WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-                worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181706_f);
+                worldrenderer.begin(7, DefaultVertexFormats.field_181706_f);
                 float f11 = (field_147527_e.nextFloat() * 0.5F + 0.1F) * f6;
                 float f12 = (field_147527_e.nextFloat() * 0.5F + 0.4F) * f6;
                 float f13 = (field_147527_e.nextFloat() * 0.5F + 0.5F) * f6;
@@ -103,10 +103,10 @@ public class TileEntityEndPortalRenderer extends TileEntitySpecialRenderer<TileE
                     f11 = f12 = f13 = 1.0F * f6;
                 }
 
-                worldrenderer.func_181662_b(x, y + (double)f3, z).func_181666_a(f11, f12, f13, 1.0F).func_181675_d();
-                worldrenderer.func_181662_b(x, y + (double)f3, z + 1.0D).func_181666_a(f11, f12, f13, 1.0F).func_181675_d();
-                worldrenderer.func_181662_b(x + 1.0D, y + (double)f3, z + 1.0D).func_181666_a(f11, f12, f13, 1.0F).func_181675_d();
-                worldrenderer.func_181662_b(x + 1.0D, y + (double)f3, z).func_181666_a(f11, f12, f13, 1.0F).func_181675_d();
+                worldrenderer.pos(x, y + (double)f3, z).func_181666_a(f11, f12, f13, 1.0F).endVertex();
+                worldrenderer.pos(x, y + (double)f3, z + 1.0D).func_181666_a(f11, f12, f13, 1.0F).endVertex();
+                worldrenderer.pos(x + 1.0D, y + (double)f3, z + 1.0D).func_181666_a(f11, f12, f13, 1.0F).endVertex();
+                worldrenderer.pos(x + 1.0D, y + (double)f3, z).func_181666_a(f11, f12, f13, 1.0F).endVertex();
                 tessellator.draw();
                 GlStateManager.popMatrix();
                 GlStateManager.matrixMode(5888);

@@ -130,7 +130,7 @@ public class RenderDragon extends RenderLiving<EntityDragon>
         GlStateManager.shadeModel(7425);
         float f7 = 0.0F - ((float)dragon.ticksExisted + p_180574_8_) * 0.01F;
         float f8 = MathHelper.sqrt_float(f2 * f2 + f3 * f3 + f4 * f4) / 32.0F - ((float)dragon.ticksExisted + p_180574_8_) * 0.01F;
-        worldrenderer.func_181668_a(5, DefaultVertexFormats.field_181709_i);
+        worldrenderer.begin(5, DefaultVertexFormats.field_181709_i);
         int i = 8;
 
         for (int j = 0; j <= 8; ++j)
@@ -138,8 +138,8 @@ public class RenderDragon extends RenderLiving<EntityDragon>
             float f9 = MathHelper.sin((float)(j % 8) * (float)Math.PI * 2.0F / 8.0F) * 0.75F;
             float f10 = MathHelper.cos((float)(j % 8) * (float)Math.PI * 2.0F / 8.0F) * 0.75F;
             float f11 = (float)(j % 8) * 1.0F / 8.0F;
-            worldrenderer.func_181662_b((double)(f9 * 0.2F), (double)(f10 * 0.2F), 0.0D).func_181673_a((double)f11, (double)f8).func_181669_b(0, 0, 0, 255).func_181675_d();
-            worldrenderer.func_181662_b((double)f9, (double)f10, (double)f6).func_181673_a((double)f11, (double)f7).func_181669_b(255, 255, 255, 255).func_181675_d();
+            worldrenderer.pos((double)(f9 * 0.2F), (double)(f10 * 0.2F), 0.0D).func_181673_a((double)f11, (double)f8).func_181669_b(0, 0, 0, 255).endVertex();
+            worldrenderer.pos((double)f9, (double)f10, (double)f6).func_181673_a((double)f11, (double)f7).func_181669_b(255, 255, 255, 255).endVertex();
         }
 
         tessellator.draw();

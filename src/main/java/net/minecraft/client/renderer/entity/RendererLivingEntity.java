@@ -664,11 +664,11 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
                         int i = fontrenderer.getStringWidth(s) / 2;
                         Tessellator tessellator = Tessellator.getInstance();
                         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-                        worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181706_f);
-                        worldrenderer.func_181662_b((double)(-i - 1), -1.0D, 0.0D).func_181666_a(0.0F, 0.0F, 0.0F, 0.25F).func_181675_d();
-                        worldrenderer.func_181662_b((double)(-i - 1), 8.0D, 0.0D).func_181666_a(0.0F, 0.0F, 0.0F, 0.25F).func_181675_d();
-                        worldrenderer.func_181662_b((double)(i + 1), 8.0D, 0.0D).func_181666_a(0.0F, 0.0F, 0.0F, 0.25F).func_181675_d();
-                        worldrenderer.func_181662_b((double)(i + 1), -1.0D, 0.0D).func_181666_a(0.0F, 0.0F, 0.0F, 0.25F).func_181675_d();
+                        worldrenderer.begin(7, DefaultVertexFormats.field_181706_f);
+                        worldrenderer.pos((double)(-i - 1), -1.0D, 0.0D).func_181666_a(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                        worldrenderer.pos((double)(-i - 1), 8.0D, 0.0D).func_181666_a(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                        worldrenderer.pos((double)(i + 1), 8.0D, 0.0D).func_181666_a(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                        worldrenderer.pos((double)(i + 1), -1.0D, 0.0D).func_181666_a(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
                         tessellator.draw();
                         GlStateManager.enableTexture2D();
                         GlStateManager.depthMask(true);
