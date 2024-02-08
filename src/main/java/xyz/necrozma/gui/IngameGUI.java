@@ -111,11 +111,11 @@ public final class IngameGUI extends GuiIngame {
         Client.INSTANCE.getMM().getModules().values().forEach(module -> {
             int width = mc.fontRendererObj.getStringWidth(module.getName()) + 2;
             if (module.isToggled()) {
-                RenderUtil.roundedRect(2, yOffSet.get() - 2, width + 2, 10, 2, new Color(0, 0, 0, 55 + 0));
+                // RenderUtil.roundedRect(2, yOffSet.get() - 2, width + 2, 10, 2, new Color(0, 0, 0, 55 + 0));
                 CustomFont.drawString(module.getName(), 2, yOffSet.get(), 0xFF00FF00);
                 CustomFont.drawString("[" + Keyboard.getKeyName(module.getKey()) + "]", width + 2, yOffSet.get(), 0xFF00FFFF);
             } else {
-                RenderUtil.roundedRect(2, yOffSet.get() - 2, width + 2, 10, 2, new Color(0, 0, 0, 55 + 0));
+                // RenderUtil.roundedRect(2, yOffSet.get() - 2, width + 2, 10, 2, new Color(0, 0, 0, 55 + 0));
                 CustomFont.drawString(module.getName(), 2, yOffSet.get(), 0xFFFF0000);
                 CustomFont.drawString("[" + Keyboard.getKeyName(module.getKey()) + "]", width + 2, yOffSet.get(), 0xFF00FFFF);
             }
@@ -129,13 +129,33 @@ public final class IngameGUI extends GuiIngame {
         CustomFont.drawString(location, 2, new ScaledResolution(mc).getScaledHeight() - 10, 0xFFFFFFFF);
     }
 
+    private void drawArmorHud() {
+        ScaledResolution sr = new ScaledResolution(mc);
+
+        int width = sr.getScaledWidth();
+        int height = sr.getScaledHeight();
+
+        int i = width / 2;
+        int j = height - 55;
+
+        RenderUtil.drawArmorHUD(i, j);
+    }
+
+    private int lastColor = 0;
+    private int colorCounter = 0;
+    private int randomColor() {
+        if (colorCounter == 0) {
+            lastColor = new Color((int) (Math.random() * 0x1000000)).getRGB();
+            colorCounter = 10;
+        }
+        colorCounter--;
+        return lastColor;
+    }
+
     @Override
     public void renderGameOverlay(final float partialTicks) {
 
         super.renderGameOverlay(partialTicks);
-
-        CustomFont.drawStringBigWithDropShadow("Nixon", 2, 5, 0xFFFFFFFF);
-
 
         /*
          * For some GUI stuff we don't want to render while F3 menu is enabled so we check for it.
@@ -147,6 +167,7 @@ public final class IngameGUI extends GuiIngame {
             //renderKeyStrokes();
             renderModules();
             renderLocation();
+            drawArmorHud();
             //renderBPS();
         }
 

@@ -43,6 +43,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.border.WorldBorder;
 import net.optifine.CustomColors;
+import xyz.necrozma.gui.render.RenderUtil;
 
 public class GuiIngame extends Gui
 {
@@ -161,9 +162,17 @@ public class GuiIngame extends Gui
 
         if (this.showCrosshair())
         {
+            /*
             GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
             GlStateManager.enableAlpha();
             this.drawTexturedModalRect(i / 2 - 7, j / 2 - 7, 0, 0, 16, 16);
+             */
+
+            // Custom crosshair
+            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+            GlStateManager.enableAlpha();
+            RenderUtil.quickDrawBorderedRect(i / 2 - 1, j / 2 - 1, i / 2 + 1, j / 2 + 1, 16, 0xFF00FF00, 0x00000000);
+
         }
 
         GlStateManager.enableAlpha();

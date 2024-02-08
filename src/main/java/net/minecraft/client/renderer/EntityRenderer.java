@@ -93,6 +93,7 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
 import xyz.necrozma.Client;
+import xyz.necrozma.event.impl.render.Render2DEvent;
 
 public class EntityRenderer implements IResourceManagerReloadListener
 {
@@ -1352,6 +1353,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 {
                     GlStateManager.alphaFunc(516, 0.1F);
                     this.mc.ingameGUI.renderGameOverlay(p_181560_1_);
+
+                    final Render2DEvent render2DEvent = new Render2DEvent(p_181560_1_, scaledresolution);
+                    Client.BUS.post(render2DEvent);
+
+                    Client.INSTANCE.getNM().onRender2D(render2DEvent);
 
                     if (this.mc.gameSettings.ofShowFps && !this.mc.gameSettings.showDebugInfo)
                     {

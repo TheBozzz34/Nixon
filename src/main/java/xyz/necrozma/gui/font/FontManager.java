@@ -30,7 +30,7 @@ public final class FontManager {
 
         try {
             for (final int i : new int[]{60, 96}) {
-                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/rise/font/Dreamscape.ttf");
+                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/nixon/font/Dreamscape.ttf");
 
                 Font myFont = Font.createFont(0, istream);
                 myFont = myFont.deriveFont(Font.PLAIN, (float) i);
@@ -38,7 +38,7 @@ public final class FontManager {
             }
 
             for (final int i : new int[]{14, 16, 18, 19, 20, 22, 24, 36, 48, 72, 96}) {
-                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/rise/font/Light.ttf");
+                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/nixon/font/Light.ttf");
 
                 Font myFont = Font.createFont(0, istream);
                 myFont = myFont.deriveFont(Font.PLAIN, (float) i);
@@ -46,7 +46,7 @@ public final class FontManager {
             }
 
             for (final int i : new int[]{18}) {
-                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/rise/font/SigmaRegular.ttf");
+                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/nixon/font/SigmaRegular.ttf");
 
                 Font myFont = Font.createFont(0, istream);
                 myFont = myFont.deriveFont(Font.PLAIN, (float) i);
@@ -54,7 +54,7 @@ public final class FontManager {
             }
 
             for (final int i : new int[]{12}) {
-                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/rise/font/TahomaBold.ttf");
+                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/nixon/font/TahomaBold.ttf");
 
                 Font myFont = Font.createFont(0, istream);
                 myFont = myFont.deriveFont(Font.PLAIN, (float) i);
@@ -62,7 +62,7 @@ public final class FontManager {
             }
 
             for (final int i : new int[]{18, 16}) {
-                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/rise/font/Tahoma.ttf");
+                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/nixon/font/Tahoma.ttf");
 
                 Font myFont = Font.createFont(0, istream);
                 myFont = myFont.deriveFont(Font.PLAIN, (float) i);
@@ -70,7 +70,7 @@ public final class FontManager {
             }
 
             for (final int i : new int[]{16, 18, 28, 36, 48}) {
-                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/rise/font/Biko_Regular.otf");
+                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/nixon/font/Biko_Regular.otf");
 
                 Font myFont = Font.createFont(0, istream);
                 myFont = myFont.deriveFont(Font.PLAIN, (float) i);
@@ -78,7 +78,7 @@ public final class FontManager {
             }
 
             for (final int i : new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 32, 128}) {
-                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/rise/font/Comfortaa-Regular.ttf");
+                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/nixon/font/Comfortaa-Regular.ttf");
 
                 Font myFont = Font.createFont(0, istream);
                 myFont = myFont.deriveFont(Font.PLAIN, (float) i);
@@ -86,7 +86,7 @@ public final class FontManager {
             }
 
             for (final int i : new int[]{18}) {
-                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/rise/font/Icon-Font.ttf");
+                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/nixon/font/Icon-Font.ttf");
 
                 Font myFont = Font.createFont(0, istream);
                 myFont = myFont.deriveFont(Font.PLAIN, (float) i);
@@ -94,7 +94,7 @@ public final class FontManager {
             }
 
             for (final int i : new int[]{18}) {
-                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/rise/font/icon2.ttf");
+                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/nixon/font/icon2.ttf");
 
                 Font myFont = Font.createFont(0, istream);
                 myFont = myFont.deriveFont(Font.PLAIN, (float) i);
@@ -102,7 +102,7 @@ public final class FontManager {
             }
 
             for (final int i : new int[]{18, 20, 24, 36, 48, 72, 96}) {
-                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/rise/font/Jello.ttf");
+                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/nixon/font/Jello.ttf");
 
                 Font myFont = Font.createFont(0, istream);
                 myFont = myFont.deriveFont(Font.PLAIN, (float) i);
@@ -110,7 +110,7 @@ public final class FontManager {
             }
 
             for (final int i : new int[]{18, 20, 24, 36, 48, 72, 96}) {
-                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/rise/font/aldotheapache.ttf");
+                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/nixon/font/aldotheapache.ttf");
 
                 Font myFont = Font.createFont(0, istream);
                 myFont = myFont.deriveFont(Font.PLAIN, (float) i);
@@ -118,7 +118,7 @@ public final class FontManager {
             }
 
             for (final int i : new int[]{18, 20, 24}) {
-                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/rise/font/MuseoSans_900.otf");
+                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/nixon/font/MuseoSans_900.otf");
 
                 Font myFont = Font.createFont(0, istream);
                 myFont = myFont.deriveFont(Font.PLAIN, (float) i);
@@ -126,7 +126,7 @@ public final class FontManager {
             }
 
             for (final int i : new int[]{16, 18, 20, 24}) {
-                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/rise/font/Eaves.ttf");
+                final InputStream istream = this.getClass().getResourceAsStream("/assets/minecraft/nixon/font/Eaves.ttf");
 
                 Font myFont = Font.createFont(0, istream);
                 myFont = myFont.deriveFont(Font.PLAIN, (float) i);

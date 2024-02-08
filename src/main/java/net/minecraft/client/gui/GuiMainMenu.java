@@ -39,6 +39,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
 import xyz.necrozma.gui.font.CustomFont;
+import xyz.necrozma.gui.font.TTFFontRenderer;
+import xyz.necrozma.gui.render.RenderUtil;
 
 public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
 {
@@ -607,17 +609,14 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
             k1 = custompanoramaproperties.getOverlay2Bottom();
         }
 
-        if (l != 0 || i1 != 0)
-        {
-            this.drawGradientRect(0, 0, this.width, this.height, l, i1);
-        }
-
-        if (j1 != 0 || k1 != 0)
-        {
-            this.drawGradientRect(0, 0, this.width, this.height, j1, k1);
-        }
+        RenderUtil.rainbowRectangle(0, 0, this.width, this.height, i1);
 
 
+        TTFFontRenderer skeet = CustomFont.FONT_MANAGER.getFont("Comfortaa 32");
+
+        skeet.drawCenteredString("Nixon Client", this.width / 2, 20, Color.WHITE.hashCode());
+
+        /*
         this.mc.getTextureManager().bindTexture(minecraftTitleTextures);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -634,6 +633,8 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
             this.drawTexturedModalRect(j + 0, k + 0, 0, 0, 155, 44);
             this.drawTexturedModalRect(j + 155, k + 0, 0, 45, 155, 44);
         }
+
+         */
 
 
 
@@ -714,6 +715,14 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         {
             this.modUpdateNotification.drawScreen(mouseX, mouseY, partialTicks);
         }
+
+        this.buttonList.forEach(button -> {
+            if(button.hovered) {
+                // do stuff
+                //RenderUtil.roundedOutLine(button.xPosition, button.yPosition, button.width, button.height, 12, 20, new Color(255, 255, 255, 255));
+                //RenderUtil.drawBorder(button.xPosition, button.yPosition, button.xPosition + button.width, button.yPosition + button.height, 1, 0xFF000000);
+            }
+        });
     }
 
     /**
