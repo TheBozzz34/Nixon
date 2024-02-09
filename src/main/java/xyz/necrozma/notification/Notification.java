@@ -60,7 +60,9 @@ public final class Notification {
 
         // final Color c = ThemeUtil.getThemeColor(ThemeType.GENERAL);
 
-        final Color c = new Color(0, 0, 0, 170);
+        // background color
+
+        final Color c = new Color(159, 24, 242);
 
         RenderUtil.roundedRectCustom(xVisual, yVisual - 3, sr.getScaledWidth() - xVisual, 25, 4f, new Color(0, 0, 0, 170), true, false, true, false);
 
