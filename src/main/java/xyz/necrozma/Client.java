@@ -18,6 +18,8 @@ import xyz.necrozma.gui.ModGui;
 import xyz.necrozma.module.ModuleManager;
 import xyz.necrozma.command.CommandManager;
 import xyz.necrozma.module.impl.render.Xray;
+import xyz.necrozma.notification.NotificationManager;
+import xyz.necrozma.notification.NotificationType;
 import xyz.necrozma.util.*;
 
 
@@ -41,6 +43,7 @@ public enum Client implements Subscriber {
     private ModuleManager MM;
     private CommandManager CM;
     private PacketHandler PH;
+    private NotificationManager NM;
 
     private boolean authed;
 
@@ -69,6 +72,7 @@ public enum Client implements Subscriber {
         MM = new ModuleManager();
         CM = new CommandManager();
         PH = new PacketHandler();
+        NM = new NotificationManager();
 
 
         clickGui = new ModGui();
@@ -88,6 +92,7 @@ public enum Client implements Subscriber {
         int centerX = scaledResolution.getScaledWidth() / 2;
         int centerY = scaledResolution.getScaledHeight() / 2;
 
+        /*
         if(!MC.inGameHasFocus) {
             if(authed) {
                 MC.ingameGUI.drawString(MC.fontRendererObj, "Logged in!", 2, 2, 0xFF00FF00);
@@ -96,33 +101,8 @@ public enum Client implements Subscriber {
             }
         }
 
+         */
 
-/*
-        if (MC.inGameHasFocus && !MC.gameSettings.showDebugInfo) {
-            // drawRect(centerX - squareSize / 2, centerY - squareSize / 2, centerX + squareSize / 2, centerY + squareSize / 2, 0xFFFF0000);
-            MM.getModules().values().forEach(module -> {
-                int width = MC.fontRendererObj.getStringWidth(module.getName()) + 2;
-                if (module.isToggled()) {
-                    MC.ingameGUI.drawString(MC.fontRendererObj, module.getName(), 2, yOffSet.get(), 0xFF00FF00);
-                    MC.ingameGUI.drawString(MC.fontRendererObj, "[" + Keyboard.getKeyName(module.getKey()) + "]", width + 2, yOffSet.get(), 0xFF00FFFF);
-                } else {
-                    MC.ingameGUI.drawString(MC.fontRendererObj, module.getName(), 2, yOffSet.get(), 0xFFFF0000);
-                    MC.ingameGUI.drawString(MC.fontRendererObj, "[" + Keyboard.getKeyName(module.getKey()) + "]", width + 2, yOffSet.get(), 0xFF00FFFF);
-                }
-                yOffSet.addAndGet(yOffsetInc);
-            });
-
-            String location = "X: " + MC.thePlayer.getPosition().getX() + " Y: " + MC.thePlayer.getPosition().getY() + " Z: " + MC.thePlayer.getPosition().getZ();
-
-            MC.ingameGUI.drawString(MC.fontRendererObj, location, 2, scaledResolution.getScaledHeight() - 10, 0xFFFFFFFF);
-
-            String fps = "FPS: " + Minecraft.getDebugFPS();
-            MC.ingameGUI.drawString(MC.fontRendererObj, fps, scaledResolution.getScaledWidth() - MC.fontRendererObj.getStringWidth(fps) - 2, scaledResolution.getScaledHeight() - 10, 0xFFFFFFFF);
-
-            drawChromaString("Nixon Client", scaledResolution.getScaledWidth() - MC.fontRendererObj.getStringWidth("Nixon Client") - 2, 2, false);
-        }
-
- */
     }
 
     private void drawChromaString(String text, int x, int y, boolean shadow) {
@@ -155,6 +135,7 @@ public enum Client implements Subscriber {
             MM.getModules().values().forEach(m -> {
                 if (m.getKey() == e.getKey()) {
                     m.toggle();
+                    NM.registerNotification("Testing", 5000, NotificationType.NOTIFICATION);
                 }
             });
         }
