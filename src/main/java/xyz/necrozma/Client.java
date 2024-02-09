@@ -15,6 +15,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import xyz.necrozma.event.impl.input.EventKey;
 import xyz.necrozma.gui.ModGui;
+import xyz.necrozma.gui.clickgui.ClickGUI;
 import xyz.necrozma.module.ModuleManager;
 import xyz.necrozma.command.CommandManager;
 import xyz.necrozma.module.impl.render.Xray;
@@ -32,7 +33,7 @@ public enum Client implements Subscriber {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private ModGui clickGui;
+    public ClickGUI clickGUI;
     private Xray xray;
     private Gson gson;
 
@@ -54,7 +55,7 @@ public enum Client implements Subscriber {
             .build();
 
     private final String
-            name = "Nixon Client",
+            name = "Nixon",
             version = "1.0.0",
             commandPrefix = "#",
             clientPrefix = "&7[&cNixon&7]&r ",
@@ -75,7 +76,7 @@ public enum Client implements Subscriber {
         NM = new NotificationManager();
 
 
-        clickGui = new ModGui();
+        clickGUI = new ClickGUI();
         xray = new Xray();
 
         xray.addBlocks();
@@ -139,8 +140,11 @@ public enum Client implements Subscriber {
                 }
             });
         }
+        /*
         if (e.getKey() == Keyboard.KEY_GRAVE) {
             MC.displayGuiScreen(clickGui);
         }
+
+         */
     });
 }

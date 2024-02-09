@@ -22,6 +22,7 @@ import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.glu.Sphere;
+import xyz.necrozma.gui.font.CustomFont;
 import xyz.necrozma.util.ColorUtil;
 import xyz.necrozma.util.InstanceAccess;
 
@@ -1853,6 +1854,7 @@ public final class RenderUtil implements InstanceAccess {
                 stuff.add(armor);
             }
         }
+
         if (mc.thePlayer.getHeldItem() != null) {
             stuff.add(mc.thePlayer.getHeldItem());
         }

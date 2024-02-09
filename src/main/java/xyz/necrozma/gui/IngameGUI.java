@@ -19,7 +19,11 @@ import xyz.necrozma.gui.font.CustomFont;
 import xyz.necrozma.gui.font.TTFFontRenderer;
 import xyz.necrozma.gui.render.KeystrokeUtil;
 import xyz.necrozma.gui.render.RenderUtil;
+import xyz.necrozma.module.Category;
+import xyz.necrozma.module.Module;
 import xyz.necrozma.module.impl.render.ClickGUIModule;
+import xyz.necrozma.settings.impl.BooleanSetting;
+import xyz.necrozma.util.MathUtil;
 import xyz.necrozma.util.TimeUtil;
 
 import java.awt.*;
@@ -49,6 +53,7 @@ public final class IngameGUI extends GuiIngame {
     public static final KeystrokeUtil right = new KeystrokeUtil();
     public static final KeystrokeUtil space = new KeystrokeUtil();
 
+    private static List<Object> modules;
     private final static TTFFontRenderer comfortaa = CustomFont.FONT_MANAGER.getFont("Comfortaa 18");
     private final static TTFFontRenderer comfortaaBig = CustomFont.FONT_MANAGER.getFont("Comfortaa 32");
     private final static TTFFontRenderer skeet = CustomFont.FONT_MANAGER.getFont("SkeetBold 12");
@@ -115,19 +120,25 @@ public final class IngameGUI extends GuiIngame {
                 // RenderUtil.roundedRect(2, yOffSet.get() - 2, width + 2, 10, 2, new Color(0, 0, 0, 55 + 0));
                 CustomFont.drawString(module.getName(), 2, yOffSet.get(), 0xFF00FF00);
                 CustomFont.drawString("[" + Keyboard.getKeyName(module.getKey()) + "]", width + 2, yOffSet.get(), 0xFF00FFFF);
-            } else {
-                // RenderUtil.roundedRect(2, yOffSet.get() - 2, width + 2, 10, 2, new Color(0, 0, 0, 55 + 0));
-                CustomFont.drawString(module.getName(), 2, yOffSet.get(), 0xFFFF0000);
-                CustomFont.drawString("[" + Keyboard.getKeyName(module.getKey()) + "]", width + 2, yOffSet.get(), 0xFF00FFFF);
+                yOffSet.addAndGet(yOffsetInc);
             }
-            yOffSet.addAndGet(yOffsetInc);
         });
     }
 
     private void renderLocation() {
         final Vec3 vec = mc.thePlayer.getPositionVector();
         final String location = "X: " + (int) vec.xCoord + " Y: " + (int) vec.yCoord + " Z: " + (int) vec.zCoord;
-        CustomFont.drawString(location, 2, new ScaledResolution(mc).getScaledHeight() - 10, 0xFFFFFFFF);
+        skeetBig.drawStringWithShadow(location, 2, new ScaledResolution(mc).getScaledHeight() - 10, 0xFFFFFFFF);
+    }
+
+    private void renderBPS() {
+        final ScaledResolution sr = new ScaledResolution(mc);
+
+        final double x = 2, y = sr.getScaledHeight() - 20;
+        final String bps = "BPS: " + MathUtil.round(((Math.hypot(mc.thePlayer.posX - mc.thePlayer.prevPosX, mc.thePlayer.posZ - mc.thePlayer.prevPosZ) * mc.timer.timerSpeed) * 20), 2);
+
+        skeetBig.drawStringWithShadow(bps, (float) x, (float) y, 0xFFFFFFFF);
+
     }
 
     private void drawArmorHud() {
@@ -140,6 +151,9 @@ public final class IngameGUI extends GuiIngame {
         int j = height - 55;
 
         RenderUtil.drawArmorHUD(i, j);
+
+
+
     }
 
     private int lastColor = 0;
@@ -153,6 +167,14 @@ public final class IngameGUI extends GuiIngame {
         return lastColor;
     }
 
+    private void renderClientName() {
+        CustomFont.drawStringBigWithDropShadow("Nixon", 2, 5, new Color(159, 24, 242).hashCode());
+
+        int offset = (int) (CustomFont.getWidthBig("Nixon") + 2);
+        CustomFont.drawStringWithDropShadow("1.0.0", 1 + offset, 5, new Color(159, 24, 242).hashCode());
+
+        }
+
     @Override
     public void renderGameOverlay(final float partialTicks) {
 
@@ -163,23 +185,64 @@ public final class IngameGUI extends GuiIngame {
          * For other GUI stuff that we want to run while F3 is enabled, well we can just call the rendering regardless.
          */
         if (!mc.gameSettings.showDebugInfo && !Client.INSTANCE.getMM().getModule(ClickGUIModule.class).isToggled()) {
-            //renderClientName();
-            //renderArrayList();
+            renderClientName();
+            renderArrayList();
             //renderKeyStrokes();
-            renderModules();
             renderLocation();
             drawArmorHud();
-            //renderBPS();
+            renderBPS();
         }
 
-        /*
-         * New intent cracking method? Idk I have heard of it this might
-         * potentially fix this, well it better fix it or I am going to be very mad.
-         */
-        System.setSecurityManager(null);
+    }
+
+    private void renderArrayList() {
+        // final String mode = this.getMode(Interface.class, "Theme");
+        final String mode = "Rise";
+
+        final ScaledResolution SR = new ScaledResolution(mc);
+
+        final float offset = 6;
+
+        final float arraylistX = SR.getScaledWidth() - offset;
+
+        modules = new ArrayList<>();
+
+        int yOffSet = 5;
+
+        // modules.addAll(Client.INSTANCE.getMM().getModules().values());
+
+        for (Module module : Client.INSTANCE.getMM().getModules().values()) {
+            if (module.isToggled()) {
+                modules.add(module);
+            }
+        }
+
+        modules.sort(Comparator.comparingInt(module -> -mc.fontRendererObj.getStringWidth(((Module) module).getName())));
+
+        for (Object module : modules) {
+            final int offsetY = 2;
+            final int offsetX = 1;
+
+            final String name = module instanceof Module ? ((Module) module).getName() : "null";
+
+            float finalX = 0;
+
+            final float renderX = arraylistX - comfortaa.getWidth(name);
+            final float renderY = yOffSet;
+
+            final double stringWidth = comfortaa.getWidth(name);
+            RenderUtil.rect(renderX - offsetX, renderY - offsetY + 1 + 0.1, stringWidth + offsetX * 1.5 + 0.5, comfortaa.getHeight() + offsetY + 0.3, new Color(0, 0, 0, 80));
+
+            finalX = arraylistX - comfortaa.getWidth(name);
+
+            comfortaa.drawStringWithShadow(name, renderX + 0.5f, renderY + 1, 0xFFFFFFFF);
+
+            yOffSet += comfortaa.getHeight() + 1;
+        }
 
 
     }
+
 
 
 }
