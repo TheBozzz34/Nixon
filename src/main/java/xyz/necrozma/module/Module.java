@@ -17,6 +17,8 @@ public abstract class Module implements Subscriber {
 
     private boolean toggled;
 
+    public float sizeInGui;
+
     private final String name;
 
     private final String description;

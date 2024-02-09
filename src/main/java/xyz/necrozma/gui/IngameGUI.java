@@ -19,6 +19,7 @@ import xyz.necrozma.gui.font.CustomFont;
 import xyz.necrozma.gui.font.TTFFontRenderer;
 import xyz.necrozma.gui.render.KeystrokeUtil;
 import xyz.necrozma.gui.render.RenderUtil;
+import xyz.necrozma.module.impl.render.ClickGUIModule;
 import xyz.necrozma.util.TimeUtil;
 
 import java.awt.*;
@@ -161,7 +162,7 @@ public final class IngameGUI extends GuiIngame {
          * For some GUI stuff we don't want to render while F3 menu is enabled so we check for it.
          * For other GUI stuff that we want to run while F3 is enabled, well we can just call the rendering regardless.
          */
-        if (!mc.gameSettings.showDebugInfo) {
+        if (!mc.gameSettings.showDebugInfo && !Client.INSTANCE.getMM().getModule(ClickGUIModule.class).isToggled()) {
             //renderClientName();
             //renderArrayList();
             //renderKeyStrokes();

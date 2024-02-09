@@ -42,6 +42,7 @@ import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.*;
 //import net.minecraft.client.gui.GuiIngame;
+import xyz.necrozma.event.impl.render.OpenGUIEvent;
 import xyz.necrozma.gui.IngameGUI;
 import net.minecraft.client.gui.achievement.GuiAchievement;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -945,6 +946,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         Tessellator.getInstance().draw();
     }
 
+
     /**
      * Returns the save loader that is currently being used
      */
@@ -956,6 +958,43 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     /**
      * Sets the argument GuiScreen as the main (topmost visible) screen.
      */
+
+    public void displayGuiScreen(GuiScreen guiScreenIn) {
+        final OpenGUIEvent openGUIEvent = new OpenGUIEvent(guiScreenIn, this.currentScreen);
+        Client.BUS.post(openGUIEvent);
+
+
+        if (this.currentScreen != null) {
+            this.currentScreen.onGuiClosed();
+        }
+
+        if (guiScreenIn == null && this.theWorld == null) {
+            guiScreenIn = new  GuiMainMenu();
+        } else if (guiScreenIn == null && this.thePlayer.getHealth() <= 0.0F) {
+            guiScreenIn = new GuiGameOver();
+        }
+
+        if (guiScreenIn instanceof  GuiMainMenu) {
+            this.gameSettings.showDebugInfo = false;
+            this.ingameGUI.getChatGUI().clearChatMessages();
+        }
+
+        this.currentScreen = (GuiScreen) guiScreenIn;
+
+        if (guiScreenIn != null) {
+            this.setIngameNotInFocus();
+            ScaledResolution scaledresolution = new ScaledResolution(this);
+            int i = scaledresolution.getScaledWidth();
+            int j = scaledresolution.getScaledHeight();
+            ((GuiScreen) guiScreenIn).setWorldAndResolution(this, i, j);
+            this.skipRenderWorld = false;
+        } else {
+            this.mcSoundHandler.resumeSounds();
+            this.setIngameFocus();
+        }
+    }
+
+    /*
     public void displayGuiScreen(GuiScreen guiScreenIn)
     {
         if (this.currentScreen != null)
@@ -995,6 +1034,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             this.setIngameFocus();
         }
     }
+
+     */
 
     /**
      * Checks for an OpenGL error. If there is one, prints the error ID and error string.

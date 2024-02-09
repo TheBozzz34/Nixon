@@ -1,6 +1,8 @@
 package net.minecraft.client.renderer.entity;
 
 import com.google.common.collect.Lists;
+
+import java.awt.*;
 import java.nio.FloatBuffer;
 import java.util.List;
 import net.minecraft.client.Minecraft;
@@ -31,6 +33,10 @@ import net.optifine.shaders.Shaders;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
+import xyz.necrozma.Client;
+import xyz.necrozma.gui.render.RenderUtil;
+import xyz.necrozma.module.impl.render.EntityESP;
+import xyz.necrozma.util.OutlineUtil;
 
 public abstract class RendererLivingEntity<T extends EntityLivingBase> extends Render<T>
 {
@@ -348,6 +354,26 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
             {
                 return;
             }
+
+            if (Client.INSTANCE.getMM().getModule(EntityESP.class).isToggled()) {
+                OutlineUtil.renderOne((float) 1.5);
+                this.mainModel.render(entitylivingbaseIn, p_77036_2_, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, p_77036_7_);
+                OutlineUtil.renderTwo();
+                this.mainModel.render(entitylivingbaseIn, p_77036_2_, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, p_77036_7_);
+                OutlineUtil.renderThree();
+                this.mainModel.render(entitylivingbaseIn, p_77036_2_, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, p_77036_7_);
+
+                //Color
+                // final Color c = new Color(ThemeUtil.getThemeColorInt(ThemeType.GENERAL));
+                final Color c = new Color(159, 24, 242);
+                OutlineUtil.renderFour(c);
+
+                this.mainModel.render(entitylivingbaseIn, p_77036_2_, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, p_77036_7_);
+                OutlineUtil.renderFive();
+                RenderUtil.color(Color.white);
+            }
+
+
 
             if (flag1)
             {
