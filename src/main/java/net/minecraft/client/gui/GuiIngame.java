@@ -162,16 +162,15 @@ public class GuiIngame extends Gui
 
         if (this.showCrosshair())
         {
+
             /*
             GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
             GlStateManager.enableAlpha();
             this.drawTexturedModalRect(i / 2 - 7, j / 2 - 7, 0, 0, 16, 16);
+
              */
 
-            // Custom crosshair
-            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-            GlStateManager.enableAlpha();
-            RenderUtil.quickDrawBorderedRect(i / 2 - 1, j / 2 - 1, i / 2 + 1, j / 2 + 1, 16, 0xFF00FF00, 0x00000000);
+            RenderUtil.drawCircle(i / 2, j / 2, 2, 0xFFFFFFFF, 1,1, 1);
 
         }
 
