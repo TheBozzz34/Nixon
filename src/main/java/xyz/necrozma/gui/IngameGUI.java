@@ -18,6 +18,7 @@ import xyz.necrozma.Client;
 import xyz.necrozma.gui.font.CustomFont;
 import xyz.necrozma.gui.font.TTFFontRenderer;
 import xyz.necrozma.gui.render.KeystrokeUtil;
+import xyz.necrozma.gui.render.Particle;
 import xyz.necrozma.gui.render.RenderUtil;
 import xyz.necrozma.module.Category;
 import xyz.necrozma.module.Module;
@@ -65,6 +66,11 @@ public final class IngameGUI extends GuiIngame {
     private final Minecraft mc = Minecraft.getMinecraft();
     public IngameGUI(final Minecraft mcIn) {
         super(mcIn);
+    }
+
+    public boolean doesGuiPauseGame()
+    {
+        return false;
     }
 
     public static void renderKeyStrokes() {
@@ -168,9 +174,9 @@ public final class IngameGUI extends GuiIngame {
     }
 
     private void renderClientName() {
-        CustomFont.drawStringBigWithDropShadow("Nixon", 2, 5, new Color(159, 24, 242).hashCode());
+        CustomFont.drawStringBigWithDropShadow("Client", 2, 5, new Color(159, 24, 242).hashCode());
 
-        int offset = (int) (CustomFont.getWidthBig("Nixon") + 2);
+        int offset = (int) (CustomFont.getWidthBig("Client") + 2);
         CustomFont.drawStringWithDropShadow("1.0.0", 1 + offset, 5, new Color(159, 24, 242).hashCode());
 
         }

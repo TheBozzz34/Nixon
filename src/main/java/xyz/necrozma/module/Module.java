@@ -7,6 +7,8 @@ import net.minecraft.client.Minecraft;
 import org.apache.commons.lang3.Validate;
 import org.lwjgl.input.Keyboard;
 import xyz.necrozma.Client;
+import xyz.necrozma.event.impl.motion.PreMotionEvent;
+import xyz.necrozma.event.impl.render.Render3DEvent;
 import xyz.necrozma.settings.Settings;
 
 import java.util.ArrayList;
@@ -94,5 +96,12 @@ public abstract class Module implements Subscriber {
         }
 
         return null;
+    }
+
+    public void onPreMotion(final PreMotionEvent event) {
+    }
+
+    public void onRender3DEvent(Render3DEvent event) {
+
     }
 }

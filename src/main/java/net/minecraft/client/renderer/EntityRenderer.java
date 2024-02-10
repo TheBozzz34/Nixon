@@ -94,6 +94,7 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
 import xyz.necrozma.Client;
 import xyz.necrozma.event.impl.render.Render2DEvent;
+import xyz.necrozma.event.impl.render.Render3DEvent;
 
 public class EntityRenderer implements IResourceManagerReloadListener
 {
@@ -1903,6 +1904,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
             Reflector.callVoid(Reflector.ForgeHooksClient_dispatchRenderLast, new Object[] {renderglobal, Float.valueOf(partialTicks)});
         }
 
+        final Render3DEvent render3DEvent = new Render3DEvent(partialTicks);
+        Client.BUS.post(render3DEvent);
         this.mc.mcProfiler.endStartSection("hand");
 
         if (this.renderHand && !Shaders.isShadowPass)

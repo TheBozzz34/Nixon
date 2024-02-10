@@ -14,8 +14,11 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import xyz.necrozma.event.impl.input.EventKey;
+import xyz.necrozma.event.impl.motion.PreMotionEvent;
+import xyz.necrozma.event.impl.render.Render3DEvent;
 import xyz.necrozma.gui.ModGui;
 import xyz.necrozma.gui.clickgui.ClickGUI;
+import xyz.necrozma.module.Module;
 import xyz.necrozma.module.ModuleManager;
 import xyz.necrozma.command.CommandManager;
 import xyz.necrozma.module.impl.render.Xray;
@@ -131,7 +134,21 @@ public enum Client implements Subscriber {
     }
 
     @Subscribe
-    private final Listener<EventKey> listener = new Listener<>(e -> {
+    private final Listener<Render3DEvent> lister0 = new Listener<>(e -> {
+        if (this.MM != null) {
+            MM.getModules().values().stream().filter(Module::isToggled).forEach(m -> m.onRender3DEvent(e));
+        }
+    });
+
+    @Subscribe
+    private final Listener<PreMotionEvent> listener1 = new Listener<>(e -> {
+        if (this.MM != null) {
+            MM.getModules().values().stream().filter(Module::isToggled).forEach(m -> m.onPreMotion(e));
+        }
+    });
+
+    @Subscribe
+    private final Listener<EventKey> listener2 = new Listener<>(e -> {
         if(this.MM != null) {
             MM.getModules().values().forEach(m -> {
                 if (m.getKey() == e.getKey()) {
