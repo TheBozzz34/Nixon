@@ -174,8 +174,6 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
                 renderModule(x + categoryWidth + 5, y + categoryHeight + 5 + heightOffset, width - categoryWidth - 10, 20, m);
                 heightOffset += 20;
             }
-
-
         }
 
     }
@@ -232,17 +230,10 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
                 }
                 ++amount;
             }
-
-            for (final Module m : Client.INSTANCE.getMM().getModules().values()) {
-                if (m.getCategory() == selectedCat) {
-                    if (mouseOver(x + categoryWidth + 5, y + categoryHeight + 5 + heightOffset, width - categoryWidth - 10, 20, mouseX, mouseY)) {
-                        m.toggle();
-                    }
-                    heightOffset += 20;
-                }
-            }
         }
     }
+
+
 
 
     protected void mouseReleased(final int mouseX, final int mouseY, final int state) {

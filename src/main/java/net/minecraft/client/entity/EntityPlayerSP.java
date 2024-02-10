@@ -53,6 +53,7 @@ import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 import xyz.necrozma.Client;
 import xyz.necrozma.command.CommandManager;
+import xyz.necrozma.event.impl.motion.PreMotionEvent;
 import xyz.necrozma.event.impl.update.EventUpdate;
 
 public class EntityPlayerSP extends AbstractClientPlayer
@@ -194,6 +195,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
      */
     public void onUpdateWalkingPlayer()
     {
+        final PreMotionEvent preMotionEvent = new PreMotionEvent(this.rotationYaw, this.rotationPitch, this.onGround, this.posX, this.getEntityBoundingBox().minY, this.posZ);
+        Client.BUS.post(preMotionEvent);
+
         boolean flag = this.isSprinting();
 
         if (flag != this.serverSprintState)
