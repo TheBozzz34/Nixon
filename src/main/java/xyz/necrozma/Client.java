@@ -1,6 +1,6 @@
 package xyz.necrozma;
 
-import com.google.gson.Gson;
+import xyz.necrozma.settings.Settings;
 import lombok.Getter;
 import me.zero.alpine.bus.EventBus;
 import me.zero.alpine.bus.EventManager;
@@ -24,10 +24,14 @@ import xyz.necrozma.command.CommandManager;
 import xyz.necrozma.module.impl.render.Xray;
 import xyz.necrozma.notification.NotificationManager;
 import xyz.necrozma.notification.NotificationType;
+import xyz.necrozma.settings.impl.BooleanSetting;
+import xyz.necrozma.settings.impl.NumberSetting;
 import xyz.necrozma.util.*;
 
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
@@ -38,18 +42,13 @@ public enum Client implements Subscriber {
 
     public ClickGUI clickGUI;
     private Xray xray;
-    private Gson gson;
-
 
     private final Minecraft MC = Minecraft.getMinecraft();
-
 
     private ModuleManager MM;
     private CommandManager CM;
     private PacketHandler PH;
     private NotificationManager NM;
-
-    private boolean authed;
 
 
     public static final EventBus BUS = EventManager.builder()
@@ -66,71 +65,138 @@ public enum Client implements Subscriber {
 
     public final void init() throws IOException {
 
-        // authed = HWID.checkHWID(); el broken
+        if (!FileUtil.riseDirectoryExists()) {
+            FileUtil.createRiseDirectory();
+        }
+
+        if (!FileUtil.exists("Config" + File.separator)) {
+            FileUtil.createDirectory("Config" + File.separator);
+        }
+
+        loadConfig();
+
 
         Display.setTitle(name + " -> " + version);
         BUS.subscribe(this);
-
-        gson = new Gson();
 
         MM = new ModuleManager();
         CM = new CommandManager();
         PH = new PacketHandler();
         NM = new NotificationManager();
 
-
         clickGUI = new ClickGUI();
         xray = new Xray();
-
         xray.addBlocks();
-
-
     }
 
     public final void onRender() {
-        AtomicInteger yOffSet = new AtomicInteger(4);
-        int yOffsetInc = 10;
-        int squareSize = 2;
-        ScaledResolution scaledResolution = new ScaledResolution(MC);
-
-        int centerX = scaledResolution.getScaledWidth() / 2;
-        int centerY = scaledResolution.getScaledHeight() / 2;
-
-        /*
-        if(!MC.inGameHasFocus) {
-            if(authed) {
-                MC.ingameGUI.drawString(MC.fontRendererObj, "Logged in!", 2, 2, 0xFF00FF00);
-            } else {
-                MC.ingameGUI.drawString(MC.fontRendererObj, "Not logged in!", 2, 2, 0xFFFF0000);
-            }
-        }
-
-         */
-
-    }
-
-    private void drawChromaString(String text, int x, int y, boolean shadow) {
-        int updateCounter = MC.ingameGUI.getUpdateCounter() / 5;
-        double frequency = 0.2; // speed
-
-        int red = (int) (Math.sin(frequency * updateCounter + 0) * 127 + 128);
-        int green = (int) (Math.sin(frequency * updateCounter + 2) * 127 + 128);
-        int blue = (int) (Math.sin(frequency * updateCounter + 4) * 127 + 128);
-
-        int color = (red << 16) + (green << 8) + blue;
-
-        if (shadow) {
-            MC.fontRendererObj.drawStringWithShadow(text, x, y, color);
-        } else {
-            MC.fontRendererObj.drawString(text, x, y, color);
-        }
-
-
+        // Always called for rendering
     }
 
     public final void shutdown() {
         BUS.unsubscribe(this);
 
+        saveConfig();
+
+    }
+
+    private void loadConfig() {
+        final String config = FileUtil.loadFile("settings.txt");
+        if (config == null) return;
+        final String[] configLines = config.split("\r\n");
+
+
+        boolean gotConfigVersion = false;
+        for (final String line : configLines) {
+            if (line == null) return;
+
+            final String[] split = line.split("_");
+            if (split[0].contains("Rise")) {
+                if (split[1].contains("Version")) {
+                    gotConfigVersion = true;
+
+                    final String clientVersion = version;
+                    final String configVersion = split[2];
+
+                    if (!clientVersion.equalsIgnoreCase(configVersion)) {
+                        ChatUtil.sendMessage("This config was made in a different version of Rise! Incompatibilities are expected.");
+                        this.getNM().registerNotification(
+                                "This config was made in a different version of Rise! Incompatibilities are expected.", NotificationType.WARNING
+                        );
+                    }
+                }
+            }
+
+
+
+            if (split[0].contains("Toggle")) {
+                if (split[2].contains("true")) {
+                    if (getMM().getModuleFromString(split[1]) != null) {
+                        final Module module = Objects.requireNonNull(getMM().getModuleFromString(split[1]));
+
+                        if (!module.isToggled()) {
+                            module.toggle();
+                        }
+                    }
+                }
+            }
+
+            /*
+            final Settings setting = getMM().getSettings(split[1], split[2]);
+
+            if (split[0].contains("BooleanSetting") && setting instanceof BooleanSetting) {
+                if (split[3].contains("true")) {
+                    ((BooleanSetting) setting).enabled = true;
+                }
+
+                if (split[3].contains("false")) {
+                    ((BooleanSetting) setting).enabled = false;
+                }
+            }
+
+            if (split[0].contains("NumberSetting") && setting instanceof NumberSetting)
+                ((NumberSetting) setting).setValue(Double.parseDouble(split[3]));
+
+            if (split[0].contains("ModeSetting") && setting instanceof ModeSetting)
+                ((ModeSetting) setting).set(split[3]);
+
+            if (split[0].contains("Bind")) {
+                final Module m = getModuleManager().getModule(split[1]);
+
+                if (m != null)
+                    Objects.requireNonNull(m).setKeyBind(Integer.parseInt(split[2]));
+            }
+
+             */
+        }
+        if (!gotConfigVersion) {
+            ChatUtil.sendMessage("This config was made in a different version of Rise! Incompatibilities are expected.");
+            getNM().registerNotification(
+                    "This config was made in a different version of Rise! Incompatibilities are expected.", NotificationType.WARNING
+            );
+        }
+    }
+
+    private void saveConfig() {
+        final StringBuilder configBuilder = new StringBuilder();
+        configBuilder.append("Rise_Version_").append(version).append("\r\n");
+
+        for (final Module m : getMM().getModules().values()) {
+            final String moduleName = m.getName();
+            configBuilder.append("Toggle_").append(moduleName).append("_").append(m.isToggled()).append("\r\n");
+
+            for (final Settings s : m.getSettings()) {
+                if (s instanceof BooleanSetting) {
+                    configBuilder.append("BooleanSetting_").append(moduleName).append("_").append(s.name).append("_").append(((BooleanSetting) s).enabled).append("\r\n");
+                }
+                if (s instanceof NumberSetting) {
+                    configBuilder.append("NumberSetting_").append(moduleName).append("_").append(s.name).append("_").append(((NumberSetting) s).value).append("\r\n");
+                }
+            }
+            //configBuilder.append("Bind_").append(moduleName).append("_").append(m.getKeyBind()).append("\r\n");
+        }
+
+        FileUtil.saveFile("settings.txt", true, configBuilder.toString());
     }
 
     @Subscribe
@@ -157,11 +223,5 @@ public enum Client implements Subscriber {
                 }
             });
         }
-        /*
-        if (e.getKey() == Keyboard.KEY_GRAVE) {
-            MC.displayGuiScreen(clickGui);
-        }
-
-         */
     });
 }
