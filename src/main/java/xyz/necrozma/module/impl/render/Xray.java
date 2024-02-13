@@ -1,5 +1,6 @@
 package xyz.necrozma.module.impl.render;
 
+import lombok.Getter;
 import me.zero.alpine.listener.Listener;
 import me.zero.alpine.listener.Subscribe;
 import net.minecraft.block.Block;
@@ -7,6 +8,7 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import xyz.necrozma.event.impl.update.EventUpdate;
+import xyz.necrozma.gui.render.RenderUtil;
 import xyz.necrozma.module.Category;
 import xyz.necrozma.module.Module;
 import xyz.necrozma.module.ModuleInfo;
@@ -24,7 +26,6 @@ public class Xray extends Module {
     public static final List<Block> BLOCKS = new ArrayList<>();
 
     public Xray() {
-        setKey(Keyboard.KEY_X);
     }
 
     @Override
@@ -40,7 +41,6 @@ public class Xray extends Module {
     @Override
     public void onToggle() {
         super.onToggle();
-        mc.renderGlobal.loadRenderers();
     }
 
     public void addBlocks() {

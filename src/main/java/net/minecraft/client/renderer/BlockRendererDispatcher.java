@@ -17,6 +17,7 @@ import net.minecraft.util.ReportedException;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldType;
 import xyz.necrozma.Client;
+import xyz.necrozma.gui.render.RenderUtil;
 import xyz.necrozma.module.impl.render.Xray;
 
 public class BlockRendererDispatcher implements IResourceManagerReloadListener

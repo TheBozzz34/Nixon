@@ -21,7 +21,7 @@ import java.util.List;
 public final class Breadcrumbs extends Module {
 
     public Breadcrumbs() {
-        setKey(Keyboard.KEY_B);
+
     }
 
     List<Vec3> path = new ArrayList<>();

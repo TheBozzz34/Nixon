@@ -146,7 +146,6 @@ public final class IngameGUI extends GuiIngame {
         skeetBig.drawStringWithShadow(bps, (float) x, (float) y, 0xFFFFFFFF);
 
     }
-
     private void drawArmorHud() {
         ScaledResolution sr = new ScaledResolution(mc);
 

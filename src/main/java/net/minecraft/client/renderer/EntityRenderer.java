@@ -717,7 +717,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
     /**
      * sets up player's eye (or camera in third person mode)
      */
-    private void orientCamera(float partialTicks)
+    public void orientCamera(float partialTicks)
     {
         Entity entity = this.mc.getRenderViewEntity();
         float f = entity.getEyeHeight();

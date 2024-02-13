@@ -18,7 +18,7 @@ public final class Fullbright extends Module {
     private float oldGamma;
 
     public Fullbright() {
-        setKey(Keyboard.KEY_M);
+
     }
     @Override
     public void onEnable() {

@@ -17,6 +17,7 @@ public class DefaultVertexFormats
     private static final VertexFormat FORGE_BAKED = SVertexFormat.duplicate((VertexFormat)getFieldValue(Attributes_DEFAULT_BAKED_FORMAT));
     public static final VertexFormat field_181703_c = new VertexFormat();
     public static final VertexFormat field_181704_d = new VertexFormat();
+    public static final VertexFormat field_181705_e = new VertexFormat();
     public static final VertexFormat POSITION_COLOR = new VertexFormat();
     public static final VertexFormat field_181706_f = new VertexFormat();
     public static final VertexFormat field_181707_g = new VertexFormat();
