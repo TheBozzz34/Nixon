@@ -25,6 +25,7 @@ import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -42,13 +43,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.stats.StatBase;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MovementInput;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 import xyz.necrozma.Client;
@@ -927,5 +922,14 @@ public class EntityPlayerSP extends AbstractClientPlayer
             this.capabilities.isFlying = false;
             this.sendPlayerAbilities();
         }
+    }
+
+    public float getDistanceToEntityRender(final Entity entityIn) {
+        final Minecraft mc = Minecraft.getMinecraft();
+        final float x = (float) (entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX) * mc.timer.renderPartialTicks - (mc.getRenderManager()).renderPosX);
+        final float y = (float) (entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY) * mc.timer.renderPartialTicks - (mc.getRenderManager()).renderPosY);
+        final float z = (float) (entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ) * mc.timer.renderPartialTicks - (mc.getRenderManager()).renderPosZ);
+
+        return MathHelper.sqrt_float(x * x + y * y + z * z);
     }
 }

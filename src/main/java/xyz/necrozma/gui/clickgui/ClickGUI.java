@@ -2,7 +2,9 @@ package xyz.necrozma.gui.clickgui;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import xyz.necrozma.Client;
 import xyz.necrozma.gui.font.CustomFont;
@@ -11,6 +13,7 @@ import xyz.necrozma.gui.render.RenderUtil;
 import xyz.necrozma.module.Category;
 import xyz.necrozma.module.Module;
 import xyz.necrozma.module.impl.render.ClickGUIModule;
+import xyz.necrozma.module.impl.render.Xray;
 import xyz.necrozma.settings.impl.BooleanSetting;
 import xyz.necrozma.settings.impl.NumberSetting;
 import xyz.necrozma.util.MathUtil;
@@ -21,10 +24,28 @@ import xyz.necrozma.settings.Settings;
 import java.awt.*;
 import java.io.IOException;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
+
+class RenderedModule {
+    float x;
+    float y;
+    float width;
+    float height;
+
+    Module module;
+
+    public RenderedModule(float x, float y, float width, float height, Module module) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.module = module;
+    }
+}
 
 
 public final class ClickGUI extends GuiScreen implements ClickGUIType {
@@ -68,40 +89,10 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
     private Color selectedCatColor = new Color(68, 134, 240, 255);
     private Color settingColor3 = new Color(70, 100, 145, 255);
 
+    private final ArrayList<RenderedModule> renderedModules = new ArrayList<>();
+
     public ClickGUI() {
 
-    }
-
-    public void initGui() {
-        /*
-        size = PopOutAnimation.startingSizeValue;
-
-        holdingGui = false;
-
-        resizingGui = false;
-
-        for (final Module m : Rise.INSTANCE.getModuleManager().getModuleList()) {
-            for (final Setting s : m.getSettings()) {
-                if (s instanceof NumberSetting) {
-                    final NumberSetting numberSetting = ((NumberSetting) s);
-                    numberSetting.renderPercentage = Math.random();
-                }
-            }
-        }
-
-        hasEditedSliders = false;
-        blockScriptEditorOpen = false;
-
-        final RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
-        final List<String> arguments = runtimeMxBean.getInputArguments();
-
-        int i = 0;
-        for (final Object s : arguments.toArray()) {
-            i++;
-            //Rise.addChatMessage(s + " " + i);
-        }
-
-         */
     }
 
     public void drawScreen(final int mouseX, final int mouseY, final float partialTicks) {
@@ -190,27 +181,24 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
     }
 
     public void renderModule(final float x, final float y, final float width, final float height, final Module m) {
-        //Module background
+        // Module background
         RenderUtil.roundedRect(x, y, width, height, 5, new Color(255, 255, 255, 10));
 
-        //Module name
+        // Module name
         CustomFont.drawString(m.getName(), x + 4, y + 6, ((m.isToggled()) ? booleanColor2 : new Color(237, 237, 237)).getRGB());
 
-        //Switch
+        // Switch
         if (!m.getName().equals("Interface")) {
             RenderUtil.roundedRect(x + width - 15, y + 8, 10, 5, 5, new Color(255, 255, 255, 255));
             RenderUtil.circle(x + width - ((m.isToggled()) ? 10 : 17), y + 7, 7, booleanColor1);
         }
 
-        /*
-        if (m.clickGuiOpacity != 1)
-            RenderUtil.roundedRect(x, y, width, height, 5, new Color(39, 42, 48, Math.round(m.clickGuiOpacity)));
-
-         */
-
-        //Module description
-        //if (m.descOpacityInGui > 1)
+        // Module description
+        // if (m.descOpacityInGui > 1)
         CustomFont.drawStringSmall(m.getDescription(), x + (CustomFont.getWidth(m.getName())) + 6, y + 8, new Color(175, 175, 175, new Color(255, 255, 255).getAlpha()).getRGB());
+
+        // Store rendered module information
+        renderedModules.add(new RenderedModule(x, y , width, height + 4, m));
     }
 
     public void renderModule(final float x, final float y, final float width, final float height, final String n) {
@@ -227,13 +215,22 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
             for (final Category c : Category.values()) {
                 if (mouseOver(x, y + categoryHeight * (amount + 1), categoryWidth, categoryHeight, mouseX, mouseY)) {
                     selectedCat = c;
+                    break; // Exit the loop after finding the category
                 }
                 ++amount;
             }
+
+            // Now iterate over modules only if a category is selected
+            if (selectedCat != null) {
+                for (final RenderedModule m : renderedModules) {
+                    if (mouseOver(m.x, m.y, m.width, m.height, mouseX, mouseY)) {
+                        drawCursor(mouseX, mouseY);
+                        m.module.toggle();
+                    }
+                }
+            }
         }
     }
-
-
 
 
     protected void mouseReleased(final int mouseX, final int mouseY, final int state) {
@@ -247,6 +244,8 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
 
     public void onGuiClosed() {
         Client.INSTANCE.getMM().getModule(ClickGUIModule.class).toggle();
+
+        mc.renderGlobal.loadRenderers();
     }
     private static double round(final double value, final float places) {
         if (places < 0) throw new IllegalArgumentException();
@@ -278,6 +277,10 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
 
         // print diff in days
         return (int) (timeDiff / (1000 * 60 * 60 * 24));
+    }
+
+    private void drawCursor(int x, int y) {
+        RenderUtil.rect(x, y, 1, 1, new Color(255, 255, 255));
     }
 
 
