@@ -24,6 +24,8 @@ import net.minecraft.world.World;
 import net.optifine.entity.model.IEntityRenderer;
 import net.optifine.shaders.Shaders;
 import org.lwjgl.opengl.GL11;
+import xyz.necrozma.Client;
+import xyz.necrozma.module.impl.render.Nametags;
 
 public abstract class Render<T extends Entity> implements IEntityRenderer
 {
@@ -65,6 +67,10 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
      */
     public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
+        if(Client.INSTANCE.getMM().getModule(Nametags.class).isToggled()) {
+            return;
+        }
+
         this.renderName(entity, x, y, z);
     }
 

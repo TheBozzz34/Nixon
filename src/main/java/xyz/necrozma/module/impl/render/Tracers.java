@@ -52,7 +52,7 @@ public final class Tracers extends Module {
 
     public void render(final float red, final float green, final float blue,
                        final double x, final double y, final double z) {
-        drawTracerLine(x, y, z, red, green, blue, 0.5F, 1.5F);
+        drawTracerLine(x, y, z, red, green, blue, 0.5F, 2F);
     }
 
     public static void drawTracerLine(final double x, final double y, final double z,
