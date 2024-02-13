@@ -6,13 +6,13 @@ I am learning client development with this project, it is in no way meant to be 
 
 Settings system and parts of the Nuker module are borrowed from Rise.
 
-![image0](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/2nj3sczy.png)
+![image0](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/gom4r09k.png)
 
-![image1](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/nnwgbbpw.png)
+![image1](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/ohi32ne6.png)
 
-![image2](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/5no97ix2.png)
+![image2](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/tfjv0tks.png)
 
-![image3](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/1c08gxkc.png)
+![image3](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/hm1jx9r8.png)
 
 ## Issues
 
