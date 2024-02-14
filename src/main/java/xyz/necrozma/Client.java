@@ -1,5 +1,6 @@
 package xyz.necrozma;
 
+import xyz.necrozma.exception.CommandException;
 import xyz.necrozma.settings.Settings;
 import lombok.Getter;
 import me.zero.alpine.bus.EventBus;
@@ -73,9 +74,6 @@ public enum Client implements Subscriber {
             FileUtil.createDirectory("Config" + File.separator);
         }
 
-        loadConfig();
-
-
         Display.setTitle(name + " -> " + version);
         BUS.subscribe(this);
 
@@ -87,6 +85,8 @@ public enum Client implements Subscriber {
         clickGUI = new ClickGUI();
         xray = new Xray();
         xray.addBlocks();
+
+        loadConfig();
     }
 
     public final void onRender() {
@@ -110,8 +110,10 @@ public enum Client implements Subscriber {
         for (final String line : configLines) {
             if (line == null) return;
 
+
             final String[] split = line.split("_");
-            if (split[0].contains("Rise")) {
+
+            if (split[0].contains("Nixon")) {
                 if (split[1].contains("Version")) {
                     gotConfigVersion = true;
 
@@ -128,15 +130,13 @@ public enum Client implements Subscriber {
             }
 
 
-
             if (split[0].contains("Toggle")) {
                 if (split[2].contains("true")) {
-                    if (getMM().getModuleFromString(split[1]) != null) {
-                        final Module module = Objects.requireNonNull(getMM().getModuleFromString(split[1]));
-
-                        if (!module.isToggled()) {
-                            module.toggle();
-                        }
+                    Module module = Client.INSTANCE.getMM().getModuleFromString(split[1]);
+                    if (module == null) {
+                        throw new CommandException("Module " + split[1] + " not found!");
+                    } else {
+                        module.toggle();
                     }
                 }
             }
@@ -179,21 +179,11 @@ public enum Client implements Subscriber {
 
     private void saveConfig() {
         final StringBuilder configBuilder = new StringBuilder();
-        configBuilder.append("Rise_Version_").append(version).append("\r\n");
+        configBuilder.append("Nixon_Version_").append(version).append("\r\n");
 
         for (final Module m : getMM().getModules().values()) {
             final String moduleName = m.getName();
             configBuilder.append("Toggle_").append(moduleName).append("_").append(m.isToggled()).append("\r\n");
-
-            for (final Settings s : m.getSettings()) {
-                if (s instanceof BooleanSetting) {
-                    configBuilder.append("BooleanSetting_").append(moduleName).append("_").append(s.name).append("_").append(((BooleanSetting) s).enabled).append("\r\n");
-                }
-                if (s instanceof NumberSetting) {
-                    configBuilder.append("NumberSetting_").append(moduleName).append("_").append(s.name).append("_").append(((NumberSetting) s).value).append("\r\n");
-                }
-            }
-            //configBuilder.append("Bind_").append(moduleName).append("_").append(m.getKeyBind()).append("\r\n");
         }
 
         FileUtil.saveFile("settings.txt", true, configBuilder.toString());

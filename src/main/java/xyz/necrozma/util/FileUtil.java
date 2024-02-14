@@ -18,7 +18,7 @@ public class FileUtil {
 
     private final String SEPARATOR = File.separator;
 
-    private final String CLIENT_PATH = mc.mcDataDir.getAbsolutePath() + SEPARATOR + "Rise" + SEPARATOR;
+    private final String CLIENT_PATH = mc.mcDataDir.getAbsolutePath() + SEPARATOR + "nixon" + SEPARATOR;
 
     /**
      * Checks if a file exists.
