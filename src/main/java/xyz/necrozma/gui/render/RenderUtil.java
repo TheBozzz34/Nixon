@@ -3,22 +3,27 @@ package xyz.necrozma.gui.render;
 
 
 import lombok.experimental.UtilityClass;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.item.*;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.src.Config;
+import net.minecraft.util.*;
+import net.optifine.model.BlockModelUtils;
+import net.optifine.shaders.Shaders;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.glu.Sphere;
@@ -1164,7 +1169,7 @@ public final class RenderUtil implements InstanceAccess {
         putVertex3d(aa.minX, aa.minY, aa.minZ);
         end();
 
-        //worldRenderer.startDrawingQuads();
+        worldRenderer.startDrawingQuads();
         //todo fix this
         putVertex3d(aa.minX, aa.maxY, aa.minZ);
         putVertex3d(aa.maxX, aa.maxY, aa.minZ);
@@ -1172,7 +1177,7 @@ public final class RenderUtil implements InstanceAccess {
         putVertex3d(aa.minX, aa.maxY, aa.maxZ);
         putVertex3d(aa.minX, aa.maxY, aa.minZ);
         tessellator.draw();
-        //worldRenderer.startDrawingQuads();
+        worldRenderer.startDrawingQuads();
         putVertex3d(aa.minX, aa.minY, aa.minZ);
         putVertex3d(aa.minX, aa.maxY, aa.minZ);
         putVertex3d(aa.maxX, aa.minY, aa.minZ);
@@ -1968,4 +1973,5 @@ public final class RenderUtil implements InstanceAccess {
         GlStateManager.enableDepth();
         GlStateManager.popMatrix();
     }
+
 }

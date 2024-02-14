@@ -275,6 +275,21 @@ public class WorldRenderer
         this.modeTriangles = false;
     }
 
+    public void startDrawingQuads() {
+        this.startDrawing(7);
+    }
+
+    public void startDrawing(final int p_178964_1_) {
+        if (this.isDrawing) {
+            throw new IllegalStateException("Already building!");
+        } else {
+            this.isDrawing = true;
+            this.reset();
+            this.drawMode = p_178964_1_;
+            this.needsUpdate = false;
+        }
+    }
+
     public void begin(int p_181668_1_, VertexFormat p_181668_2_)
     {
         if (this.isDrawing)
