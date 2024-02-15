@@ -1,20 +1,15 @@
 package xyz.necrozma;
 
-import com.jagrosh.discordipc.IPCClient;
-import com.jagrosh.discordipc.IPCListener;
-import com.jagrosh.discordipc.entities.RichPresence;
+
 import lombok.Setter;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
-import org.lwjgl.opengl.GL11;
+import xyz.necrozma.discord.IPCClient;
+import xyz.necrozma.discord.IPCListener;
+import xyz.necrozma.discord.entities.RichPresence;
 import xyz.necrozma.exception.CommandException;
 import xyz.necrozma.gui.render.RenderUtil;
 import xyz.necrozma.pathing.Path;
-import xyz.necrozma.settings.Settings;
 import lombok.Getter;
 import me.zero.alpine.bus.EventBus;
 import me.zero.alpine.bus.EventManager;
@@ -22,15 +17,12 @@ import me.zero.alpine.listener.Listener;
 import me.zero.alpine.listener.Subscribe;
 import me.zero.alpine.listener.Subscriber;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import xyz.necrozma.event.impl.input.EventKey;
 import xyz.necrozma.event.impl.motion.PreMotionEvent;
 import xyz.necrozma.event.impl.render.Render3DEvent;
-import xyz.necrozma.gui.ModGui;
 import xyz.necrozma.gui.clickgui.ClickGUI;
 import xyz.necrozma.module.Module;
 import xyz.necrozma.module.ModuleManager;
@@ -38,22 +30,14 @@ import xyz.necrozma.command.CommandManager;
 import xyz.necrozma.module.impl.render.Xray;
 import xyz.necrozma.notification.NotificationManager;
 import xyz.necrozma.notification.NotificationType;
-import xyz.necrozma.settings.impl.BooleanSetting;
-import xyz.necrozma.settings.impl.NumberSetting;
 import xyz.necrozma.util.*;
 
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.lwjgl.opengl.GL11.GL_LINES;
 
 @Getter
 public enum Client implements Subscriber {
@@ -99,11 +83,6 @@ public enum Client implements Subscriber {
                         .setDetails("MC 1.8.9")
                         .setStartTimestamp(OffsetDateTime.now())
                         .setLargeImage("cover", "1.8.9");
-                        //.setSmallImage("ptb-small", "Discord PTB")
-                        //.setParty("party1234", 1, 6)
-                        //.setMatchSecret("xyzzy")
-                        //.setJoinSecret("join")
-                        //.setSpectateSecret("look");
                 client.sendRichPresence(builder.build());
             }
         });
