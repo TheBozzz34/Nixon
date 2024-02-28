@@ -73,7 +73,6 @@ public enum Client implements Subscriber {
     private IPCClient ipcClient = new IPCClient(824317166357577728L);
 
     public final void init() throws IOException {
-
         ipcClient.setListener(new IPCListener(){
             @Override
             public void onReady(IPCClient client)

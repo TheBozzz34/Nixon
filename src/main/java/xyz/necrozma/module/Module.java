@@ -17,6 +17,9 @@ import java.util.List;
 @Getter
 public abstract class Module implements Subscriber {
 
+    @Setter
+    private boolean hideInClickGui;
+
     private boolean toggled;
 
     public float sizeInGui;

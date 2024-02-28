@@ -24,7 +24,9 @@ import xyz.necrozma.module.Category;
 import xyz.necrozma.module.Module;
 import xyz.necrozma.module.impl.render.ClickGUIModule;
 import xyz.necrozma.settings.impl.BooleanSetting;
+import xyz.necrozma.util.GaussianBlur;
 import xyz.necrozma.util.MathUtil;
+import xyz.necrozma.util.RoundedUtil;
 import xyz.necrozma.util.TimeUtil;
 
 import java.awt.*;

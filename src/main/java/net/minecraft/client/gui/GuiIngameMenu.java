@@ -1,11 +1,14 @@
 package net.minecraft.client.gui;
 
+import java.awt.*;
 import java.io.IOException;
 import net.minecraft.client.gui.achievement.GuiAchievements;
 import net.minecraft.client.gui.achievement.GuiStats;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.realms.RealmsBridge;
+import xyz.necrozma.util.GaussianBlur;
+import xyz.necrozma.util.RoundedUtil;
 
 public class GuiIngameMenu extends GuiScreen
 {
@@ -107,7 +110,14 @@ public class GuiIngameMenu extends GuiScreen
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        this.drawDefaultBackground();
+        //this.drawDefaultBackground();
+        ScaledResolution sr = new ScaledResolution(mc);
+        int width = sr.getScaledWidth();
+        int height = sr.getScaledHeight();
+        GaussianBlur.startBlur();
+        RoundedUtil.drawRound(0.0f, 0.0f,
+                width, height, 10, Color.WHITE);
+        GaussianBlur.endBlur(40, 2);
         this.drawCenteredString(this.fontRendererObj, I18n.format("menu.game", new Object[0]), this.width / 2, 40, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

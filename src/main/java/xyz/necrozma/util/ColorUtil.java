@@ -7,6 +7,8 @@ import lombok.experimental.UtilityClass;
 import java.awt.*;
 import java.util.regex.Pattern;
 
+import static xyz.necrozma.util.MathUtil.interpolateInt;
+
 @UtilityClass
 public final class ColorUtil {
 
@@ -20,6 +22,14 @@ public final class ColorUtil {
         return darker(c, factor);
     }
 
+
+    public static Color interpolateColorC(Color color1, Color color2, float amount) {
+        amount = Math.min(1, Math.max(0, amount));
+        return new Color(interpolateInt(color1.getRed(), color2.getRed(), amount),
+                interpolateInt(color1.getGreen(), color2.getGreen(), amount),
+                interpolateInt(color1.getBlue(), color2.getBlue(), amount),
+                interpolateInt(color1.getAlpha(), color2.getAlpha(), amount));
+    }
     public Color brighter(final Color c, final float factor) {
         int r = c.getRed();
         int g = c.getGreen();

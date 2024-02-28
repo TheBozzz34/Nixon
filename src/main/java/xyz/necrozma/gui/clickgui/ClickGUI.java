@@ -1,11 +1,7 @@
 package xyz.necrozma.gui.clickgui;
 
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
-import org.lwjgl.input.Cursor;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.gui.ScaledResolution;
 import xyz.necrozma.Client;
 import xyz.necrozma.gui.font.CustomFont;
 import xyz.necrozma.gui.font.TTFFontRenderer;
@@ -16,7 +12,9 @@ import xyz.necrozma.module.impl.render.ClickGUIModule;
 import xyz.necrozma.module.impl.render.Xray;
 import xyz.necrozma.settings.impl.BooleanSetting;
 import xyz.necrozma.settings.impl.NumberSetting;
+import xyz.necrozma.util.GaussianBlur;
 import xyz.necrozma.util.MathUtil;
+import xyz.necrozma.util.RoundedUtil;
 import xyz.necrozma.util.TimeUtil;
 import org.apache.commons.lang3.StringUtils;
 import xyz.necrozma.settings.Settings;
@@ -28,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
+
 
 
 class RenderedModule {
@@ -89,21 +88,30 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
     private Color selectedCatColor = new Color(68, 134, 240, 255);
     private Color settingColor3 = new Color(70, 100, 145, 255);
 
+    private Panel pane = new Panel();
+
     private final ArrayList<RenderedModule> renderedModules = new ArrayList<>();
 
     public ClickGUI() {
-
     }
 
     public void drawScreen(final int mouseX, final int mouseY, final float partialTicks) {
 
+        ScaledResolution sr = new ScaledResolution(mc);
+        int width = sr.getScaledWidth();
+        int height = sr.getScaledHeight();
+        GaussianBlur.startBlur();
+        RoundedUtil.drawRound(0.0f, 0.0f,
+                width, height, 10, Color.WHITE);
+        GaussianBlur.endBlur(40, 2);
         /*
         x = 50;
         y = 50;
 
+
          */
         // Background
-        RenderUtil.roundedRectCustom(x + categoryWidth, y + categoryHeight, width - categoryWidth, height - categoryHeight, 10, colorModules, false, false, false, true);
+        //RenderUtil.roundedRectCustom(x + categoryWidth, y + categoryHeight, width - categoryWidth, height - categoryHeight, 10, colorModules, false, false, false, true);
 
         // Category background
         RenderUtil.roundedRectCustom(x, y, categoryWidth, height, 10, colorCategory, true, false, true, false);
@@ -162,6 +170,9 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
 
         for (final Module m : Client.INSTANCE.getMM().getModules().values()) {
             if (m.getCategory() == selectedCat) {
+                if (m.isHideInClickGui()) {
+                    continue;
+                }
                 renderModule(x + categoryWidth + 5, y + categoryHeight + 5 + heightOffset, width - categoryWidth - 10, 20, m);
                 heightOffset += 20;
             }
@@ -282,6 +293,8 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
     private void drawCursor(int x, int y) {
         RenderUtil.rect(x, y, 1, 1, new Color(255, 255, 255));
     }
+
+
 
 
 }

@@ -13,7 +13,9 @@ public class ClickGUIModule extends Module {
     private final NumberSetting gamma = new NumberSetting("Gamma", this, 500, 100, 700, 50);
 
     public ClickGUIModule() {
+
         setKey(Keyboard.KEY_GRAVE);
+        setHideInClickGui(true);
     }
     @Override
     public void onEnable() {
