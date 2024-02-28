@@ -95,6 +95,11 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
     public ClickGUI() {
     }
 
+    @Override
+    public boolean doesGuiPauseGame() {
+        return false;
+    }
+
     public void drawScreen(final int mouseX, final int mouseY, final float partialTicks) {
 
         ScaledResolution sr = new ScaledResolution(mc);

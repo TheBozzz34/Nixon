@@ -261,7 +261,7 @@ public enum Client implements Subscriber {
             MM.getModules().values().forEach(m -> {
                 if (m.getKey() == e.getKey()) {
                     m.toggle();
-                    NM.registerNotification(m.getName() + " toggled!", 3000, NotificationType.NOTIFICATION);
+                    // NM.registerNotification(m.getName() + " toggled!", 3000, NotificationType.NOTIFICATION);
                 }
             });
         }

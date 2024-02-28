@@ -1,10 +1,13 @@
 package net.minecraft.client.gui.inventory;
 
 import com.google.common.collect.Sets;
+
+import java.awt.*;
 import java.io.IOException;
 import java.util.Set;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
@@ -18,6 +21,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
+import xyz.necrozma.util.GaussianBlur;
+import xyz.necrozma.util.RoundedUtil;
 
 public abstract class GuiContainer extends GuiScreen
 {
@@ -98,7 +103,13 @@ public abstract class GuiContainer extends GuiScreen
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        this.drawDefaultBackground();
+        ScaledResolution sr = new ScaledResolution(mc);
+        int width = sr.getScaledWidth();
+        int height = sr.getScaledHeight();
+        GaussianBlur.startBlur();
+        RoundedUtil.drawRound(0.0f, 0.0f,
+                width, height, 10, Color.WHITE);
+        GaussianBlur.endBlur(40, 2);
         int i = this.guiLeft;
         int j = this.guiTop;
         this.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
