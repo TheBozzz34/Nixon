@@ -4,7 +4,7 @@
 
 I am learning client development with this project, it is in no way meant to be actually useful.
 
-Settings system and parts of the Nuker module are borrowed from Rise.
+half of this is skidded from rise and tenacity leaks lmao
 
 ![image0](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/8g0wq976.png)
 
