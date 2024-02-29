@@ -118,7 +118,6 @@ public class GuiIngameMenu extends GuiScreen
         RoundedUtil.drawRound(0.0f, 0.0f,
                 width, height, 10, Color.WHITE);
         GaussianBlur.endBlur(40, 2);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("menu.game", new Object[0]), this.width / 2, 40, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }
