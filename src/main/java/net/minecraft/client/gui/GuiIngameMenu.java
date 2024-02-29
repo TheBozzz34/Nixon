@@ -7,6 +7,7 @@ import net.minecraft.client.gui.achievement.GuiStats;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.realms.RealmsBridge;
+import xyz.necrozma.gui.MainMenu;
 import xyz.necrozma.util.GaussianBlur;
 import xyz.necrozma.util.RoundedUtil;
 
@@ -61,7 +62,7 @@ public class GuiIngameMenu extends GuiScreen
 
                 if (flag)
                 {
-                    this.mc.displayGuiScreen(new GuiMainMenu());
+                    this.mc.displayGuiScreen(new MainMenu());
                 }
                 else if (flag1)
                 {
@@ -70,7 +71,7 @@ public class GuiIngameMenu extends GuiScreen
                 }
                 else
                 {
-                    this.mc.displayGuiScreen(new GuiMultiplayer(new GuiMainMenu()));
+                    this.mc.displayGuiScreen(new GuiMultiplayer(new MainMenu()));
                 }
 
             case 2:
