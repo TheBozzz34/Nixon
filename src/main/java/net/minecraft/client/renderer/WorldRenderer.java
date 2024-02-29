@@ -1058,6 +1058,56 @@ public class WorldRenderer
         return this.needsUpdate;
     }
 
+    public WorldRenderer color(final int p_181669_1_, final int p_181669_2_, final int p_181669_3_, final int p_181669_4_) {
+        if (this.needsUpdate) {
+            return this;
+        } else {
+            final int i = this.vertexCount * this.vertexFormat.getNextOffset() + this.vertexFormat.func_181720_d(this.field_181678_g);
+
+            switch (this.field_181677_f.getType()) {
+                case FLOAT:
+                    this.byteBuffer.putFloat(i, (float) p_181669_1_ / 255.0F);
+                    this.byteBuffer.putFloat(i + 4, (float) p_181669_2_ / 255.0F);
+                    this.byteBuffer.putFloat(i + 8, (float) p_181669_3_ / 255.0F);
+                    this.byteBuffer.putFloat(i + 12, (float) p_181669_4_ / 255.0F);
+                    break;
+
+                case UINT:
+                case INT:
+                    this.byteBuffer.putFloat(i, (float) p_181669_1_);
+                    this.byteBuffer.putFloat(i + 4, (float) p_181669_2_);
+                    this.byteBuffer.putFloat(i + 8, (float) p_181669_3_);
+                    this.byteBuffer.putFloat(i + 12, (float) p_181669_4_);
+                    break;
+
+                case USHORT:
+                case SHORT:
+                    this.byteBuffer.putShort(i, (short) p_181669_1_);
+                    this.byteBuffer.putShort(i + 2, (short) p_181669_2_);
+                    this.byteBuffer.putShort(i + 4, (short) p_181669_3_);
+                    this.byteBuffer.putShort(i + 6, (short) p_181669_4_);
+                    break;
+
+                case UBYTE:
+                case BYTE:
+                    if (ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN) {
+                        this.byteBuffer.put(i, (byte) p_181669_1_);
+                        this.byteBuffer.put(i + 1, (byte) p_181669_2_);
+                        this.byteBuffer.put(i + 2, (byte) p_181669_3_);
+                        this.byteBuffer.put(i + 3, (byte) p_181669_4_);
+                    } else {
+                        this.byteBuffer.put(i, (byte) p_181669_4_);
+                        this.byteBuffer.put(i + 1, (byte) p_181669_3_);
+                        this.byteBuffer.put(i + 2, (byte) p_181669_2_);
+                        this.byteBuffer.put(i + 3, (byte) p_181669_1_);
+                    }
+            }
+
+            this.func_181667_k();
+            return this;
+        }
+    }
+
     public class State
     {
         private final int[] stateRawBuffer;

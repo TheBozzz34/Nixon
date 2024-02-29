@@ -35,4 +35,8 @@ public class MouseHelper
         this.deltaX = Mouse.getDX();
         this.deltaY = Mouse.getDY();
     }
+
+    public void mouseGrab(boolean t) {
+        Mouse.setGrabbed(t);
+    }
 }

@@ -54,6 +54,7 @@ public enum Client implements Subscriber {
     private CommandManager CM;
     private PacketHandler PH;
     private NotificationManager NM;
+    private StatsUtil SU;
 
     @Setter
     private Path path;
@@ -101,6 +102,8 @@ public enum Client implements Subscriber {
         CM = new CommandManager();
         PH = new PacketHandler();
         NM = new NotificationManager();
+        SU = new StatsUtil();
+
 
         clickGUI = new ClickGUI();
         xray = new Xray();
@@ -113,6 +116,8 @@ public enum Client implements Subscriber {
         } catch (Exception e) {
             logger.error("Failed to connect to Discord RPC");
         }
+
+        // logger.info(SU.getStats());
     }
 
     private List<Vec3> vecPath = new ArrayList<>();

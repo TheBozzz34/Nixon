@@ -177,6 +177,8 @@ import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 import xyz.necrozma.Client;
 import xyz.necrozma.event.impl.input.EventKey;
+import xyz.necrozma.gui.Login;
+import xyz.necrozma.gui.MainMenu;
 
 public class Minecraft implements IThreadListener, IPlayerUsage
 {
@@ -347,6 +349,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
     /** Profiler currently displayed in the debug screen pie chart */
     private String debugProfilerName = "root";
+
 
     public Minecraft(GameConfiguration gameConfig)
     {
@@ -553,6 +556,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.checkGLError("Post startup");
         this.ingameGUI = new IngameGUI(this);
 
+        /*
         if (this.serverName != null)
         {
             this.displayGuiScreen(new GuiConnecting(new GuiMainMenu(), this, this.serverName, this.serverPort));
@@ -560,6 +564,13 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         else
         {
             this.displayGuiScreen(new GuiMainMenu());
+        }
+         */
+
+        if (this.serverName != null) {
+            this.displayGuiScreen(new GuiConnecting(new MainMenu(), this, this.serverName, this.serverPort));
+        } else {
+            this.displayGuiScreen(new MainMenu());
         }
 
         this.renderEngine.deleteTexture(this.mojangLogo);

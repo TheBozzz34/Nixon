@@ -7,6 +7,9 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Mouse;
+import xyz.necrozma.gui.render.RenderUtil;
+
+import java.awt.*;
 
 public abstract class GuiSlot
 {
