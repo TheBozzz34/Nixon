@@ -50,7 +50,7 @@ Nixon uses Maven, to make sure that it is installed properly you can check the A
 
 ## Additional info
 
-Nixon is powered by the [MavenMCP](https://github.com/Marcelektro/MavenMCP-1.8.9/), [Forge](https://forums.minecraftforge.net/), and [Optifine](https://optifine.net/home)
+Nixon is powered by the [MavenMCP](https://github.com/Marcelektro/MavenMCP-1.8.9/) and [Optifine](https://optifine.net/home)
 
 
 ## Contributing
