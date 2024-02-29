@@ -2,6 +2,8 @@ package net.minecraft.client.gui;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+
+import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 import net.minecraft.client.multiplayer.GuiConnecting;
@@ -13,6 +15,7 @@ import net.minecraft.client.resources.I18n;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
+import xyz.necrozma.gui.render.RenderUtil;
 
 public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
 {

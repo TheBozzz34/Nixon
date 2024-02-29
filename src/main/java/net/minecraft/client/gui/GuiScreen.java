@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityList;
@@ -45,6 +46,7 @@ import org.lwjgl.input.Mouse;
 import tv.twitch.chat.ChatUserInfo;
 import xyz.necrozma.Client;
 import xyz.necrozma.event.impl.input.EventKey;
+import xyz.necrozma.gui.render.RenderUtil;
 
 public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 {
@@ -662,6 +664,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     public void drawDefaultBackground()
     {
         this.drawWorldBackground(0);
+        //RenderUtil.drawGradientRect(0, 0, this.width, this.height, -1072689136, -804253680);
     }
 
     public void drawWorldBackground(int tint)
@@ -681,11 +684,12 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
      */
     public void drawBackground(int tint)
     {
+
         GlStateManager.disableLighting();
         GlStateManager.disableFog();
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        this.mc.getTextureManager().bindTexture(optionsBackground);
+        this.mc.getTextureManager().bindTexture(clientBackground);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         float f = 32.0F;
         worldrenderer.begin(7, DefaultVertexFormats.field_181709_i);

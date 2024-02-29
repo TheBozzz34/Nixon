@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 public class Gui
 {
     public static final ResourceLocation optionsBackground = new ResourceLocation("textures/gui/options_background.png");
+    public static final ResourceLocation clientBackground = new ResourceLocation("nixon/textures/purple.png");
     public static final ResourceLocation statIcons = new ResourceLocation("textures/gui/container/stats_icons.png");
     public static final ResourceLocation icons = new ResourceLocation("textures/gui/icons.png");
     public static float zLevel;
