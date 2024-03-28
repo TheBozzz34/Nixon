@@ -193,7 +193,7 @@ public final class IngameGUI extends GuiIngame {
          */
         if (!mc.gameSettings.showDebugInfo && !Client.INSTANCE.getMM().getModule(ClickGUIModule.class).isToggled()) {
             renderClientName();
-            renderArrayList();
+            renderModulesList();
             //renderKeyStrokes();
             renderLocation();
             drawArmorHud();
@@ -202,7 +202,7 @@ public final class IngameGUI extends GuiIngame {
 
     }
 
-    private void renderArrayList() {
+    private void renderModulesList() {
         // final String mode = this.getMode(Interface.class, "Theme");
         final String mode = "Rise";
 
@@ -244,12 +244,9 @@ public final class IngameGUI extends GuiIngame {
 
             comfortaa.drawStringWithShadow(name, renderX + 0.5f, renderY + 1, 0xFFFFFFFF);
 
-            yOffSet += comfortaa.getHeight() + 1;
+            yOffSet += (int) (comfortaa.getHeight() + 1);
         }
 
-
     }
-
-
 
 }
