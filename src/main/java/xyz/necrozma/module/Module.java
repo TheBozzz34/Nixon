@@ -30,6 +30,13 @@ public abstract class Module implements Subscriber {
 
     private final Category category;
 
+    public boolean expanded;
+    public float clickGuiOpacity;
+    public float descOpacityInGui = 1;
+
+    @Setter
+    private int misc;
+
     public List<Settings> settings = new ArrayList<>();
 
     @Setter
@@ -105,6 +112,8 @@ public abstract class Module implements Subscriber {
     }
 
     public void onRender3DEvent(Render3DEvent event) {
+    }
 
+    public void onUpdateAlwaysInGui() {
     }
 }

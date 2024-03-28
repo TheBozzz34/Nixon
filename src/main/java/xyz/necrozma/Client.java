@@ -8,6 +8,7 @@ import xyz.necrozma.discord.IPCClient;
 import xyz.necrozma.discord.IPCListener;
 import xyz.necrozma.discord.entities.RichPresence;
 import xyz.necrozma.exception.CommandException;
+import xyz.necrozma.gui.clickgui.ClickGUI2;
 import xyz.necrozma.gui.render.RenderUtil;
 import xyz.necrozma.pathing.Path;
 import lombok.Getter;
@@ -105,6 +106,7 @@ public enum Client implements Subscriber {
         SU = new StatsUtil();
 
 
+        //clickGUI = new ClickGUI();
         clickGUI = new ClickGUI();
         xray = new Xray();
         xray.addBlocks();
@@ -257,6 +259,11 @@ public enum Client implements Subscriber {
 
         if (this.MM != null) {
             MM.getModules().values().stream().filter(Module::isToggled).forEach(m -> m.onPreMotion(e));
+
+            if (MC.currentScreen instanceof ClickGUI ) {
+                MM.getModules().values().stream().filter(Module::isToggled).forEach(Module::onUpdateAlwaysInGui);
+            }
+
         }
     });
 

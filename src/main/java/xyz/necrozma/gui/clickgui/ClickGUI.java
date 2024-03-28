@@ -1,7 +1,11 @@
 package xyz.necrozma.gui.clickgui;
 
+import lombok.Getter;
+import lombok.Setter;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import xyz.necrozma.Client;
 import xyz.necrozma.gui.font.CustomFont;
 import xyz.necrozma.gui.font.TTFFontRenderer;
@@ -9,6 +13,7 @@ import xyz.necrozma.gui.render.RenderUtil;
 import xyz.necrozma.module.Category;
 import xyz.necrozma.module.Module;
 import xyz.necrozma.module.impl.render.ClickGUIModule;
+import xyz.necrozma.module.impl.render.PopOutAnimation;
 import xyz.necrozma.module.impl.render.Xray;
 import xyz.necrozma.settings.impl.BooleanSetting;
 import xyz.necrozma.settings.impl.NumberSetting;
@@ -21,10 +26,13 @@ import xyz.necrozma.settings.Settings;
 
 import java.awt.*;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -46,13 +54,12 @@ class RenderedModule {
     }
 }
 
-
 public final class ClickGUI extends GuiScreen implements ClickGUIType {
-
+    private int alpha = 255;
     private float x, y, size;
 
-    private final Color booleanColor1 = new Color(60, 90, 135, 255);
-    private final Color booleanColor2 = new Color(68, 134, 240, 255);
+    private final Color booleanColor1 = new Color(60, 90, 135, alpha);
+    private final Color booleanColor2 = new Color(68, 134, 240, alpha);
 
     private boolean hasEditedSliders;
 
@@ -82,11 +89,11 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
 
     private int categoryWidth = 70;
     private int categoryHeight = 20;
-    private Color colorCategory = new Color(38, 39, 44, 255);
-    private Color colorTop = new Color(39, 42, 49, 255);
-    private Color colorModules = new Color(39, 42, 48, 255);
-    private Color selectedCatColor = new Color(68, 134, 240, 255);
-    private Color settingColor3 = new Color(70, 100, 145, 255);
+    private Color colorCategory = new Color(38, 39, 44, alpha);
+    private Color colorTop = new Color(39, 42, 49, alpha);
+    private Color colorModules = new Color(39, 42, 48, alpha);
+    private Color selectedCatColor = new Color(68, 134, 240, alpha);
+    private Color settingColor3 = new Color(70, 100, 145, alpha);
 
     private Panel pane = new Panel();
 
@@ -100,7 +107,12 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
         return false;
     }
 
+    public void initGui() {
+        size = PopOutAnimation.startingSizeValue;
+    }
+
     public void drawScreen(final int mouseX, final int mouseY, final float partialTicks) {
+        GlStateManager.pushMatrix();
 
         ScaledResolution sr = new ScaledResolution(mc);
         int width = sr.getScaledWidth();
@@ -109,6 +121,7 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
         RoundedUtil.drawRound(0.0f, 0.0f,
                 width, height, 10, Color.WHITE);
         GaussianBlur.endBlur(40, 2);
+
         /*
         x = 50;
         y = 50;
@@ -116,7 +129,7 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
 
          */
         // Background
-        //RenderUtil.roundedRectCustom(x + categoryWidth, y + categoryHeight, width - categoryWidth, height - categoryHeight, 10, colorModules, false, false, false, true);
+        RenderUtil.roundedRectCustom(x + categoryWidth, y + categoryHeight, width - categoryWidth, height - categoryHeight, 10, colorModules, false, false, false, true);
 
         // Category background
         RenderUtil.roundedRectCustom(x, y, categoryWidth, height, 10, colorCategory, true, false, true, false);
@@ -125,7 +138,7 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
         RenderUtil.roundedRectCustom(x + categoryWidth, y, width - categoryWidth, categoryHeight, 10, colorTop, false, true, false, false);
 
         //Logo
-        CustomFont.drawStringBig(Client.INSTANCE.getName(), x + 18, y + 0.0, new Color(237, 237, 237).getRGB());
+        CustomFont.drawStringBig(Client.INSTANCE.getName(), x + 18, y + 0.0, new Color(237, 237, 237, alpha).getRGB());
 
         int i = 0;
         for (final Category category : Category.values()) {
@@ -144,7 +157,7 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
         int amount = 0;
         for (final Category c : Category.values()) {
 
-            final Color color = new Color(237, 237, 237);
+            final Color color = new Color(237, 237, 237, alpha);
 
             switch (c) {
                 case COMBAT: {
@@ -183,6 +196,8 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
             }
         }
 
+        GlStateManager.popMatrix();
+
     }
     public static Color changeHue(Color c, final float hue) {
 
@@ -198,31 +213,23 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
 
     public void renderModule(final float x, final float y, final float width, final float height, final Module m) {
         // Module background
-        RenderUtil.roundedRect(x, y, width, height, 5, new Color(255, 255, 255, 10));
+        RenderUtil.roundedRect(x, y, width, height, 5, new Color(255, 255, 255, alpha / 25));
 
         // Module name
-        CustomFont.drawString(m.getName(), x + 4, y + 6, ((m.isToggled()) ? booleanColor2 : new Color(237, 237, 237)).getRGB());
+        CustomFont.drawString(m.getName(), x + 4, y + 6, ((m.isToggled()) ? booleanColor2 : new Color(237, 237, 237, alpha)).getRGB());
 
         // Switch
         if (!m.getName().equals("Interface")) {
-            RenderUtil.roundedRect(x + width - 15, y + 8, 10, 5, 5, new Color(255, 255, 255, 255));
+            RenderUtil.roundedRect(x + width - 15, y + 8, 10, 5, 5, new Color(255, 255, 255, alpha));
             RenderUtil.circle(x + width - ((m.isToggled()) ? 10 : 17), y + 7, 7, booleanColor1);
         }
 
         // Module description
         // if (m.descOpacityInGui > 1)
-        CustomFont.drawStringSmall(m.getDescription(), x + (CustomFont.getWidth(m.getName())) + 6, y + 8, new Color(175, 175, 175, new Color(255, 255, 255).getAlpha()).getRGB());
+        CustomFont.drawStringSmall(m.getDescription(), x + (CustomFont.getWidth(m.getName())) + 6, y + 8, new Color(175, 175, 175, alpha).getRGB());
 
         // Store rendered module information
         renderedModules.add(new RenderedModule(x, y , width, height + 4, m));
-    }
-
-    public void renderModule(final float x, final float y, final float width, final float height, final String n) {
-        //Module background
-        RenderUtil.roundedRect(x, y, width, height, 5, new Color(255, 255, 255, 10));
-
-        //Module name
-        CustomFont.drawString(n, x + 4, y + 6, booleanColor2.hashCode());
     }
 
     public void mouseClicked(final int mouseX, final int mouseY, final int mouseButton) throws IOException {

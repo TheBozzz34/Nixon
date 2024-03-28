@@ -66,5 +66,23 @@ public class StencilUtil {
     public static void uninitStencilBuffer() {
         glDisable(GL_STENCIL_TEST);
     }
-}
 
+    public static void bindWriteStencilBuffer() {
+        glStencilFunc(GL_ALWAYS, 1, 1);
+        glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
+        glColorMask(false, false, false, false);
+    }
+
+    public static void bindReadStencilBuffer(final int ref) {
+        glColorMask(true, true, true, true);
+        glStencilFunc(GL_EQUAL, ref, 1);
+        glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+    }
+
+    public static void initStencil(final Framebuffer framebuffer) {
+        framebuffer.bindFramebuffer(false);
+        checkSetupFBO(framebuffer);
+        glClear(GL_STENCIL_BUFFER_BIT);
+        glEnable(GL_STENCIL_TEST);
+    }
+}
