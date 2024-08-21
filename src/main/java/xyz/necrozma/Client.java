@@ -1,6 +1,8 @@
 package xyz.necrozma;
 
 
+import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
+import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import lombok.Setter;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;

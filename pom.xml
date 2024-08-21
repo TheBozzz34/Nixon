@@ -72,7 +72,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
-
+        <repository>
+            <id>litarvan</id>
+            <url>https://litarvan.github.io/maven</url>
+        </repository>
         <repository>
             <id>marcloud-development-repository</id>
             <name>marCloud-Repository</name>
@@ -369,18 +372,18 @@
             <type>pom</type>
         </dependency>
 
-        <!-- LEGUI - https://github.com/SpinyOwl/legui -->
-        <dependency>
-            <groupId>com.spinyowl</groupId>
-            <artifactId>legui</artifactId>
-            <version>4.2.0</version>
-        </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.2.3</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>msal4j</artifactId>
+            <version>1.16.2</version>
+        </dependency>
+
 
 
     </dependencies>

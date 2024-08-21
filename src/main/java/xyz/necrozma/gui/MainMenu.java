@@ -133,22 +133,32 @@ public final class MainMenu extends GuiScreen {
             }
         }
 
-        //Singleplayer
+        // Adjusting button positions
+        float buttonY = y + fontRenderer.getHeight();
+        float buttonYOffset = buttonHeight + gap + 2;
+
+        // Singleplayer Button
         RenderUtil.roundedRect(x, y + fontRenderer.getHeight(), buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 35));
-        CustomFont.drawString("Singleplayer", x + buttonWidth - 58, y + fontRenderer.getHeight() + 1 + 6, new Color(255, 255, 255, 240).hashCode());
+        CustomFont.drawString("Singleplayer", x + buttonWidth - 58, y + fontRenderer.getHeight() + 6, new Color(255, 255, 255, 240).hashCode());
 
-        //Multiplayer
+        // Multiplayer Button
         RenderUtil.roundedRect(x + buttonWidth + gap, y + fontRenderer.getHeight(), buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 35));
-        CustomFont.drawString("Multiplayer", x + buttonWidth * 2 + gap - 57, y + fontRenderer.getHeight() + 6 + 1, new Color(255, 255, 255, 240).hashCode());
+        CustomFont.drawString("Multiplayer", x + buttonWidth * 2 + gap - 57, y + fontRenderer.getHeight() + 6, new Color(255, 255, 255, 240).hashCode());
 
-        //Settings
+        // Settings Button
         RenderUtil.roundedRect(x + buttonWidth + gap, y + fontRenderer.getHeight() + 2 + buttonHeight + gap, buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 35));
-        CustomFont.drawString("Settings", x + buttonWidth * 2 + gap - 56, y + fontRenderer.getHeight() + buttonHeight + 10 + 3, new Color(255, 255, 255, 240).hashCode());
+        CustomFont.drawString("Settings", x + buttonWidth * 2 + gap - 56, y + fontRenderer.getHeight() + buttonHeight + 10, new Color(255, 255, 255, 240).hashCode());
 
-        //Exit
+        // Quit Button
         RenderUtil.roundedRect(x, y + fontRenderer.getHeight() + 2 + buttonHeight + gap, buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 35));
-        CustomFont.drawString("Quit", x + gap + 10, y + fontRenderer.getHeight() + buttonHeight + 10 + 3, new Color(255, 255, 255, 240).hashCode());
+        CustomFont.drawString("Quit", x + gap + 10, y + fontRenderer.getHeight() + buttonHeight + 10, new Color(255, 255, 255, 240).hashCode());
 
+        // Login Button (Positioned below Quit)
+        float loginButtonY = y + fontRenderer.getHeight() + 4 + buttonHeight * 2 + gap * 2;
+        RenderUtil.roundedRect(x, loginButtonY, buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 35));
+        CustomFont.drawString("Login", x + gap + 10, loginButtonY + 6, new Color(255, 255, 255, 240).hashCode());
+
+        // Hover effects
         if (mouseOver(x, y + fontRenderer.getHeight(), buttonWidth, buttonHeight + 2, mouseX, mouseY)) {
             RenderUtil.roundedRect(x, y + fontRenderer.getHeight(), buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 55));
         }
@@ -165,15 +175,15 @@ public final class MainMenu extends GuiScreen {
             RenderUtil.roundedRect(x, y + fontRenderer.getHeight() + 2 + buttonHeight + gap, buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 55));
         }
 
-        String version = "Nixon " + Client.INSTANCE.getVersion();
+        if (mouseOver(x, loginButtonY, buttonWidth, buttonHeight + 2, mouseX, mouseY)) {
+            RenderUtil.roundedRect(x, loginButtonY, buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 55));
+        }
 
+        // Version and message rendering
+        String version = "Nixon " + Client.INSTANCE.getVersion();
         CustomFont.drawString(version, 2, sr.getScaledHeight() - 12.5, new Color(255, 255, 255, 180).hashCode());
 
-
-
-        //Note
         final String message = "Made with <3 by Necrozma";
-
         CustomFont.drawString(message, sr.getScaledWidth() - CustomFont.getWidth(message) - 2, sr.getScaledHeight() - 12.5, new Color(255, 255, 255, 180).hashCode());
 
         super.drawScreen(mouseX, mouseY, partialTicks);
@@ -203,24 +213,30 @@ public final class MainMenu extends GuiScreen {
     }
 
     public void mouseClicked(final int mouseX, final int mouseY, final int button) {
-        //Singleplayer
+        // Singleplayer Button
         if (mouseOver(x, y + fontRenderer.getHeight(), buttonWidth, buttonHeight + 2, mouseX, mouseY)) {
             mc.displayGuiScreen(new GuiSelectWorld(this));
         }
 
-        //Multiplayer
+        // Multiplayer Button
         if (mouseOver(x + buttonWidth + gap, y + fontRenderer.getHeight(), buttonWidth, buttonHeight + 2, mouseX, mouseY)) {
             mc.displayGuiScreen(new GuiMultiplayer(this));
         }
 
-        //Settings
+        // Settings Button
         if (mouseOver(x + buttonWidth + gap, y + fontRenderer.getHeight() + 2 + buttonHeight + gap, buttonWidth, buttonHeight + 2, mouseX, mouseY)) {
             mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings));
         }
 
-        //Quit
+        // Quit Button
         if (mouseOver(x, y + fontRenderer.getHeight() + 2 + buttonHeight + gap, buttonWidth, buttonHeight + 2, mouseX, mouseY)) {
             System.exit(-1);
+        }
+
+        // Login Button
+        float loginButtonY = y + fontRenderer.getHeight() + 4 + buttonHeight * 2 + gap * 2;
+        if (mouseOver(x, loginButtonY, buttonWidth, buttonHeight + 2, mouseX, mouseY)) {
+            mc.displayGuiScreen(new LoginGui());
         }
     }
 
