@@ -73,10 +73,6 @@
             <url>https://jitpack.io</url>
         </repository>
         <repository>
-            <id>litarvan</id>
-            <url>https://litarvan.github.io/maven</url>
-        </repository>
-        <repository>
             <id>marcloud-development-repository</id>
             <name>marCloud-Repository</name>
             <url>https://repo.marcloud.net/</url>
