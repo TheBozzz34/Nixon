@@ -14,7 +14,6 @@ import xyz.necrozma.gui.clickgui.ClickGUI2;
 import xyz.necrozma.gui.render.RenderUtil;
 import xyz.necrozma.login.AuthenticationException;
 import xyz.necrozma.login.AuthenticationResult;
-import xyz.necrozma.login.XboxLiveMojangAuth;
 import xyz.necrozma.pathing.Path;
 import lombok.Getter;
 import me.zero.alpine.bus.EventBus;
@@ -37,7 +36,6 @@ import xyz.necrozma.module.impl.render.Xray;
 import xyz.necrozma.notification.NotificationManager;
 import xyz.necrozma.notification.NotificationType;
 import xyz.necrozma.util.*;
-import xyz.necrozma.login.WebLoginHelper;
 
 
 import java.io.File;
