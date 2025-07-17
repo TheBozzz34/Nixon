@@ -4,6 +4,8 @@
 
 I am learning client development with this project, it is in no way meant to be actually useful.
 
+It has working microsoft device code flow auth which is cool though
+
 half of this is skidded from rise and tenacity leaks lmao
 
 ![image0](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/8g0wq976.png)
