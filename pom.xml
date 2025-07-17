@@ -82,10 +82,6 @@
             <url>https://libraries.minecraft.net/</url>
         </repository>
         <repository>
-            <id>litarvan</id>
-            <url>https://litarvan.github.io/maven</url>
-        </repository>
-        <repository>
             <id>central</id>
             <name>Maven Central</name>
             <url>https://repo1.maven.org/maven2</url>
@@ -100,11 +96,6 @@
         <repository>
             <id>legui</id>
             <url>https://raw.github.com/SpinyOwl/repo/releases</url>
-        </repository>
-
-        <repository>
-            <id>litarvan</id>
-            <url>https://litarvan.github.io/maven</url>
         </repository>
     </repositories>
 
