@@ -290,4 +290,26 @@ public class FileUtil {
             return -1;
         }
     }
+
+    /**
+     * Reads the content of an InputStream and returns it as a String.
+     *
+     * @param inputStream the InputStream to read from
+     * @return the content of the InputStream as a String
+     */
+
+    public static String readInputStream(InputStream inputStream) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            while ((line = bufferedReader.readLine()) != null)
+                stringBuilder.append(line).append('\n');
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return stringBuilder.toString();
+    }
 }

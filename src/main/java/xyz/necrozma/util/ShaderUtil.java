@@ -193,7 +193,7 @@ public class ShaderUtil implements Util {
 
     private int createShader(InputStream inputStream, int shaderType) {
         int shader = glCreateShader(shaderType);
-        glShaderSource(shader, FileUtils.readInputStream(inputStream));
+        glShaderSource(shader, FileUtil.readInputStream(inputStream));
         glCompileShader(shader);
 
 
