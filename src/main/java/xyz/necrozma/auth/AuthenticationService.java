@@ -1,11 +1,8 @@
 package xyz.necrozma.auth;
 
-import fr.litarvan.openauth.microsoft.AuthTokens;
+import xyz.necrozma.login.*;
 import xyz.necrozma.util.ConfigManager;
-import xyz.necrozma.login.XboxLiveMojangAuth;
-import xyz.necrozma.login.AuthenticationResult;
-import xyz.necrozma.login.AuthenticationException;
-import xyz.necrozma.login.WebLoginHelper;
+//import xyz.necrozma.login.WebLoginHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Session;
@@ -148,7 +145,7 @@ public class AuthenticationService {
         try {
             LOGGER.info("Performing web login authentication");
 
-            final AuthTokens tokens = WebLoginHelper.getTokensFromWebLogin();
+            final AuthTokens tokens = CodeLoginHelper.getTokensFromWebLogin();
 
             if (tokens.getAccessToken() == null || tokens.getAccessToken().trim().isEmpty()) {
                 LOGGER.severe("Access token is null or empty");
