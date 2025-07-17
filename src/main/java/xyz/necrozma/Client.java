@@ -1,7 +1,6 @@
 package xyz.necrozma;
 
 
-import fr.litarvan.openauth.microsoft.AuthTokens;
 import lombok.Setter;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Session;

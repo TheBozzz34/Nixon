@@ -3,6 +3,8 @@ package net.minecraft.client.gui;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+
+import java.awt.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -170,7 +172,35 @@ public class GuiIngame extends Gui
 
              */
 
-            RenderUtil.drawCircle(i / 2, j / 2, 2, 0xFFFFFFFF, 1,1, 1);
+
+            Color color = new Color(255, 255, 255, 255);
+
+
+
+            int centerX = i / 2;
+            int centerY = j / 2;
+
+            int size = 4;
+            double thickness = 1.0;
+
+            // Top-left
+            RenderUtil.line(centerX - size, centerY - size, centerX - size + 2, centerY - size, thickness, color);
+            RenderUtil.line(centerX - size, centerY - size, centerX - size, centerY - size + 2, thickness, color);
+
+            // Top-right
+            RenderUtil.line(centerX + size, centerY - size, centerX + size - 2, centerY - size, thickness, color);
+            RenderUtil.line(centerX + size, centerY - size, centerX + size, centerY - size + 2, thickness, color);
+
+            // Bottom-left
+            RenderUtil.line(centerX - size, centerY + size, centerX - size + 2, centerY + size, thickness, color);
+            RenderUtil.line(centerX - size, centerY + size, centerX - size, centerY + size - 2, thickness, color);
+
+            // Bottom-right
+            RenderUtil.line(centerX + size, centerY + size, centerX + size - 2, centerY + size, thickness, color);
+            RenderUtil.line(centerX + size, centerY + size, centerX + size, centerY + size - 2, thickness, color);
+
+            // Dot in the center using a filled circle
+            RenderUtil.circle(centerX - 1, centerY - 1, 2, color);
 
         }
 

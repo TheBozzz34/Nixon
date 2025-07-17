@@ -1,9 +1,6 @@
 package xyz.necrozma.gui;
 
 import com.microsoft.aad.msal4j.*;
-import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
-import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
-import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Session;
 import net.minecraft.client.gui.*;

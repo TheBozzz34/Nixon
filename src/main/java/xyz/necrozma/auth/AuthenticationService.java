@@ -72,6 +72,10 @@ public class AuthenticationService {
 
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Authentication failed", e);
+
+            // Clear any invalid tokens on failure
+            configManager.clearAuthTokens();
+
             return false;
         }
     }

@@ -111,7 +111,7 @@ public final class MainMenu extends GuiScreen {
         y = (sr.getScaledHeight() / 2.0F) - (screenHeight / 2.0F) - 6;
 
         // Box
-        RenderUtil.roundedRect(x - 10, y + fontRenderer.getHeight() + buttonHeight * 2 + gap * 2 + 2 - 108, 170, 145, 10, new Color(0, 0, 0, 35));
+        RenderUtil.roundedRect(x - 10, y + fontRenderer.getHeight() + buttonHeight * 2 + gap * 2 + 2 - 108, 170, 120, 10, new Color(0, 0, 0, 35));
 
         if (easterEgg) {
             fontRenderer.drawString("RICE", x, UIUtil.logoPosition, new Color(255, 255, 255, 150).getRGB());
@@ -153,11 +153,6 @@ public final class MainMenu extends GuiScreen {
         RenderUtil.roundedRect(x, y + fontRenderer.getHeight() + 2 + buttonHeight + gap, buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 35));
         CustomFont.drawString("Quit", x + gap + 10, y + fontRenderer.getHeight() + buttonHeight + 10, new Color(255, 255, 255, 240).hashCode());
 
-        // Login Button (Positioned below Quit)
-        float loginButtonY = y + fontRenderer.getHeight() + 4 + buttonHeight * 2 + gap * 2;
-        RenderUtil.roundedRect(x, loginButtonY, buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 35));
-        CustomFont.drawString("Login", x + gap + 10, loginButtonY + 6, new Color(255, 255, 255, 240).hashCode());
-
         // Hover effects
         if (mouseOver(x, y + fontRenderer.getHeight(), buttonWidth, buttonHeight + 2, mouseX, mouseY)) {
             RenderUtil.roundedRect(x, y + fontRenderer.getHeight(), buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 55));
@@ -175,9 +170,6 @@ public final class MainMenu extends GuiScreen {
             RenderUtil.roundedRect(x, y + fontRenderer.getHeight() + 2 + buttonHeight + gap, buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 55));
         }
 
-        if (mouseOver(x, loginButtonY, buttonWidth, buttonHeight + 2, mouseX, mouseY)) {
-            RenderUtil.roundedRect(x, loginButtonY, buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 55));
-        }
 
         // Version and message rendering
         String version = "Nixon " + Client.INSTANCE.getVersion();
@@ -233,12 +225,6 @@ public final class MainMenu extends GuiScreen {
             Client.INSTANCE.shutdown();
             mc.shutdown();
             System.exit(0);
-        }
-
-        // Login Button
-        float loginButtonY = y + fontRenderer.getHeight() + 4 + buttonHeight * 2 + gap * 2;
-        if (mouseOver(x, loginButtonY, buttonWidth, buttonHeight + 2, mouseX, mouseY)) {
-            mc.displayGuiScreen(new LoginGui());
         }
     }
 
