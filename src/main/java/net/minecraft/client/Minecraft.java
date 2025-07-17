@@ -1079,7 +1079,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             logger.info("Stopping!");
 
             // Shitclient hook
-            Client.INSTANCE.shutdown();
+            //Client.INSTANCE.shutdown();
 
             try
             {

@@ -101,6 +101,11 @@
             <id>legui</id>
             <url>https://raw.github.com/SpinyOwl/repo/releases</url>
         </repository>
+
+        <repository>
+            <id>litarvan</id>
+            <url>https://litarvan.github.io/maven</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -379,8 +384,6 @@
             <artifactId>msal4j</artifactId>
             <version>1.16.2</version>
         </dependency>
-
-
 
     </dependencies>
 

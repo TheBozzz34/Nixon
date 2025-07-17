@@ -1,17 +1,21 @@
 package xyz.necrozma;
 
 
-import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
-import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
+import fr.litarvan.openauth.microsoft.AuthTokens;
 import lombok.Setter;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.Session;
 import net.minecraft.util.Vec3;
+import xyz.necrozma.auth.AuthenticationService;
 import xyz.necrozma.discord.IPCClient;
 import xyz.necrozma.discord.IPCListener;
 import xyz.necrozma.discord.entities.RichPresence;
 import xyz.necrozma.exception.CommandException;
 import xyz.necrozma.gui.clickgui.ClickGUI2;
 import xyz.necrozma.gui.render.RenderUtil;
+import xyz.necrozma.login.AuthenticationException;
+import xyz.necrozma.login.AuthenticationResult;
+import xyz.necrozma.login.XboxLiveMojangAuth;
 import xyz.necrozma.pathing.Path;
 import lombok.Getter;
 import me.zero.alpine.bus.EventBus;
@@ -34,6 +38,7 @@ import xyz.necrozma.module.impl.render.Xray;
 import xyz.necrozma.notification.NotificationManager;
 import xyz.necrozma.notification.NotificationType;
 import xyz.necrozma.util.*;
+import xyz.necrozma.login.WebLoginHelper;
 
 
 import java.io.File;
@@ -58,6 +63,8 @@ public enum Client implements Subscriber {
     private PacketHandler PH;
     private NotificationManager NM;
     private StatsUtil SU;
+    private ConfigManager configManager;
+    private AuthenticationService authService;
 
     @Setter
     private Path path;
@@ -77,6 +84,83 @@ public enum Client implements Subscriber {
     private IPCClient ipcClient = new IPCClient(824317166357577728L);
 
     public final void init() throws IOException {
+
+        /*
+        try {
+            System.out.println("Starting authentication process...");
+
+            AuthTokens tokens = WebLoginHelper.getTokensFromWebLogin();
+
+            // Debug the tokens
+            System.out.println("Got tokens from web login:");
+            System.out.println("Access token: " + (tokens.getAccessToken() != null ?
+                    tokens.getAccessToken().substring(0, Math.min(50, tokens.getAccessToken().length())) + "..." : "null"));
+            System.out.println("Refresh token: " + (tokens.getRefreshToken() != null ? "Present" : "null"));
+
+            if (tokens.getAccessToken() == null || tokens.getAccessToken().trim().isEmpty()) {
+                throw new IOException("Access token is null or empty");
+            }
+
+            System.out.println("Starting Xbox Live authentication...");
+
+            try {
+                XboxLiveMojangAuth auth = new XboxLiveMojangAuth();
+                AuthenticationResult result = auth.authenticate(tokens.getAccessToken());
+
+                System.out.println("Authentication successful!");
+                System.out.println("Xbox Username: " + result.getUsername());
+                System.out.println("Minecraft Username: " + result.getMinecraftUsername());
+                System.out.println("Minecraft UUID: " + result.getUuid());
+                System.out.println("Token expires in: " + result.getExpiresIn() + " seconds");
+
+                // For your Minecraft session constructor:
+                String usernameIn = result.getMinecraftUsername(); // Minecraft username
+                String playerIDIn = result.getUuid();              // Minecraft UUID (this is what you need!)
+                String tokenIn = result.getAccessToken();          // Bearer token
+                String sessionTypeIn = "legacy";                   // or whatever session type you use
+
+                if (usernameIn == null || playerIDIn == null || tokenIn == null) {
+                    throw new IOException("Authentication result contains null values");
+                }
+
+                System.out.println("Creating Minecraft session...");
+                Minecraft.getMinecraft().setSession(new Session(
+                        usernameIn,
+                        playerIDIn,
+                        tokenIn,
+                        sessionTypeIn));
+
+                System.out.println("Session created successfully!");
+
+            } catch (AuthenticationException e) {
+                System.err.println("Xbox Live authentication failed: " + e.getMessage());
+                e.printStackTrace();
+
+                // Print the full stack trace to understand what went wrong
+                if (e.getCause() != null) {
+                    System.err.println("Caused by: " + e.getCause().getClass().getSimpleName() + ": " + e.getCause().getMessage());
+                }
+
+                throw new IOException("Xbox Live authentication failed: " + e.getMessage(), e);
+            }
+
+        } catch (Exception e) {
+            System.err.println("An unexpected error occurred during authentication: " + e.getMessage());
+            e.printStackTrace();
+
+            // Print detailed error information
+            System.err.println("Error type: " + e.getClass().getSimpleName());
+            if (e.getCause() != null) {
+                System.err.println("Root cause: " + e.getCause().getClass().getSimpleName() + ": " + e.getCause().getMessage());
+            }
+
+            throw new IOException("Unexpected error during authentication", e);
+        }
+
+         */
+
+
+
         ipcClient.setListener(new IPCListener(){
             @Override
             public void onReady(IPCClient client)
@@ -90,12 +174,8 @@ public enum Client implements Subscriber {
             }
         });
 
-        if (!FileUtil.riseDirectoryExists()) {
-            FileUtil.createRiseDirectory();
-        }
-
-        if (!FileUtil.exists("Config" + File.separator)) {
-            FileUtil.createDirectory("Config" + File.separator);
+        if (!FileUtil.clientDirectoryExists()) {
+            FileUtil.createClientDirectory();
         }
 
         Display.setTitle(name + " -> " + version);
@@ -106,6 +186,8 @@ public enum Client implements Subscriber {
         PH = new PacketHandler();
         NM = new NotificationManager();
         SU = new StatsUtil();
+        configManager = new ConfigManager("1.0.0", MM);
+        authService = new AuthenticationService(configManager);
 
 
         //clickGUI = new ClickGUI();
@@ -113,7 +195,11 @@ public enum Client implements Subscriber {
         xray = new Xray();
         xray.addBlocks();
 
-        loadConfig();
+        if (configManager.loadConfig()) {
+            System.out.println("Config loaded successfully!");
+        }
+
+        authenticateUser();
 
         try {
             ipcClient.connect();
@@ -144,11 +230,45 @@ public enum Client implements Subscriber {
         }
     }
 
+    private void authenticateUser() {
+        System.out.println("Starting authentication process...");
+
+        if (authService.authenticate()) {
+            System.out.println("Authentication successful!");
+
+            final AuthenticationResult result = authService.getLastAuthResult();
+            if (result != null) {
+                String usernameIn = result.getMinecraftUsername(); // Minecraft username
+                String playerIDIn = result.getUuid();              // Minecraft UUID (this is what you need!)
+                String tokenIn = result.getAccessToken();          // Bearer token
+                String sessionTypeIn = "legacy";                   // or whatever session type you use
+
+                if (usernameIn == null || playerIDIn == null || tokenIn == null) {
+                    System.err.println("Authentication result contains null values");
+                    return;
+                }
+
+                System.out.println("Creating Minecraft session...");
+                MC.setSession(new Session(
+                        usernameIn,
+                        playerIDIn,
+                        tokenIn,
+                        sessionTypeIn));
+
+                System.out.println("Session created successfully!");
+            } else {
+                System.err.println("Authentication result is null");
+            }
+        }
+    }
+
 
     public final void shutdown() {
         BUS.unsubscribe(this);
 
-        saveConfig();
+        if (configManager.saveConfig()) {
+            System.out.println("Config saved successfully!");
+        }
 
         try {
             ipcClient.close();
@@ -156,95 +276,6 @@ public enum Client implements Subscriber {
             logger.error("Failed to close Discord RPC");
         }
 
-    }
-
-    private void loadConfig() {
-        final String config = FileUtil.loadFile("settings.txt");
-        if (config == null) return;
-        final String[] configLines = config.split("\r\n");
-
-
-        boolean gotConfigVersion = false;
-        for (final String line : configLines) {
-            if (line == null) return;
-
-
-            final String[] split = line.split("_");
-
-            if (split[0].contains("Nixon")) {
-                if (split[1].contains("Version")) {
-                    gotConfigVersion = true;
-
-                    final String clientVersion = version;
-                    final String configVersion = split[2];
-
-                    if (!clientVersion.equalsIgnoreCase(configVersion)) {
-                        ChatUtil.sendMessage("This config was made in a different version of Rise! Incompatibilities are expected.");
-                        this.getNM().registerNotification(
-                                "This config was made in a different version of Rise! Incompatibilities are expected.", NotificationType.WARNING
-                        );
-                    }
-                }
-            }
-
-
-            if (split[0].contains("Toggle")) {
-                if (split[2].contains("true")) {
-                    Module module = Client.INSTANCE.getMM().getModuleFromString(split[1]);
-                    if (module == null) {
-                        throw new CommandException("Module " + split[1] + " not found!");
-                    } else {
-                        module.toggle();
-                    }
-                }
-            }
-
-            /*
-            final Settings setting = getMM().getSettings(split[1], split[2]);
-
-            if (split[0].contains("BooleanSetting") && setting instanceof BooleanSetting) {
-                if (split[3].contains("true")) {
-                    ((BooleanSetting) setting).enabled = true;
-                }
-
-                if (split[3].contains("false")) {
-                    ((BooleanSetting) setting).enabled = false;
-                }
-            }
-
-            if (split[0].contains("NumberSetting") && setting instanceof NumberSetting)
-                ((NumberSetting) setting).setValue(Double.parseDouble(split[3]));
-
-            if (split[0].contains("ModeSetting") && setting instanceof ModeSetting)
-                ((ModeSetting) setting).set(split[3]);
-
-            if (split[0].contains("Bind")) {
-                final Module m = getModuleManager().getModule(split[1]);
-
-                if (m != null)
-                    Objects.requireNonNull(m).setKeyBind(Integer.parseInt(split[2]));
-            }
-
-             */
-        }
-        if (!gotConfigVersion) {
-            ChatUtil.sendMessage("This config was made in a different version of Rise! Incompatibilities are expected.");
-            getNM().registerNotification(
-                    "This config was made in a different version of Rise! Incompatibilities are expected.", NotificationType.WARNING
-            );
-        }
-    }
-
-    private void saveConfig() {
-        final StringBuilder configBuilder = new StringBuilder();
-        configBuilder.append("Nixon_Version_").append(version).append("\r\n");
-
-        for (final Module m : getMM().getModules().values()) {
-            final String moduleName = m.getName();
-            configBuilder.append("Toggle_").append(moduleName).append("_").append(m.isToggled()).append("\r\n");
-        }
-
-        FileUtil.saveFile("settings.txt", true, configBuilder.toString());
     }
 
     @Subscribe

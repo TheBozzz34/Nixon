@@ -17,7 +17,10 @@ import xyz.necrozma.module.Module;
 import xyz.necrozma.util.FileUtil;
 
 import java.awt.*;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -44,8 +47,8 @@ public final class LoginGui extends GuiScreen {
     public static float xOffSet;
     public static float yOffSet;
 
-    private static String authority = "https://login.microsoftonline.com/common";
-    private static Set<String> scope;
+    private static String authority = "https://login.microsoftonline.com/consumers/oauth2/v2.0/authorization";
+    private static Set<String> scope = new HashSet<String>();
     private static String clientId = "11b2bc64-013f-45a8-b336-e1f79a8d3d86";
     private static String username = "Ethan James";
 
@@ -62,6 +65,7 @@ public final class LoginGui extends GuiScreen {
     }
 
     public void drawScreen(final int mouseX, final int mouseY, final float partialTicks) {
+
 
         if (mc.mouseHelper != null) mc.mouseHelper.mouseGrab(false);
 
@@ -85,7 +89,9 @@ public final class LoginGui extends GuiScreen {
 
         final ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
 
-        UIUtil.logoPosition = /*MathUtil.lerp(UIUtil.logoPosition, */sr.getScaledHeight() / 2.0F - (screenHeight / 2.0F) - 6/*, 0.2f)*/;
+        // UIUtil.logoPosition = MathUtil.lerp(UIUtil.logoPosition, sr.getScaledHeight() / 2.0F - (screenHeight / 2.0F) - 6, 0.2f);
+
+        UIUtil.logoPosition = sr.getScaledHeight() / 2.0F - (screenHeight / 2.0F) - 6;
 
         x = (sr.getScaledWidth() / 2.0F) - (screenWidth / 2.0F);
         y = (sr.getScaledHeight() / 2.0F) - (screenHeight / 2.0F) - 6;
@@ -119,10 +125,12 @@ public final class LoginGui extends GuiScreen {
         CustomFont.drawString(version, 2, sr.getScaledHeight() - 12.5, new Color(255, 255, 255, 180).hashCode());
 
 
-        //Note
+
         final String message = "Made with <3 by Necrozma";
 
         CustomFont.drawString(message, sr.getScaledWidth() - CustomFont.getWidth(message) - 2, sr.getScaledHeight() - 12.5, new Color(255, 255, 255, 180).hashCode());
+
+
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -133,50 +141,31 @@ public final class LoginGui extends GuiScreen {
         // login
         if (mouseOver(x, y + fontRenderer.getHeight(), buttonWidth, buttonHeight + 2, mouseX, mouseY)) {
 
-            PublicClientApplication pca = null;
-
             try {
-                pca = PublicClientApplication.builder(clientId)
-                        .authority(authority)
+                PublicClientApplication publicClientApplication =
+                        PublicClientApplication
+                                .builder(clientId)
+                                .authority(authority)
+                                .build();
+
+                InteractiveRequestParameters parameters = InteractiveRequestParameters
+                        .builder(new URI("http://localhost"))
+                        .scopes(scope)
                         .build();
-            } catch (Exception ex) {
-                System.out.println("==PublicClientApplication builder failed: " + ex.getMessage());
+
+                IAuthenticationResult result = publicClientApplication.acquireToken(parameters).join();
+
+
+
+
+
+
+                Minecraft.getMinecraft().setSession(new Session("38C3", result.idToken(), result.accessToken(), "legacy"));
+
+                System.out.println(result);
+            } catch (MalformedURLException | URISyntaxException e) {
+                throw new RuntimeException(e);
             }
-
-
-            Set<IAccount> accountsInCache = pca.getAccounts().join();
-            IAccount account = getAccountByUsername(accountsInCache, username);
-
-            IAuthenticationResult result = null;
-            try {
-                //Attempt to acquire token when user's account is not in the application's token cache
-                result = acquireTokenIntegratedWindowsAuth(pca, scope, account, username);
-                System.out.println("Account username: " + result.account().username());
-                System.out.println("Access token:     " + result.accessToken());
-                System.out.println("Id token:         " + result.idToken());
-                System.out.println();
-            } catch (Exception ex) {
-                System.out.println("==Acquiring token failed: " + ex.getMessage());
-            }
-
-
-            //Get list of accounts from the application's token cache, and search them for the configured username
-            //getAccounts() will be empty on this first call, as accounts are added to the cache when acquiring a token
-            accountsInCache = pca.getAccounts().join();
-            account = getAccountByUsername(accountsInCache, username);
-
-            try {
-                //Attempt to acquire token again, now that the user's account and a token are in the application's token cache
-                result = acquireTokenIntegratedWindowsAuth(pca, scope, account, username);
-                System.out.println("Account username: " + result.account().username());
-                System.out.println("Access token:     " + result.accessToken());
-                System.out.println("Id token:         " + result.idToken());
-            } catch (Exception ex) {
-                System.out.println("==Acquiring token failed: " + ex.getMessage());
-            }
-
-
-
 
             //Minecraft.getMinecraft().setSession(new Session(result.getProfile().getName(), result.getProfile().getId(), result.getAccessToken(), "legacy"));
 
@@ -199,59 +188,6 @@ public final class LoginGui extends GuiScreen {
             return mouseY > posY && mouseY < posY + height;
         }
         return false;
-    }
-    private static IAuthenticationResult acquireTokenIntegratedWindowsAuth(PublicClientApplication pca,
-                                                                           Set<String> scope,
-                                                                           IAccount account,
-                                                                           String username) throws Exception {
-
-        IAuthenticationResult result;
-        try {
-            SilentParameters silentParameters =
-                    SilentParameters
-                            .builder(scope)
-                            .account(account)
-                            .build();
-            // Try to acquire token silently. This will fail on the first acquireTokenIntegratedWindowsAuth() call
-            // because the token cache does not have any data for the user you are trying to acquire a token for
-            result = pca.acquireTokenSilently(silentParameters).join();
-            System.out.println("==acquireTokenSilently call succeeded");
-        } catch (Exception ex) {
-            if (ex.getCause() instanceof MsalException) {
-                System.out.println("==acquireTokenSilently call failed: " + ex.getCause());
-                IntegratedWindowsAuthenticationParameters parameters =
-                        IntegratedWindowsAuthenticationParameters
-                                .builder(scope, username)
-                                .build();
-
-                // Try to acquire a token using Integrated Windows Authentication (IWA). You will need to generate a Kerberos ticket.
-                // If successful, you should see the token and account information printed out to console
-                result = pca.acquireToken(parameters).join();
-                System.out.println("==Integrated Windows Authentication flow succeeded");
-            } else {
-                // Handle other exceptions accordingly
-                throw ex;
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Helper function to return an account from a given set of accounts based on the given username,
-     * or return null if no accounts in the set match
-     */
-    private static IAccount getAccountByUsername(Set<IAccount> accounts, String username) {
-        if (accounts.isEmpty()) {
-            System.out.println("==No accounts in cache");
-        } else {
-            System.out.println("==Accounts in cache: " + accounts.size());
-            for (IAccount account : accounts) {
-                if (account.username().equals(username)) {
-                    return account;
-                }
-            }
-        }
-        return null;
     }
 }
 

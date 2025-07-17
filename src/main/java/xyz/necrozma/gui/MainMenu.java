@@ -230,7 +230,9 @@ public final class MainMenu extends GuiScreen {
 
         // Quit Button
         if (mouseOver(x, y + fontRenderer.getHeight() + 2 + buttonHeight + gap, buttonWidth, buttonHeight + 2, mouseX, mouseY)) {
-            System.exit(-1);
+            Client.INSTANCE.shutdown();
+            mc.shutdown();
+            System.exit(0);
         }
 
         // Login Button

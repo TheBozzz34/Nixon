@@ -4,9 +4,17 @@ import lombok.experimental.UtilityClass;
 import net.minecraft.client.Minecraft;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * Utilities for accessing and using files in the Rise directory.
+ * Utilities for accessing and using files in the Nixon directory.
  *
  * @author Strikeless
  * @since 08/06/2021
@@ -14,178 +22,272 @@ import java.io.*;
 @UtilityClass
 public class FileUtil {
 
-    protected final Minecraft mc = Minecraft.getMinecraft();
-
-    private final String SEPARATOR = File.separator;
-
-    private final String CLIENT_PATH = mc.mcDataDir.getAbsolutePath() + SEPARATOR + "nixon" + SEPARATOR;
+    private static final Logger LOGGER = Logger.getLogger(FileUtil.class.getName());
+    private static final Minecraft mc = Minecraft.getMinecraft();
+    private static final String CLIENT_NAME = "nixon";
+    private static final Path CLIENT_PATH = Paths.get(mc.mcDataDir.getAbsolutePath(), CLIENT_NAME);
 
     /**
      * Checks if a file exists.
      *
-     * @param fileName the file name inside the Rise directory
+     * @param fileName the file name inside the Nixon directory
      * @return whether or not the file exists
      */
     public boolean exists(final String fileName) {
-        return getFileOrPath(fileName).exists();
+        return Files.exists(getPath(fileName));
     }
 
     /**
      * Checks if a file exists.
      *
-     * @param file the file
+     * @param path the path to check
      * @return whether or not the file exists
      */
-    public boolean exists(final File file) {
-        return file.exists();
+    public boolean exists(final Path path) {
+        return Files.exists(path);
     }
 
     /**
-     * Checks if the Rise directory exists.
+     * Checks if the Nixon directory exists.
      *
-     * @return whether or not the Rise directory exists.
+     * @return whether or not the Nixon directory exists.
      */
-    public boolean riseDirectoryExists() {
-        return new File(CLIENT_PATH).exists();
+    public boolean clientDirectoryExists() {
+        return Files.exists(CLIENT_PATH);
     }
 
     /**
-     * Saves a string into the specified file.
+     * Saves a string into the specified file using UTF-8 encoding.
      * If the file does not exist this will create it automatically.
+     * Uses try-with-resources for automatic resource management.
      *
-     * @param fileName the file name inside the Rise directory
+     * @param fileName the file name inside the Nixon directory
      * @param override whether or not we should override the file if it exists already
      * @param content  the string to write into the file
-     * @return whether or not the file was saved successfully, this will also return false if it wasn't overridden.
+     * @return whether or not the file was saved successfully
      */
     public boolean saveFile(final String fileName, final boolean override, final String content) {
-        BufferedWriter writer = null;
+        final Path filePath = getPath(fileName);
+
         try {
-            final File file = getFileOrPath(fileName);
-            if (!exists(file)) {
-                createRiseDirectory();
-                createFile(file);
-            } else if (!override) {
+            // Create directories if they don't exist
+            createClientDirectory();
+
+            // Check if file exists and override is false
+            if (Files.exists(filePath) && !override) {
+                LOGGER.info("File already exists and override is false: " + fileName);
                 return false;
             }
 
-            writer = new BufferedWriter(new FileWriter(file));
-            writer.write(content);
-            writer.flush();
-        } catch (final Throwable t) {
-            t.printStackTrace();
-            return false;
-        } finally {
-            try {
-                if (writer != null) writer.close();
-            } catch (final Throwable t) {
-                t.printStackTrace();
-                throw new IllegalStateException("Failed to close writer!");
-            }
-        }
+            // Write content using UTF-8 encoding
+            Files.write(filePath, content.getBytes(StandardCharsets.UTF_8),
+                    StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 
-        return true;
+            LOGGER.info("Successfully saved file: " + fileName);
+            return true;
+
+        } catch (final IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to save file: " + fileName, e);
+            return false;
+        }
     }
 
     /**
-     * Loads a string from the specified file.
+     * Loads a string from the specified file using UTF-8 encoding.
      * If the file does not exist this will return null.
      *
-     * @param fileName the file name inside the Rise directory
-     * @return the string loaded from the file.
+     * @param fileName the file name inside the Nixon directory
+     * @return the string loaded from the file, or null if file doesn't exist
      */
     public String loadFile(final String fileName) {
+        final Path filePath = getPath(fileName);
+
         try {
-            final File file = getFileOrPath(fileName);
-            if (!exists(file)) return null;
-
-            final BufferedReader reader = new BufferedReader(new FileReader(file));
-            String content = reader.readLine();
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                content += "\r\n" + line;
+            if (!Files.exists(filePath)) {
+                LOGGER.info("File does not exist: " + fileName);
+                return null;
             }
 
-            reader.close();
+            // Read all content at once using UTF-8 encoding
+            final byte[] bytes = Files.readAllBytes(filePath);
+            final String content = new String(bytes, StandardCharsets.UTF_8);
 
+            LOGGER.info("Successfully loaded file: " + fileName);
             return content;
-        } catch (final Throwable t) {
-            t.printStackTrace();
-            throw new IllegalStateException("Failed to read file!");
+
+        } catch (final IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to load file: " + fileName, e);
+            return null;
         }
     }
 
     /**
-     * Creates the Rise directory if absent.
+     * Loads file content as a list of lines.
+     *
+     * @param fileName the file name inside the Nixon directory
+     * @return list of lines, or null if file doesn't exist
      */
-    public void createRiseDirectory() {
-        new File(CLIENT_PATH).mkdirs();
+    public List<String> loadFileLines(final String fileName) {
+        final Path filePath = getPath(fileName);
+
+        try {
+            if (!Files.exists(filePath)) {
+                LOGGER.info("File does not exist: " + fileName);
+                return null;
+            }
+
+            return Files.readAllLines(filePath, StandardCharsets.UTF_8);
+
+        } catch (final IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to load file lines: " + fileName, e);
+            return null;
+        }
     }
 
+    /**
+     * Creates the Nixon directory if absent.
+     */
+    public void createClientDirectory() {
+        try {
+            Files.createDirectories(CLIENT_PATH);
+        } catch (final IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to create client directory", e);
+            throw new IllegalStateException("Unable to create Nixon directory!", e);
+        }
+    }
+
+    /**
+     * Creates a directory at the specified path.
+     *
+     * @param directoryName the directory name/path inside the Nixon directory
+     */
     public void createDirectory(final String directoryName) {
-        getFileOrPath(directoryName.replace("\\", SEPARATOR)).mkdirs();
+        try {
+            Files.createDirectories(getPath(directoryName));
+        } catch (final IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to create directory: " + directoryName, e);
+            throw new IllegalStateException("Unable to create directory!", e);
+        }
     }
 
+    /**
+     * Creates a file at the specified path.
+     *
+     * @param fileName the file name inside the Nixon directory
+     */
     public void createFile(final String fileName) {
         try {
-            getFileOrPath(fileName).mkdirs();
-            getFileOrPath(fileName).createNewFile();
-        } catch (final Throwable t) {
-            throw new IllegalStateException("Unable to create Rise directory!", t);
+            final Path filePath = getPath(fileName);
+            Files.createDirectories(filePath.getParent());
+            Files.createFile(filePath);
+        } catch (final IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to create file: " + fileName, e);
+            throw new IllegalStateException("Unable to create file!", e);
         }
     }
 
-    public File[] listFiles(final String path) {
-        return getFileOrPath(path).listFiles();
-    }
-
-    public File[] listFiles(final File file) {
-        return file.listFiles();
-    }
-
     /**
-     * Get a file object from the file name.
+     * Lists files in the specified directory.
      *
-     * @param fileName the file name inside the Rise directory
-     * @return the file. duh.
+     * @param path the directory path inside the Nixon directory
+     * @return array of files, or null if directory doesn't exist
      */
-    public File getFileOrPath(final String fileName) {
-        return new File(CLIENT_PATH + fileName.replace("\\", SEPARATOR));
+    public File[] listFiles(final String path) {
+        return getPath(path).toFile().listFiles();
     }
 
     /**
-     * Deletes the specified file if absent.
+     * Get a Path object from the file name.
      *
-     * @param fileName the file name inside the Rise directory
+     * @param fileName the file name inside the Nixon directory
+     * @return the Path object
+     */
+    public Path getPath(final String fileName) {
+        return CLIENT_PATH.resolve(fileName.replace("\\", "/"));
+    }
+
+    /**
+     * Get a File object from the file name.
+     *
+     * @param fileName the file name inside the Nixon directory
+     * @return the File object
+     */
+    public File getFile(final String fileName) {
+        return getPath(fileName).toFile();
+    }
+
+    /**
+     * Deletes the specified file if it exists.
+     *
+     * @param fileName the file name inside the Nixon directory
      */
     public void delete(final String fileName) {
-        if (exists(fileName)) {
-            if (!getFileOrPath(fileName).delete()) throw new IllegalStateException("Unable to delete file!");
-        }
-    }
-
-    /**
-     * Deletes the specified file if absent.
-     *
-     * @param file the file to delete
-     */
-    public void delete(final File file) {
-        if (exists(file)) {
-            if (!file.delete()) throw new IllegalStateException("Unable to delete file!");
-        }
-    }
-
-    /**
-     * Creates the specified file if absent.
-     *
-     * @param file the file to create
-     */
-    private void createFile(final File file) {
+        final Path filePath = getPath(fileName);
         try {
-            file.createNewFile();
-        } catch (final Throwable t) {
-            throw new IllegalStateException("Unable to create file!", t);
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
+                LOGGER.info("Successfully deleted file: " + fileName);
+            }
+        } catch (final IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to delete file: " + fileName, e);
+            throw new IllegalStateException("Unable to delete file!", e);
+        }
+    }
+
+    /**
+     * Deletes the specified file if it exists.
+     *
+     * @param path the path to delete
+     */
+    public void delete(final Path path) {
+        try {
+            if (Files.exists(path)) {
+                Files.delete(path);
+                LOGGER.info("Successfully deleted file: " + path.toString());
+            }
+        } catch (final IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to delete file: " + path.toString(), e);
+            throw new IllegalStateException("Unable to delete file!", e);
+        }
+    }
+
+    /**
+     * Creates a backup of the specified file.
+     *
+     * @param fileName the file name inside the Nixon directory
+     * @return true if backup was created successfully
+     */
+    public boolean createBackup(final String fileName) {
+        final Path originalPath = getPath(fileName);
+        final Path backupPath = getPath(fileName + ".backup");
+
+        try {
+            if (Files.exists(originalPath)) {
+                Files.copy(originalPath, backupPath,
+                        java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                LOGGER.info("Created backup for file: " + fileName);
+                return true;
+            }
+            return false;
+        } catch (final IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to create backup for file: " + fileName, e);
+            return false;
+        }
+    }
+
+    /**
+     * Gets the size of a file in bytes.
+     *
+     * @param fileName the file name inside the Nixon directory
+     * @return file size in bytes, or -1 if file doesn't exist
+     */
+    public long getFileSize(final String fileName) {
+        try {
+            final Path filePath = getPath(fileName);
+            return Files.exists(filePath) ? Files.size(filePath) : -1;
+        } catch (final IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to get file size: " + fileName, e);
+            return -1;
         }
     }
 }
