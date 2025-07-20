@@ -1357,6 +1357,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
                     final Render2DEvent render2DEvent = new Render2DEvent(p_181560_1_, scaledresolution);
                     Client.BUS.post(render2DEvent);
+                    if (mc.currentScreen == Client.INSTANCE.getStrikeGUI()) Client.INSTANCE.strikeGUI.updateScroll();
 
                     Client.INSTANCE.getNM().onRender2D(render2DEvent);
 

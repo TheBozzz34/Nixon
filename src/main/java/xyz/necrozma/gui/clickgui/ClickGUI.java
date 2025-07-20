@@ -12,7 +12,7 @@ import xyz.necrozma.gui.font.TTFFontRenderer;
 import xyz.necrozma.gui.render.RenderUtil;
 import xyz.necrozma.module.Category;
 import xyz.necrozma.module.Module;
-import xyz.necrozma.module.impl.render.ClickGUIModule;
+import xyz.necrozma.module.impl.render.ClickGui;
 import xyz.necrozma.module.impl.render.PopOutAnimation;
 import xyz.necrozma.module.impl.render.Xray;
 import xyz.necrozma.settings.impl.BooleanSetting;
@@ -266,7 +266,7 @@ public final class ClickGUI extends GuiScreen implements ClickGUIType {
     }
 
     public void onGuiClosed() {
-        Client.INSTANCE.getMM().getModule(ClickGUIModule.class).toggle();
+        Client.INSTANCE.getMM().getModule(ClickGui.class).toggle();
 
         mc.renderGlobal.loadRenderers();
     }

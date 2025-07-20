@@ -1,5 +1,7 @@
 package xyz.necrozma.module;
 
+import org.lwjgl.input.Keyboard;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -12,4 +14,5 @@ public @interface ModuleInfo {
     String name();
     String description() default "";
     Category category();
+    int defaultKey() default Keyboard.KEY_NONE;
 }

@@ -18,6 +18,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import xyz.necrozma.Client;
 
 public class GuiConnecting extends GuiScreen
 {
@@ -47,6 +48,8 @@ public class GuiConnecting extends GuiScreen
 
     private void connect(final String ip, final int port)
     {
+
+        Client.timeJoinedServer = System.currentTimeMillis();
         logger.info("Connecting to " + ip + ", " + port);
         (new Thread("Server Connector #" + CONNECTION_ID.incrementAndGet())
         {

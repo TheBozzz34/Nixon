@@ -4,7 +4,9 @@ package xyz.necrozma.module.impl.combat;
 import net.minecraft.network.play.client.*;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import xyz.necrozma.Client;
 import xyz.necrozma.event.impl.motion.PreMotionEvent;
+import xyz.necrozma.event.impl.packet.EventPacket;
 import xyz.necrozma.module.Category;
 import xyz.necrozma.module.Module;
 import xyz.necrozma.module.ModuleInfo;
@@ -53,13 +55,12 @@ public final class AutoGap extends Module {
         gap = -37;
     }
 
-    /*
+
     @Override
-    public void onPacketSend(final PacketSendEvent event) {
+    public void onPacketSend(final EventPacket event) {
         if (event.getPacket() instanceof C0APacketAnimation && gap != -37) {
             event.setCancelled(true);
+            Client.INSTANCE.getNM().registerNotification("AutoGap");
         }
     }
-
-     */
 }

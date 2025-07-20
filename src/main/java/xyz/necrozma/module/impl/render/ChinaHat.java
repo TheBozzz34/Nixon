@@ -31,7 +31,7 @@ public class ChinaHat extends Module {
 
     private final BooleanSetting firstPerson = new BooleanSetting("Show in first person", this, false);
     private final BooleanSetting allPlayers = new BooleanSetting("All players", this, false);
-    private final ModeSetting colorMode = new ModeSetting("Color Mode", "Sync", "Sync", "Custom");
+    //private final ModeSetting colorMode = new ModeSetting("Color Mode", "Sync", "Sync", "Custom");
     private final ColorSetting color = new ColorSetting("Color", Color.WHITE);
 
     public ChinaHat() {
@@ -141,17 +141,7 @@ public class ChinaHat extends Module {
 
     private Color getColor(int index, float alpha) {
         Color returnColor;
-        if (colorMode.is("Custom")) {
-            returnColor = color.isRainbow() ? color.getRainbow().getColor(index) : color.getColor();
-        } else {
-            // purple
-            //final Pair<Color, Color> colors = Pair.of(new Color(159, 24, 242), new Color(255, 0, 255));
-            //returnColor = ColorUtil.interpolateColorsBackAndForth(7, index, colors.getFirst(), colors.getSecond(), false);
-
-            // rainbow
-            returnColor = ColorUtil.rainbow(7, index, 1, 1, 1);
-
-        }
+        returnColor = ColorUtil.rainbow(7, index, 1, 1, 1);
         return ColorUtil.applyOpacity(returnColor, alpha);
     }
 

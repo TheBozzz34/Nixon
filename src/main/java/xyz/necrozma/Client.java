@@ -7,6 +7,7 @@ import xyz.necrozma.auth.AuthenticationService;
 import xyz.necrozma.discord.IPCClient;
 import xyz.necrozma.discord.IPCListener;
 import xyz.necrozma.discord.entities.RichPresence;
+import xyz.necrozma.gui.strikeless.StrikeGUI;
 import xyz.necrozma.irc.IRCClient;
 import xyz.necrozma.irc.IRCEventListener;
 import xyz.necrozma.login.AuthenticationResult;
@@ -24,7 +25,8 @@ import org.lwjgl.opengl.Display;
 import xyz.necrozma.event.impl.input.EventKey;
 import xyz.necrozma.event.impl.motion.PreMotionEvent;
 import xyz.necrozma.event.impl.render.Render3DEvent;
-import xyz.necrozma.gui.clickgui.ClickGUI;
+//import xyz.necrozma.gui.clickgui.ClickGUI;
+import xyz.necrozma.gui.ClickGuiNG.ClickGUI;
 import xyz.necrozma.module.Module;
 import xyz.necrozma.module.ModuleManager;
 import xyz.necrozma.command.CommandManager;
@@ -43,6 +45,7 @@ public enum Client implements Subscriber {
     private static final Logger logger = LogManager.getLogger();
 
     public ClickGUI clickGUI;
+    public StrikeGUI strikeGUI;
     private Xray xray;
 
     private final Minecraft MC = Minecraft.getMinecraft();
@@ -55,6 +58,17 @@ public enum Client implements Subscriber {
     private ConfigManager configManager;
     private AuthenticationService authService;
     private IRCClient ircClient;
+
+    public static long timeJoinedServer;
+    public static int totalKills;
+    public static int totalDeaths;
+    public static float distanceRan;
+    public static float distanceFlew;
+    public static float distanceJumped;
+    public static int amountOfModulesOn;
+    public static int amountOfVoidSaves;
+    public static int amountOfConfigsLoaded;
+    public static String lastLoggedAccount;
 
     public String username = "Player";
 
@@ -143,6 +157,7 @@ public enum Client implements Subscriber {
 
 
         clickGUI = new ClickGUI();
+        strikeGUI = new StrikeGUI();
         xray = new Xray();
         xray.addBlocks();
 

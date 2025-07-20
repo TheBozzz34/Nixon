@@ -8,6 +8,8 @@ import org.apache.commons.lang3.Validate;
 import org.lwjgl.input.Keyboard;
 import xyz.necrozma.Client;
 import xyz.necrozma.event.impl.motion.PreMotionEvent;
+import xyz.necrozma.event.impl.packet.EventPacket;
+// import xyz.necrozma.event.impl.packet.PacketSendEvent;
 import xyz.necrozma.event.impl.render.Render3DEvent;
 import xyz.necrozma.settings.Settings;
 
@@ -115,5 +117,8 @@ public abstract class Module implements Subscriber {
     }
 
     public void onUpdateAlwaysInGui() {
+    }
+
+    public void onPacketSend(final EventPacket event) {
     }
 }

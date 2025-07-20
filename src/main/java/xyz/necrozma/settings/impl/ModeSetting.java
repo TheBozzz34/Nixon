@@ -1,60 +1,61 @@
 package xyz.necrozma.settings.impl;
 
 
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-import lombok.Setter;
-import xyz.necrozma.settings.Settings;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class ModeSetting extends Settings {
 
-    public final List<String> modes;
-    private final HashMap<String, ArrayList<Settings>> childrenMap = new HashMap<>();
-    private String defaultMode;
-    private int modeIndex;
+import lombok.Getter;
+import lombok.Setter;
+import xyz.necrozma.module.Module;
+import xyz.necrozma.settings.Settings;
 
-    @Setter
-    @Expose
-    @SerializedName("value")
-    private String currentMode;
+import java.util.Arrays;
+import java.util.List;
 
-    public ModeSetting(String name, String defaultMode, String... modes) {
+@Getter
+@Setter
+public final class ModeSetting extends Settings {
+
+    public int index;
+    public List<String> modes;
+
+    public ModeSetting(final String name, final Module parent, final String defaultMode, final String... modes) {
         this.name = name;
+        parent.settings.add(this);
         this.modes = Arrays.asList(modes);
-        this.modeIndex = this.modes.indexOf(defaultMode);
-        if (currentMode == null) currentMode = defaultMode;
+        index = this.modes.indexOf(defaultMode);
     }
-
 
     public String getMode() {
-        return currentMode;
+        return modes.get(index);
     }
 
-    public boolean is(String mode) {
-        return currentMode.equalsIgnoreCase(mode);
+    public void set(final String mode) {
+        if (modes.contains(mode))
+            index = this.modes.indexOf(mode);
     }
 
-    public void cycleForwards() {
-        modeIndex++;
-        if (modeIndex > modes.size() - 1) modeIndex = 0;
-        currentMode = modes.get(modeIndex);
+    public boolean is(final String mode) {
+        return index == modes.indexOf(mode);
     }
 
-    public void cycleBackwards() {
-        modeIndex--;
-        if (modeIndex < 0) modeIndex = modes.size() - 1;
-        currentMode = modes.get(modeIndex);
+    public void cycle(final boolean forwards) {
+        if (forwards) {
+            if (index < modes.size() - 1) {
+                index++;
+            } else {
+                index = 0;
+            }
+        }
+        if (!forwards) {
+            if (index > 0) {
+                index--;
+            } else {
+                index = modes.size() - 1;
+            }
+        }
     }
-
-
-    public String getConfigValue() {
-        return currentMode;
-    }
-
 }

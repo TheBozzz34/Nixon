@@ -40,7 +40,7 @@ import net.optifine.reflect.Reflector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import xyz.necrozma.Client;
-import xyz.necrozma.module.impl.render.ClickGUIModule;
+import xyz.necrozma.module.impl.render.ClickGui;
 
 public class IntegratedServer extends MinecraftServer
 {
@@ -252,7 +252,7 @@ public class IntegratedServer extends MinecraftServer
         boolean flag = this.isGamePaused;
         this.isGamePaused = Minecraft.getMinecraft().getNetHandler() != null && Minecraft.getMinecraft().isGamePaused();
 
-        if (Client.INSTANCE.getMM().getModule(ClickGUIModule.class).isToggled()) {
+        if (Client.INSTANCE.getMM().getModule(ClickGui.class).isToggled()) {
             this.isGamePaused = false;
         }
 

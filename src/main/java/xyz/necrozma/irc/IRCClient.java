@@ -80,7 +80,7 @@ public class IRCClient {
             try {
                 String line;
                 while (running && (line = reader.readLine()) != null) {
-                    System.out.println("<< " + line);
+                    // System.out.println("<< " + line);
 
                     if (line.startsWith("PING ")) {
                         sendRaw("PONG " + line.substring(5));

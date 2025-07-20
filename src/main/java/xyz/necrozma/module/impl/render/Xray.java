@@ -40,6 +40,7 @@ public class Xray extends Module {
 
     @Override
     public void onToggle() {
+        mc.renderGlobal.loadRenderers();
         super.onToggle();
     }
 

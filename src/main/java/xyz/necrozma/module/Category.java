@@ -6,7 +6,9 @@ public enum Category {
     MOVEMENT,
     PLAYER,
     RENDER,
-    MISC
+    MISC,
+    CONFIGS,
+    STATISTICS,
 
 
 }

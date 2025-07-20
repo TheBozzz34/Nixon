@@ -31,8 +31,8 @@ public class AuthenticationService {
 
     // Microsoft OAuth endpoints
     private static final String MS_TOKEN_REFRESH_URL = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token";
-    private static final String CLIENT_ID = "00000000402b5328"; // Default Minecraft client ID
-    private static final String SCOPE = "service::user.auth.xboxlive.com::MBI_SSL XboxLive.signin offline_access";
+    private static final String CLIENT_ID = "17b88a38-2d92-4552-80b3-cd98b5b66cea";
+    private static final String SCOPE = "XboxLive.signin offline_access";
 
     private final ConfigManager configManager;
     private final XboxLiveMojangAuth xboxAuth;
