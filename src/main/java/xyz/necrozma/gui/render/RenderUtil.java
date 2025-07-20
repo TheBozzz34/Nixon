@@ -2007,4 +2007,142 @@ public final class RenderUtil implements InstanceAccess {
         GlStateManager.popMatrix();
     }
 
+    public static void shadeBlock(final BlockPos pos) {
+        double renderPosX = mc.getRenderManager().renderPosX, renderPosY = mc.getRenderManager().renderPosY, renderPosZ = mc.getRenderManager().renderPosZ;
+
+// Define the block position you want to render the cube around
+        BlockPos targetBlock = new BlockPos(100, 64, 100); // Example coordinates - change as needed
+
+        glShadeModel(GL_SMOOTH);
+        GlStateManager.enableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.disableCull();
+        GlStateManager.disableDepth();
+        GlStateManager.disableLighting();
+        GlStateManager.disableTexture2D();
+        GlStateManager.color(1, 1, 1, 1);
+        OpenGlHelper.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+
+        glPushMatrix();
+
+// Calculate render position relative to camera
+        double posX = targetBlock.getX() - renderPosX;
+        double posY = targetBlock.getY() - renderPosY;
+        double posZ = targetBlock.getZ() - renderPosZ;
+
+// Translate to block position
+        glTranslated(posX, posY, posZ);
+
+        glEnable(GL_LINE_SMOOTH);
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        glLineWidth(2);
+
+// Draw cube outline
+        glBegin(GL_LINES);
+
+// Get color for outline
+        int color1 = getColor(0, .8f).getRGB();
+        Color color = new Color(color1);
+        RenderUtil.color(color);
+
+// Bottom face
+        glVertex3d(0, 0, 0);
+        glVertex3d(1, 0, 0);
+        glVertex3d(1, 0, 0);
+        glVertex3d(1, 0, 1);
+        glVertex3d(1, 0, 1);
+        glVertex3d(0, 0, 1);
+        glVertex3d(0, 0, 1);
+        glVertex3d(0, 0, 0);
+
+// Top face
+        glVertex3d(0, 1, 0);
+        glVertex3d(1, 1, 0);
+        glVertex3d(1, 1, 0);
+        glVertex3d(1, 1, 1);
+        glVertex3d(1, 1, 1);
+        glVertex3d(0, 1, 1);
+        glVertex3d(0, 1, 1);
+        glVertex3d(0, 1, 0);
+
+// Vertical edges
+        glVertex3d(0, 0, 0);
+        glVertex3d(0, 1, 0);
+        glVertex3d(1, 0, 0);
+        glVertex3d(1, 1, 0);
+        glVertex3d(1, 0, 1);
+        glVertex3d(1, 1, 1);
+        glVertex3d(0, 0, 1);
+        glVertex3d(0, 1, 1);
+
+        glEnd();
+
+// Optional: Draw filled faces with transparency
+        glBegin(GL_QUADS);
+        int color2 = getColor(50, .3f).getRGB();
+        Color fillColor = new Color(color2);
+        RenderUtil.color(fillColor);
+
+// Bottom face
+        glVertex3d(0, 0, 0);
+        glVertex3d(1, 0, 0);
+        glVertex3d(1, 0, 1);
+        glVertex3d(0, 0, 1);
+
+// Top face
+        glVertex3d(0, 1, 0);
+        glVertex3d(0, 1, 1);
+        glVertex3d(1, 1, 1);
+        glVertex3d(1, 1, 0);
+
+// Front face
+        glVertex3d(0, 0, 0);
+        glVertex3d(0, 1, 0);
+        glVertex3d(1, 1, 0);
+        glVertex3d(1, 0, 0);
+
+// Back face
+        glVertex3d(0, 0, 1);
+        glVertex3d(1, 0, 1);
+        glVertex3d(1, 1, 1);
+        glVertex3d(0, 1, 1);
+
+// Left face
+        glVertex3d(0, 0, 0);
+        glVertex3d(0, 0, 1);
+        glVertex3d(0, 1, 1);
+        glVertex3d(0, 1, 0);
+
+// Right face
+        glVertex3d(1, 0, 0);
+        glVertex3d(1, 1, 0);
+        glVertex3d(1, 1, 1);
+        glVertex3d(1, 0, 1);
+
+        glEnd();
+
+        glPopMatrix();
+
+        // Restore OpenGL state completely
+        GlStateManager.enableTexture2D();
+        GlStateManager.enableLighting();
+        GlStateManager.enableDepth();
+        GlStateManager.enableCull();
+        GlStateManager.disableAlpha();
+        GlStateManager.disableBlend();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F); // <-- Critical: Reset color
+        GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDisable(GL_LINE_SMOOTH);
+        glShadeModel(GL_FLAT);
+
+
+
+    }
+
+    private Color getColor(int index, float alpha) {
+        Color returnColor;
+        returnColor = ColorUtil.rainbow(7, index, 1, 1, 1);
+        return ColorUtil.applyOpacity(returnColor, alpha);
+    }
+
 }

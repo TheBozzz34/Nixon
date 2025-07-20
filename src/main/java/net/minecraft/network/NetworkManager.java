@@ -520,6 +520,23 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
         }
     }
 
+    public void sendPacketWithoutEvent(Packet packetIn) {
+
+        if (this.isChannelOpen()) {
+            this.flushOutboundQueue();
+            this.dispatchPacket(packetIn, (GenericFutureListener<? extends Future<? super Void>>[]) null);
+        } else {
+            this.field_181680_j.writeLock().lock();
+
+            try {
+                this.outboundPacketsQueue.add(new NetworkManager.InboundHandlerTuplePacketListener(packetIn, (GenericFutureListener[]) null));
+            } finally {
+                this.field_181680_j.writeLock().unlock();
+            }
+        }
+
+    }
+
     static class InboundHandlerTuplePacketListener
     {
         private final Packet packet;

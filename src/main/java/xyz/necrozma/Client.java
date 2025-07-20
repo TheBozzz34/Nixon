@@ -2,17 +2,13 @@ package xyz.necrozma;
 
 
 import lombok.Setter;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.Session;
-import net.minecraft.util.Vec3;
 import xyz.necrozma.auth.AuthenticationService;
 import xyz.necrozma.discord.IPCClient;
 import xyz.necrozma.discord.IPCListener;
 import xyz.necrozma.discord.entities.RichPresence;
-import xyz.necrozma.exception.CommandException;
-import xyz.necrozma.gui.clickgui.ClickGUI2;
-import xyz.necrozma.gui.render.RenderUtil;
-import xyz.necrozma.login.AuthenticationException;
+import xyz.necrozma.irc.IRCClient;
+import xyz.necrozma.irc.IRCEventListener;
 import xyz.necrozma.login.AuthenticationResult;
 import xyz.necrozma.pathing.Path;
 import lombok.Getter;
@@ -34,15 +30,11 @@ import xyz.necrozma.module.ModuleManager;
 import xyz.necrozma.command.CommandManager;
 import xyz.necrozma.module.impl.render.Xray;
 import xyz.necrozma.notification.NotificationManager;
-import xyz.necrozma.notification.NotificationType;
 import xyz.necrozma.util.*;
 
-
-import java.io.File;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Getter
 public enum Client implements Subscriber {
@@ -62,6 +54,9 @@ public enum Client implements Subscriber {
     private StatsUtil SU;
     private ConfigManager configManager;
     private AuthenticationService authService;
+    private IRCClient ircClient;
+
+    public String username = "Player";
 
     @Setter
     private Path path;
@@ -75,88 +70,13 @@ public enum Client implements Subscriber {
             name = "Nixon",
             version = "1.0.0",
             commandPrefix = "#",
+            IRCPrefix = ";",
             clientPrefix = "&7[&cNixon&7]&r ",
             author = "Necrozma";
 
-    private IPCClient ipcClient = new IPCClient(824317166357577728L);
+    private final IPCClient ipcClient = new IPCClient(824317166357577728L);
 
     public final void init() throws IOException {
-
-        /*
-        try {
-            System.out.println("Starting authentication process...");
-
-            AuthTokens tokens = WebLoginHelper.getTokensFromWebLogin();
-
-            // Debug the tokens
-            System.out.println("Got tokens from web login:");
-            System.out.println("Access token: " + (tokens.getAccessToken() != null ?
-                    tokens.getAccessToken().substring(0, Math.min(50, tokens.getAccessToken().length())) + "..." : "null"));
-            System.out.println("Refresh token: " + (tokens.getRefreshToken() != null ? "Present" : "null"));
-
-            if (tokens.getAccessToken() == null || tokens.getAccessToken().trim().isEmpty()) {
-                throw new IOException("Access token is null or empty");
-            }
-
-            System.out.println("Starting Xbox Live authentication...");
-
-            try {
-                XboxLiveMojangAuth auth = new XboxLiveMojangAuth();
-                AuthenticationResult result = auth.authenticate(tokens.getAccessToken());
-
-                System.out.println("Authentication successful!");
-                System.out.println("Xbox Username: " + result.getUsername());
-                System.out.println("Minecraft Username: " + result.getMinecraftUsername());
-                System.out.println("Minecraft UUID: " + result.getUuid());
-                System.out.println("Token expires in: " + result.getExpiresIn() + " seconds");
-
-                // For your Minecraft session constructor:
-                String usernameIn = result.getMinecraftUsername(); // Minecraft username
-                String playerIDIn = result.getUuid();              // Minecraft UUID (this is what you need!)
-                String tokenIn = result.getAccessToken();          // Bearer token
-                String sessionTypeIn = "legacy";                   // or whatever session type you use
-
-                if (usernameIn == null || playerIDIn == null || tokenIn == null) {
-                    throw new IOException("Authentication result contains null values");
-                }
-
-                System.out.println("Creating Minecraft session...");
-                Minecraft.getMinecraft().setSession(new Session(
-                        usernameIn,
-                        playerIDIn,
-                        tokenIn,
-                        sessionTypeIn));
-
-                System.out.println("Session created successfully!");
-
-            } catch (AuthenticationException e) {
-                System.err.println("Xbox Live authentication failed: " + e.getMessage());
-                e.printStackTrace();
-
-                // Print the full stack trace to understand what went wrong
-                if (e.getCause() != null) {
-                    System.err.println("Caused by: " + e.getCause().getClass().getSimpleName() + ": " + e.getCause().getMessage());
-                }
-
-                throw new IOException("Xbox Live authentication failed: " + e.getMessage(), e);
-            }
-
-        } catch (Exception e) {
-            System.err.println("An unexpected error occurred during authentication: " + e.getMessage());
-            e.printStackTrace();
-
-            // Print detailed error information
-            System.err.println("Error type: " + e.getClass().getSimpleName());
-            if (e.getCause() != null) {
-                System.err.println("Root cause: " + e.getCause().getClass().getSimpleName() + ": " + e.getCause().getMessage());
-            }
-
-            throw new IOException("Unexpected error during authentication", e);
-        }
-
-         */
-
-
 
         ipcClient.setListener(new IPCListener(){
             @Override
@@ -186,8 +106,42 @@ public enum Client implements Subscriber {
         configManager = new ConfigManager("1.0.0", MM);
         authService = new AuthenticationService(configManager);
 
+        try {
+            ircClient = new IRCClient(
+                    "10.0.0.177",
+                    6667,
+                    "JavaBot123",
+                    "JavaBot123",
+                    "#chat",
+                    new IRCEventListener() {
+                        @Override
+                        public void onMessage(String channel, String sender, String message) {
+                            //System.out.println("[" + channel + "] <" + sender + ">: " + message);
+                            ChatUtil.sendMessage("&f[&bIRC&f] &7<" + sender + "> " + message);
+                        }
 
-        //clickGUI = new ClickGUI();
+                        @Override
+                        public void onPrivateMessage(String sender, String message) {
+                            System.out.println("[PM] <" + sender + ">: " + message);
+                        }
+
+                        @Override
+                        public void onConnected() {
+                            System.out.println("Connected to IRC.");
+                        }
+
+                        @Override
+                        public void onDisconnected() {
+                            System.out.println("Disconnected from IRC.");
+                        }
+                    }
+            );
+            ircClient.sendMessage("Hello from Java!");
+        } catch (Exception e) {
+            logger.error("Failed to initialize IRC client", e);
+        }
+
+
         clickGUI = new ClickGUI();
         xray = new Xray();
         xray.addBlocks();
@@ -198,33 +152,17 @@ public enum Client implements Subscriber {
 
         authenticateUser();
 
+
         try {
             ipcClient.connect();
         } catch (Exception e) {
             logger.error("Failed to connect to Discord RPC");
         }
-
-        // logger.info(SU.getStats());
     }
 
-    private List<Vec3> vecPath = new ArrayList<>();
+
     public final void onRender() {
         if (!MC.inGameHasFocus) return;
-
-        // Clear vecPath if path is finished or null
-        if (path == null || path.isFinished()) {
-            vecPath.clear();
-            return;
-        }
-
-        // Fetch next point from path
-        BlockPos nextPoint = path.getNextPoint();
-        if (nextPoint != null) {
-            // Synchronize access to vecPath to prevent ConcurrentModificationException
-            synchronized (vecPath) {
-                vecPath.add(new Vec3(nextPoint.getX(), nextPoint.getY(), nextPoint.getZ()));
-            }
-        }
     }
 
     private void authenticateUser() {
@@ -235,10 +173,10 @@ public enum Client implements Subscriber {
 
             final AuthenticationResult result = authService.getLastAuthResult();
             if (result != null) {
-                String usernameIn = result.getMinecraftUsername(); // Minecraft username
-                String playerIDIn = result.getUuid();              // Minecraft UUID (this is what you need!)
-                String tokenIn = result.getAccessToken();          // Bearer token
-                String sessionTypeIn = "legacy";                   // or whatever session type you use
+                String usernameIn = result.getMinecraftUsername();
+                String playerIDIn = result.getUuid();
+                String tokenIn = result.getAccessToken();
+                String sessionTypeIn = "legacy";
 
                 if (usernameIn == null || playerIDIn == null || tokenIn == null) {
                     System.err.println("Authentication result contains null values");
@@ -246,6 +184,7 @@ public enum Client implements Subscriber {
                 }
 
                 System.out.println("Creating Minecraft session...");
+                username = usernameIn;
                 MC.setSession(new Session(
                         usernameIn,
                         playerIDIn,
@@ -273,10 +212,19 @@ public enum Client implements Subscriber {
             logger.error("Failed to close Discord RPC");
         }
 
+        if (ircClient != null) {
+            ircClient.close();
+            System.out.println("IRC client disconnected.");
+        }
+
+
+
     }
 
     @Subscribe
     private final Listener<Render3DEvent> lister0 = new Listener<>(e -> {
+
+
         if (this.MM != null) {
             MM.getModules().values().stream().filter(Module::isToggled).forEach(m -> m.onRender3DEvent(e));
         }
@@ -285,7 +233,10 @@ public enum Client implements Subscriber {
     @Subscribe
     private final Listener<PreMotionEvent> listener1 = new Listener<>(e -> {
 
-        RenderUtil.renderBreadCrumbs(vecPath);
+        if (ircClient != null) {
+            ircClient.tick();
+        }
+
 
         if (this.MM != null) {
             MM.getModules().values().stream().filter(Module::isToggled).forEach(m -> m.onPreMotion(e));
@@ -303,9 +254,9 @@ public enum Client implements Subscriber {
             MM.getModules().values().forEach(m -> {
                 if (m.getKey() == e.getKey()) {
                     m.toggle();
-                    // NM.registerNotification(m.getName() + " toggled!", 3000, NotificationType.NOTIFICATION);
                 }
             });
         }
     });
+
 }
