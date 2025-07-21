@@ -8,6 +8,8 @@ It has working microsoft device code flow auth which is cool though
 
 half of this is skidded from rise and tenacity leaks lmao
 
+Currently comprised of 15,077 lines of code spread over 133 files.
+
 ![image0](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/8g0wq976.png)
 
 ![blur](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/gcj057jm.png)
@@ -16,7 +18,7 @@ half of this is skidded from rise and tenacity leaks lmao
 
 ![image2](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/tfjv0tks.png)
 
-![image3](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/hm1jx9r8.png)
+![image3](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/4o9c5gfk.jpg)
 
 ## Issues
 
