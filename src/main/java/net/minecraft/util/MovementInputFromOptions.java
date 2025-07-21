@@ -1,6 +1,9 @@
 package net.minecraft.util;
 
 import net.minecraft.client.settings.GameSettings;
+import xyz.necrozma.Client;
+import xyz.necrozma.event.impl.Button;
+import xyz.necrozma.event.impl.input.MoveButtonEvent;
 
 public class MovementInputFromOptions extends MovementInput
 {
@@ -13,6 +16,11 @@ public class MovementInputFromOptions extends MovementInput
 
     public void updatePlayerMoveState()
     {
+        final MoveButtonEvent event = new MoveButtonEvent(new Button(this.gameSettings.keyBindLeft.isKeyDown(), 90), new Button(this.gameSettings.keyBindRight.isKeyDown(), -90), new Button(this.gameSettings.keyBindBack.isKeyDown(), 180), new Button(this.gameSettings.keyBindForward.isKeyDown(), 0), this.gameSettings.keyBindSneak.isKeyDown(), this.gameSettings.keyBindJump.isKeyDown());
+        Client.BUS.post(event);
+
+        if (event.isCancelled()) return;
+
         this.moveStrafe = 0.0F;
         this.moveForward = 0.0F;
 

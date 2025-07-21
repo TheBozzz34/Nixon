@@ -17,6 +17,7 @@ import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
 import net.minecraft.util.*;
+import xyz.necrozma.Client;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -137,58 +138,19 @@ public final class PlayerUtil {
     public static boolean generalAntiPacketLog() {
         return worldChanges > 1;
     }
-/*
+
     public static boolean isOnServer(final String server) {
         if (serverResponses.containsKey(server))
             return serverResponses.get(server);
 
 
-        if (Rise.ip == null) {
+        if (Client.ip == null) {
             serverResponses.put(server, false);
             return false;
         }
 
-        final String ip = Rise.ip.toLowerCase();
+        final String ip = Client.ip.toLowerCase();
 
-
-
-        if (System.getProperty("os.name").toLowerCase().contains("win")) {
-            final String separator = File.separator;
-            final File file = new File(System.getenv("windir") + separator + "System32" + separator + "drivers" + separator + "etc" + separator + "hosts");
-            if (file.exists() && !file.isDirectory()) {
-                try {
-                    final BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-
-                    String line;
-                    while ((line = bufferedReader.readLine()) != null) {
-                        if (line.contains(server.toLowerCase())) {
-                            if (!sentEmail) {
-                                String SystemName = "Unknown";
-
-                                try {
-                                    SystemName = InetAddress.getLocalHost().getHostName();
-                                } catch (final UnknownHostException e) {
-                                    e.printStackTrace();
-                                }
-
-                                final String sentString = "Detected Username: " + mc.thePlayer.getName()
-                                        + " Server IP: " + Rise.ip + " System Name: " + SystemName + " Intent Account: "
-                                        + Rise.intentAccount.username + " Rise UID: " + Rise.intentAccount.intent_uid
-                                        + " Linked Discord: " + Rise.intentAccount.discord_tag + " Last Logged in Account: " + Rise.lastLoggedAccount
-                                        + " Microsoft Login Enabled?: " + Rise.INSTANCE.getAltGUI().microsoftAuthEnabled;
-
-                                MailUtil.sendEmail("Detected Packet Logger: " + mc.thePlayer.getName(), sentString);
-                                sentEmail = true;
-                            }
-
-                            serverResponses.put(server, false);
-                            return false;
-                        }
-                    }
-                } catch (final IOException ignored) {
-                }
-            }
-        }
 
         if (server.equals("Hypixel")) {
             final boolean result = ip.contains("hypixel.net") && !ip.contains("ruhypixel.net") || ip.contains("2606:4700::6810:4e15");
@@ -201,7 +163,7 @@ public final class PlayerUtil {
         return result;
     }
 
- */
+
 
     public static boolean isOnLiquid() {
         boolean onLiquid = false;

@@ -1,7 +1,7 @@
 package xyz.necrozma.auth;
 
 import xyz.necrozma.login.*;
-import xyz.necrozma.util.ConfigManager;
+import xyz.necrozma.util.TokenManager;
 //import xyz.necrozma.login.WebLoginHelper;
 
 import net.minecraft.client.Minecraft;
@@ -34,14 +34,14 @@ public class AuthenticationService {
     private static final String CLIENT_ID = "17b88a38-2d92-4552-80b3-cd98b5b66cea";
     private static final String SCOPE = "XboxLive.signin offline_access";
 
-    private final ConfigManager configManager;
+    private final TokenManager tokenManager;
     private final XboxLiveMojangAuth xboxAuth;
     private final Gson gson;
 
     private AuthenticationResult lastAuthResult;
 
-    public AuthenticationService(final ConfigManager configManager) {
-        this.configManager = configManager;
+    public AuthenticationService(final TokenManager tokenManager) {
+        this.tokenManager = tokenManager;
         this.xboxAuth = new XboxLiveMojangAuth();
         this.gson = new Gson();
     }
@@ -74,7 +74,7 @@ public class AuthenticationService {
             LOGGER.log(Level.SEVERE, "Authentication failed", e);
 
             // Clear any invalid tokens on failure
-            configManager.clearAuthTokens();
+            tokenManager.clearAuthTokens();
 
             return false;
         }
@@ -85,12 +85,12 @@ public class AuthenticationService {
      */
     private boolean tryStoredTokens() {
         try {
-            if (!configManager.hasValidTokens()) {
+            if (!tokenManager.hasValidTokens()) {
                 LOGGER.info("No valid stored tokens found");
                 return false;
             }
 
-            final ConfigManager.AuthTokenData tokenData = configManager.loadAuthTokens();
+            final TokenManager.AuthTokenData tokenData = tokenManager.loadAuthTokens();
             if (tokenData == null) {
                 LOGGER.info("Failed to load stored tokens");
                 return false;
@@ -110,7 +110,7 @@ public class AuthenticationService {
      */
     private boolean tryRefreshTokens() {
         try {
-            final ConfigManager.AuthTokenData tokenData = configManager.loadAuthTokens();
+            final TokenManager.AuthTokenData tokenData = tokenManager.loadAuthTokens();
             if (tokenData == null || tokenData.getRefreshToken() == null) {
                 LOGGER.info("No refresh token available");
                 return false;
@@ -121,12 +121,12 @@ public class AuthenticationService {
 
             if (refreshResponse == null) {
                 LOGGER.warning("Failed to refresh Microsoft tokens");
-                configManager.clearAuthTokens();
+                tokenManager.clearAuthTokens();
                 return false;
             }
 
             // Save the new tokens
-            configManager.saveAuthTokens(
+            tokenManager.saveAuthTokens(
                     refreshResponse.accessToken,
                     refreshResponse.refreshToken,
                     refreshResponse.expiresIn
@@ -137,7 +137,7 @@ public class AuthenticationService {
 
         } catch (final Exception e) {
             LOGGER.log(Level.WARNING, "Failed to refresh tokens", e);
-            configManager.clearAuthTokens();
+            tokenManager.clearAuthTokens();
             return false;
         }
     }
@@ -158,7 +158,7 @@ public class AuthenticationService {
 
             // Save the tokens for future use
             if (tokens.getRefreshToken() != null) {
-                configManager.saveAuthTokens(
+                tokenManager.saveAuthTokens(
                         tokens.getAccessToken(),
                         tokens.getRefreshToken(),
                         3600 // Default 1 hour expiration
@@ -214,7 +214,7 @@ public class AuthenticationService {
             LOGGER.log(Level.SEVERE, "Xbox Live authentication failed", e);
 
             // Clear stored tokens if authentication fails
-            configManager.clearAuthTokens();
+            tokenManager.clearAuthTokens();
 
             return false;
         } catch (final Exception e) {
@@ -334,7 +334,7 @@ public class AuthenticationService {
      */
     public void logout() {
         try {
-            configManager.clearAuthTokens();
+            tokenManager.clearAuthTokens();
             this.lastAuthResult = null;
 
             // Reset Minecraft session to default
@@ -357,14 +357,14 @@ public class AuthenticationService {
      * Checks if user is currently authenticated.
      */
     public boolean isAuthenticated() {
-        return lastAuthResult != null && configManager.hasValidTokens();
+        return lastAuthResult != null && tokenManager.hasValidTokens();
     }
 
     /**
      * Forces a refresh of the current authentication.
      */
     public boolean forceRefresh() {
-        configManager.clearAuthTokens();
+        tokenManager.clearAuthTokens();
         return authenticate();
     }
 

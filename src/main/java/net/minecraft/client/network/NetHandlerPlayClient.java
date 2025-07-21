@@ -829,6 +829,8 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         this.netManager.sendPacketWithoutEvent(p_147297_1_);
     }
 
+
+
     public void handleCollectItem(S0DPacketCollectItem packetIn)
     {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.gameController);

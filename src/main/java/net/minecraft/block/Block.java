@@ -33,6 +33,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import xyz.necrozma.Client;
+import xyz.necrozma.event.impl.motion.BlockCollideEvent;
 import xyz.necrozma.module.impl.render.Xray;
 
 public class Block
@@ -497,6 +498,10 @@ public class Block
      */
     public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
     {
+        final BlockCollideEvent blockCollideEvent = new BlockCollideEvent(this.getCollisionBoundingBox(worldIn, pos, state), state.getBlock(), pos.getX(), pos.getY(), pos.getZ());
+
+        Client.BUS.post(blockCollideEvent);
+
         AxisAlignedBB axisalignedbb = this.getCollisionBoundingBox(worldIn, pos, state);
 
         if (axisalignedbb != null && mask.intersectsWith(axisalignedbb))

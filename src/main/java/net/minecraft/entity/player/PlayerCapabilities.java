@@ -20,7 +20,7 @@ public class PlayerCapabilities
 
     /** Indicates whether the player is allowed to modify the surroundings */
     public boolean allowEdit = true;
-    private float flySpeed = 0.05F;
+    public float flySpeed = 0.05F;
     private float walkSpeed = 0.1F;
 
     public void writeCapabilitiesToNBT(NBTTagCompound tagCompound)

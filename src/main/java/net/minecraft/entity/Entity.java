@@ -12,6 +12,7 @@ import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockPattern;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.crash.CrashReport;
@@ -46,6 +47,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import xyz.necrozma.Client;
+import xyz.necrozma.event.impl.motion.StrafeEvent;
 
 public abstract class Entity implements ICommandSender
 {
@@ -1097,6 +1100,10 @@ public abstract class Entity implements ICommandSender
         return this.inWater;
     }
 
+    public boolean isInLiquid() {
+        return this.isInWater() || this.isInLava();
+    }
+
     /**
      * Returns if this entity is in water and will end up adding the waters velocity to the entity
      */
@@ -1215,6 +1222,14 @@ public abstract class Entity implements ICommandSender
      */
     public void moveFlying(float strafe, float forward, float friction)
     {
+        if (this == Minecraft.getMinecraft().thePlayer) {
+            final StrafeEvent strafeEvent = new StrafeEvent(forward, strafe, friction);
+            Client.BUS.post(strafeEvent);
+            strafe = strafeEvent.getStrafe();
+            forward = strafeEvent.getForward();
+            friction = strafeEvent.getFriction();
+            if (strafeEvent.isCancelled()) return;
+    }
         float f = strafe * strafe + forward * forward;
 
         if (f >= 1.0E-4F)

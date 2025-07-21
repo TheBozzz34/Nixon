@@ -27,6 +27,9 @@ public class FileUtil {
     private static final String CLIENT_NAME = "nixon";
     private static final Path CLIENT_PATH = Paths.get(mc.mcDataDir.getAbsolutePath(), CLIENT_NAME);
 
+
+    private final String SEPARATOR = File.separator;
+
     /**
      * Checks if a file exists.
      *
@@ -311,5 +314,9 @@ public class FileUtil {
             e.printStackTrace();
         }
         return stringBuilder.toString();
+    }
+
+    public File getFileOrPath(final String fileName) {
+        return new File(CLIENT_PATH + fileName.replace("\\", SEPARATOR));
     }
 }

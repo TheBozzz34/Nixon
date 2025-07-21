@@ -13,6 +13,8 @@ import org.lwjgl.input.Keyboard;
 import xyz.necrozma.Client;
 import xyz.necrozma.event.impl.motion.PreMotionEvent;
 import xyz.necrozma.event.impl.render.Render2DEvent;
+import xyz.necrozma.event.impl.update.EventUpdate;
+import xyz.necrozma.gui.ClickGuiNG.ClickGUI;
 import xyz.necrozma.module.Category;
 import xyz.necrozma.module.Module;
 import xyz.necrozma.module.ModuleInfo;
@@ -99,9 +101,10 @@ public final class ClickGui extends Module {
 
     /*
     @Override
-    public void onUpdate(final UpdateEvent event) {
-        if (mc.currentScreen == Rise.INSTANCE.getClickGUI()) ClickGUI.updateScroll();
+    public void onUpdate(final EventUpdate event) {
+        if (mc.currentScreen == Client.INSTANCE.getClickGUI()) ClickGUI.updateScroll();
     }
+
 
      */
 

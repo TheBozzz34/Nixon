@@ -48,9 +48,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
+import org.lwjgl.opencl.CL;
 import xyz.necrozma.Client;
 import xyz.necrozma.event.EventFlow;
 import xyz.necrozma.event.impl.packet.EventPacket;
+import xyz.necrozma.event.impl.packet.PacketReceiveEvent;
 import xyz.necrozma.util.PacketHandler;
 
 public class NetworkManager extends SimpleChannelInboundHandler<Packet>
@@ -156,6 +158,11 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
 
         if (this.channel.isOpen())
         {
+            final PacketReceiveEvent event1 = new PacketReceiveEvent(p_channelRead0_2_);
+            Client.BUS.post(event1);
+
+        if (event1.isCancelled()) return;
+
             try
             {
                 final EventPacket event = new EventPacket(p_channelRead0_2_);
@@ -176,6 +183,8 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
             }
         }
     }
+
+
 
     /**
      * Sets the NetHandler for this NetworkManager, no checks are made if this handler is suitable for the particular

@@ -48,6 +48,7 @@ import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 import xyz.necrozma.Client;
 import xyz.necrozma.command.CommandManager;
+import xyz.necrozma.event.impl.motion.MoveEvent;
 import xyz.necrozma.event.impl.motion.PreMotionEvent;
 import xyz.necrozma.event.impl.update.EventUpdate;
 import xyz.necrozma.irc.IRCClient;
@@ -92,7 +93,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
     private boolean serverSneakState;
 
     /** the last sprinting state sent to the server */
-    private boolean serverSprintState;
+    public static boolean serverSprintState;
 
     /**
      * Reset to 0 every time position is sent to the server, used to send periodic updates every 20 ticks even when the
@@ -170,6 +171,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
     {
         if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ)))
         {
+
             // Shitclient update hook
             Client.BUS.post(new EventUpdate());
 
@@ -949,5 +951,19 @@ public class EntityPlayerSP extends AbstractClientPlayer
         final float z = (float) (entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ) * mc.timer.renderPartialTicks - (mc.getRenderManager()).renderPosZ);
 
         return MathHelper.sqrt_float(x * x + y * y + z * z);
+    }
+
+    public void moveEntityNoEvent(double x, double y, double z) {
+        super.moveEntity(x, y, z);
+    }
+
+    @Override
+    public void moveEntity(double x, double y, double z) {
+        final MoveEvent moveEvent = new MoveEvent(x, y, z);
+        Client.BUS.post(moveEvent);
+
+        if (moveEvent.isCancelled()) return;
+
+        super.moveEntity(moveEvent.getX(), moveEvent.getY(), moveEvent.getZ());
     }
 }

@@ -48,7 +48,7 @@ public class GuiConnecting extends GuiScreen
 
     private void connect(final String ip, final int port)
     {
-
+        Client.INSTANCE.ip = ip;
         Client.timeJoinedServer = System.currentTimeMillis();
         logger.info("Connecting to " + ip + ", " + port);
         (new Thread("Server Connector #" + CONNECTION_ID.incrementAndGet())
