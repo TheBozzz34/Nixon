@@ -230,7 +230,7 @@ public enum Client implements Subscriber {
 
             final String[] split = line.split("_");
             if (split.length < 2) {
-                logger.warn("Skipping malformed config line: " + line);
+                logger.warn("Skipping malformed config line: {}", line);
                 continue;
             }
 
@@ -406,101 +406,5 @@ public enum Client implements Subscriber {
 
     @Subscribe
     private final Listener<Event> EventListener = new Listener<>(EventHandler::handle);
-
-    /*
-
-    @Subscribe
-    private final Listener<Render3DEvent> lister0 = new Listener<>(e -> {
-
-
-        if (this.MM != null) {
-            MM.getModules().values().stream().filter(Module::isToggled).forEach(m -> m.onRender3DEvent(e));
-        }
-    });
-
-    @Subscribe
-    private final Listener<PreMotionEvent> listener1 = new Listener<>(e -> {
-
-        if (ircClient != null) {
-            ircClient.tick();
-        }
-
-        if (this.MM != null) {
-            MM.getModules().values().stream().filter(Module::isToggled).forEach(m -> m.onPreMotion(e));
-
-            if (MC.currentScreen instanceof ClickGUI ) {
-                MM.getModules().values().stream().filter(Module::isToggled).forEach(Module::onUpdateAlwaysInGui);
-            }
-
-            MM.getModules().values().stream().filter(Module::isToggled).forEach(Module::onUpdateAlways);
-
-        }
-    });
-
-    @Subscribe
-    private final Listener<EventKey> listener2 = new Listener<>(e -> {
-        if(this.MM != null) {
-            MM.getModules().values().forEach(m -> {
-                if (m.getKey() == e.getKey()) {
-                    m.toggle();
-                }
-            });
-        }
-    });
-
-    @Subscribe
-    private final Listener<EventUpdate> listener3 = new Listener<>(e -> {
-        if(this.MM != null) {
-            MM.getModules().values().forEach(m -> {
-                if (m.isToggled()) {
-                    m.onUpdate(e);
-                }
-            });
-        }
-    });
-
-    @Subscribe
-    private final Listener<BlockCollideEvent> listener4 = new Listener<>(e -> {
-        if (this.MM != null) {
-            MM.getModules().values().stream().filter(Module::isToggled).forEach(m -> m.onBlockCollide(e));
-        }
-    });
-
-    @Subscribe
-    private final Listener<MoveEvent> listener5 = new Listener<>(e -> {
-        if (this.MM != null) {
-            MM.getModules().values().stream().filter(Module::isToggled).forEach(m -> m.onMove(e));
-        }
-    });
-
-    @Subscribe
-    private final Listener<MoveButtonEvent> listener6 = new Listener<>(e -> {
-        if (this.MM != null) {
-            MM.getModules().values().stream().filter(Module::isToggled).forEach(m -> m.onMoveButton(e));
-        }
-    });
-
-    @Subscribe
-    private final Listener<StrafeEvent> listener7 = new Listener<>(e -> {
-        if (this.MM != null) {
-            MM.getModules().values().stream().filter(Module::isToggled).forEach(m -> m.onStrafe(e));
-        }
-    });
-
-    @Subscribe
-    private final Listener<Render2DEvent> listener8 = new Listener<>(e -> {
-        if (this.MM != null) {
-            MM.getModules().values().stream().filter(Module::isToggled).forEach(m -> m.onRender2DEvent(e));
-        }
-    });
-
-    @Subscribe
-    private final Listener<PacketReceiveEvent> listener9 = new Listener<>(e -> {
-        if (this.MM != null) {
-            MM.getModules().values().stream().filter(Module::isToggled).forEach(m -> m.onPacketReceive(e));
-        }
-    });
-
-     */
 
 }
