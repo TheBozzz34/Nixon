@@ -1,6 +1,7 @@
 package xyz.necrozma.module.impl.combat;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -43,11 +44,14 @@ import xyz.necrozma.util.*;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
 @ModuleInfo(name = "Aura", description = "Attacks entities for you", category = Category.COMBAT)
 public final class Aura extends Module {
+
+    private static final Logger LOGGER = Logger.getLogger(Aura.class.getName());
 
     private final TimeUtil timer = new TimeUtil();
 
@@ -130,6 +134,8 @@ public final class Aura extends Module {
     private final BooleanSetting attackInInterfaces = new BooleanSetting("Attack in Interfaces", this, true);
     private final BooleanSetting onClick = new BooleanSetting("On Click", this, false);
 
+
+    private String auraDebugText = "test";
 
     @Override
     public void onWorldChanged(final WorldChangedEvent event) {
@@ -269,6 +275,8 @@ public final class Aura extends Module {
 
     @Override
     public void onUpdate(final EventUpdate event) {
+        //LOGGER.info("onupdate called!");
+
         if (!(!onClick.isEnabled() || Mouse.isButtonDown(0))) {
             target = null;
             return;
@@ -495,6 +503,8 @@ public final class Aura extends Module {
                      */
                     final AttackEvent attackEvent = new AttackEvent(target);
                     Client.BUS.post(attackEvent);
+                    auraDebugText = "Attack Event Cancelled: " + attackEvent.isCancelled();
+
 
                     if (attackEvent.isCancelled())
                         return;
@@ -613,6 +623,14 @@ public final class Aura extends Module {
     @Override
     public void onRender2DEvent(final Render2DEvent event) {
         comfortaa.drawString("Aura debug text", 1, 1, -1);
+        final ScaledResolution sr = new ScaledResolution(mc);
+
+        final int posX = (mc.displayWidth / (mc.gameSettings.guiScale * 2));
+        final int posY = (mc.displayHeight / (mc.gameSettings.guiScale * 2));
+
+        comfortaa.drawString(auraDebugText, posX, posY, -1);
+
+
         if (rotationMode.is("Custom") || rotationMode.is("Custom Simple") || rotationMode.is("Custom Advanced")) {
             comfortaa.drawString("Yaw: " + yaw, 1, 12, -1);
             comfortaa.drawString("Pitch: " + pitch, 1, 24, -1);

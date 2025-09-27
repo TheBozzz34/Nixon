@@ -12,6 +12,7 @@ import xyz.necrozma.event.impl.packet.EventPacket;
 import xyz.necrozma.event.impl.packet.PacketReceiveEvent;
 import xyz.necrozma.event.impl.render.Render2DEvent;
 import xyz.necrozma.event.impl.render.Render3DEvent;
+import xyz.necrozma.event.impl.update.EventUpdate;
 import xyz.necrozma.event.impl.update.WorldChangedEvent;
 import xyz.necrozma.gui.ClickGuiNG.ClickGUI;
 import xyz.necrozma.gui.render.RenderUtil;
@@ -43,7 +44,15 @@ public final class EventHandler {
                     module.onRender2DEvent(event);
                 }
             }
-        } else if (e instanceof Render3DEvent) {
+        } else if (e instanceof EventUpdate) {
+            final EventUpdate event = ((EventUpdate) e);
+
+            for (final Module module : modules) {
+                if (module.isToggled()) {
+                    module.onUpdate(event);
+                }
+            }
+        }else if (e instanceof Render3DEvent) {
             final Render3DEvent event = ((Render3DEvent) e);
 
             RenderUtil.delta3DFrameTime = (System.currentTimeMillis() - RenderUtil.last3DFrame) / 10F;
