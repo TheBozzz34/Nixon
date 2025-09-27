@@ -4,11 +4,14 @@
 
 I am learning client development with this project, it is in no way meant to be actually useful.
 
-It has working microsoft device code flow auth which is cool though
-
-half of this is skidded from rise and tenacity leaks lmao
-
-Currently comprised of 15,077 lines of code spread over 133 files.
+Some working features include:
+- MS device code flow auth
+- Aura, AutoGap
+- Speed, Fly, Jesus, Sprint
+- ESP, Tracers, Xray, Nametags, Fullbright
+- Fully working clickgui with settings
+- discord rpc
+- irc integration
 
 ![image0](https://r2.e-z.host/66429241-79bf-4da7-b4b6-33cb201c59b4/8g0wq976.png)
 
