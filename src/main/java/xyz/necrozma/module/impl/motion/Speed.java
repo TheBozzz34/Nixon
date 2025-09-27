@@ -125,6 +125,13 @@ public final class Speed extends Module {
 
     @Override
     public void onEnable() {
+        // Guard against early enable during client startup when player/world is not ready
+        if (mc == null || mc.thePlayer == null) {
+            // Defer activation until the game world is available
+            ticksDisable = 0; // will allow delayed re-init via ticksDisable gate
+            return;
+        }
+
         ticks = 0;
         offGroundTicks = 0;
         speed = 0;
@@ -148,10 +155,14 @@ public final class Speed extends Module {
 
     @Override
     public void onDisable() {
-        mc.thePlayer.speedInAir = 0.02f;
-        mc.thePlayer.jumpMovementFactor = 0.02f;
+        if (mc != null && mc.thePlayer != null) {
+            mc.thePlayer.speedInAir = 0.02f;
+            mc.thePlayer.jumpMovementFactor = 0.02f;
+        }
 
-        mc.timer.timerSpeed = 1;
+        if (mc != null && mc.timer != null) {
+            mc.timer.timerSpeed = 1;
+        }
 
         EntityPlayer.enableCameraYOffset = false;
 //        EntityPlayer.movementYaw = null;
