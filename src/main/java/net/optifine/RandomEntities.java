@@ -27,6 +27,8 @@ import net.optifine.util.IntegratedServerUtils;
 import net.optifine.util.PropertiesOrdered;
 import net.optifine.util.ResUtils;
 import net.optifine.util.StrUtils;
+import xyz.necrozma.Client;
+import xyz.necrozma.event.impl.update.WorldChangedEvent;
 
 public class RandomEntities
 {
@@ -87,6 +89,9 @@ public class RandomEntities
 
     public static void worldChanged(World oldWorld, World newWorld)
     {
+        final WorldChangedEvent e = new WorldChangedEvent(oldWorld, newWorld);
+
+        Client.BUS.post(e);
         if (newWorld != null)
         {
             List list = newWorld.getLoadedEntityList();

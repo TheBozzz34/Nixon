@@ -145,7 +145,7 @@ public enum Client implements Subscriber {
         PH = new PacketHandler();
         NM = new NotificationManager();
         SU = new StatsUtil();
-        tokenManager = new TokenManager("1.0.0", MM);
+        tokenManager = new TokenManager("1.0.0");
         authService = new AuthenticationService(tokenManager);
         guiTheme = new GuiTheme();
 

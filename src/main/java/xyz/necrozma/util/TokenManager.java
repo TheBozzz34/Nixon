@@ -1,7 +1,7 @@
 package xyz.necrozma.util;
 
 
-import xyz.necrozma.module.ModuleManager;
+import lombok.Getter;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -29,34 +29,24 @@ public class TokenManager {
     private static final String CONFIG_VERSION_PREFIX = "Nixon_Version_";
 
     private final String version;
-    private final ModuleManager moduleManager;
     private final Gson gson;
-    private SecretKey encryptionKey;
+    private final SecretKey encryptionKey;
 
-    public TokenManager(final String version, final ModuleManager moduleManager) {
+    public TokenManager(final String version) {
         this.version = version;
-        this.moduleManager = moduleManager;
         this.gson = new Gson();
         this.encryptionKey = loadOrCreateEncryptionKey();
     }
-
-    /**
-     * Saves the current configuration to file.
-     * Creates a backup of the existing config before saving.
-     *
-     * @return true if config was saved successfully
-     */
 
 
     /**
      * Saves authentication tokens securely (encrypted).
      *
-     * @param accessToken the Microsoft access token
+     * @param accessToken  the Microsoft access token
      * @param refreshToken the Microsoft refresh token
-     * @param expiresIn expiration time in seconds
-     * @return true if tokens were saved successfully
+     * @param expiresIn    expiration time in seconds
      */
-    public boolean saveAuthTokens(final String accessToken, final String refreshToken, final long expiresIn) {
+    public void saveAuthTokens(final String accessToken, final String refreshToken, final long expiresIn) {
         try {
             final JsonObject authData = new JsonObject();
             authData.addProperty("version", version);
@@ -76,11 +66,8 @@ public class TokenManager {
                 LOGGER.warning("Failed to save authentication tokens");
             }
 
-            return success;
-
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Error saving authentication tokens", e);
-            return false;
         }
     }
 
@@ -212,8 +199,6 @@ public class TokenManager {
      * Checks if the config version is compatible with the current version.
      */
     private boolean isVersionCompatible(final String configVersion) {
-        // You can implement version compatibility logic here
-        // For now, just check if versions match exactly
         return version.equals(configVersion);
     }
 
@@ -224,6 +209,7 @@ public class TokenManager {
     /**
      * Data class for authentication token information.
      */
+    @Getter
     public static class AuthTokenData {
         private final String accessToken;
         private final String refreshToken;
@@ -235,22 +221,6 @@ public class TokenManager {
             this.refreshToken = refreshToken;
             this.expiresIn = expiresIn;
             this.savedAt = savedAt;
-        }
-
-        public String getAccessToken() {
-            return accessToken;
-        }
-
-        public String getRefreshToken() {
-            return refreshToken;
-        }
-
-        public long getExpiresIn() {
-            return expiresIn;
-        }
-
-        public long getSavedAt() {
-            return savedAt;
         }
 
         /**

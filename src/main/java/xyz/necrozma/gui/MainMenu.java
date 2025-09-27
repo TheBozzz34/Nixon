@@ -186,21 +186,7 @@ public final class MainMenu extends GuiScreen {
         final ArrayList<String> changes = new ArrayList<>();
 
         changes.add("");
-        changes.add("d6f9055");
-        changes.add("+ Added Gaussian Blur internal function");
-        changes.add("+ Added new internal framebuffer functions");
-        changes.add("+ Modules now have internal flag to be hidden in gui");
-        changes.add("+ Added utils to read/write to files");
-        changes.add("+ Added more OpenGL utils");
-        changes.add("+ Added more math functions");
-        changes.add("+ Added roundedUtil and stencilUti ");
-
-        changes.add("");
-        changes.add("8cbd1bc");
-        changes.add("+ ClickGui no longer pauses game when opened");
-        changes.add("+ Added blur to inventory background");
-        changes.add("+ Added blur to pause menu background");
-        changes.add("+ Removed notifications when a module is toggled");
+        changes.add("need to update this");
         return changes;
     }
 

@@ -1477,6 +1477,10 @@ public abstract class Entity implements ICommandSender
         }
     }
 
+    public Vec3 getLookCustom(final float yaw, final float pitch) {
+        return this.getVectorForRotation(pitch, yaw);
+    }
+
     /**
      * Creates a Vec3 using the pitch and yaw of the entities rotation.
      *  
@@ -1512,6 +1516,13 @@ public abstract class Entity implements ICommandSender
         Vec3 vec3 = this.getPositionEyes(partialTicks);
         Vec3 vec31 = this.getLook(partialTicks);
         Vec3 vec32 = vec3.addVector(vec31.xCoord * blockReachDistance, vec31.yCoord * blockReachDistance, vec31.zCoord * blockReachDistance);
+        return this.worldObj.rayTraceBlocks(vec3, vec32, false, false, true);
+    }
+
+    public MovingObjectPosition rayTraceCustom(final double blockReachDistance, final float partialTicks, final float yaw, final float pitch) {
+        final Vec3 vec3 = this.getPositionEyes(partialTicks);
+        final Vec3 vec31 = this.getLookCustom(yaw, pitch);
+        final Vec3 vec32 = vec3.addVector(vec31.xCoord * blockReachDistance, vec31.yCoord * blockReachDistance, vec31.zCoord * blockReachDistance);
         return this.worldObj.rayTraceBlocks(vec3, vec32, false, false, true);
     }
 

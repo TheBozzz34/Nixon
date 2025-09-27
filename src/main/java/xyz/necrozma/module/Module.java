@@ -7,16 +7,14 @@ import net.minecraft.client.Minecraft;
 import org.apache.commons.lang3.Validate;
 import xyz.necrozma.Client;
 import xyz.necrozma.event.impl.input.MoveButtonEvent;
-import xyz.necrozma.event.impl.motion.BlockCollideEvent;
-import xyz.necrozma.event.impl.motion.MoveEvent;
-import xyz.necrozma.event.impl.motion.PreMotionEvent;
-import xyz.necrozma.event.impl.motion.StrafeEvent;
+import xyz.necrozma.event.impl.motion.*;
 import xyz.necrozma.event.impl.packet.EventPacket;
 // import xyz.necrozma.event.impl.packet.PacketSendEvent;
 import xyz.necrozma.event.impl.packet.PacketReceiveEvent;
 import xyz.necrozma.event.impl.render.Render2DEvent;
 import xyz.necrozma.event.impl.render.Render3DEvent;
 import xyz.necrozma.event.impl.update.EventUpdate;
+import xyz.necrozma.event.impl.update.WorldChangedEvent;
 import xyz.necrozma.settings.Settings;
 
 import java.util.ArrayList;
@@ -147,6 +145,15 @@ public abstract class Module implements Subscriber {
     }
 
     public void onPacketReceive(final PacketReceiveEvent event) {
+    }
+
+    public void onPostMotion(final PostMotionEvent event) {
+    }
+
+    public void onAttackEvent(final AttackEvent event) {
+    }
+
+    public void onWorldChanged(final WorldChangedEvent event) {
     }
 
     protected double randomDouble(final double min, final double max) {

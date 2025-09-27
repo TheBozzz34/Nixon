@@ -42,6 +42,8 @@ import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
+import xyz.necrozma.Client;
+import xyz.necrozma.event.impl.motion.AttackEvent;
 import xyz.necrozma.settings.impl.BooleanSetting;
 import xyz.necrozma.util.InstanceAccess;
 
@@ -1108,13 +1110,13 @@ public abstract class EntityPlayer extends EntityLivingBase implements InstanceA
      * called on it. Args: targetEntity
      */
     public void attackTargetEntityWithCurrentItem(Entity targetEntity) {
-        //final AttackEvent event = new AttackEvent(targetEntity);
-        //event.call();
+        final AttackEvent event = new AttackEvent(targetEntity);
+        Client.BUS.post(event);
 
-        //targetEntity = event.getTarget();
+        targetEntity = event.getTarget();
 
-        //if (event.isCancelled())
-            //return;
+        if (event.isCancelled())
+            return;
 
         if (targetEntity.canAttackWithItem()) {
             if (!targetEntity.hitByEntity(this)) {

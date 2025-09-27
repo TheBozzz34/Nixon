@@ -7,18 +7,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import xyz.necrozma.Client;
 import xyz.necrozma.event.impl.input.EventKey;
 import xyz.necrozma.event.impl.input.MoveButtonEvent;
-import xyz.necrozma.event.impl.motion.BlockCollideEvent;
-import xyz.necrozma.event.impl.motion.MoveEvent;
-import xyz.necrozma.event.impl.motion.PreMotionEvent;
-import xyz.necrozma.event.impl.motion.StrafeEvent;
+import xyz.necrozma.event.impl.motion.*;
 import xyz.necrozma.event.impl.packet.EventPacket;
 import xyz.necrozma.event.impl.packet.PacketReceiveEvent;
 import xyz.necrozma.event.impl.render.Render2DEvent;
 import xyz.necrozma.event.impl.render.Render3DEvent;
+import xyz.necrozma.event.impl.update.WorldChangedEvent;
 import xyz.necrozma.gui.ClickGuiNG.ClickGUI;
 import xyz.necrozma.gui.render.RenderUtil;
 import xyz.necrozma.gui.strikeless.StrikeGUI;
 import xyz.necrozma.module.Module;
+import xyz.necrozma.module.impl.motion.Fly;
 import xyz.necrozma.util.PlayerUtil;
 
 import java.awt.*;
@@ -69,6 +68,29 @@ public final class EventHandler {
                     module.onPacketSend(event);
                 }
             }
+        }  else if (e instanceof PostMotionEvent) {
+            final PostMotionEvent event = ((PostMotionEvent) e);
+
+            for (final Module module : modules) {
+                if (module.isToggled()) {
+                    module.onPostMotion(event);
+                }
+            }
+        } else if (e instanceof AttackEvent) {
+            final AttackEvent event = ((AttackEvent) e);
+
+            //Statistics
+            final Entity entity = event.getTarget();
+            if (entity instanceof EntityPlayer) {
+                target = (EntityPlayer) entity;
+            }
+
+            for (final Module module : modules) {
+                if (module.isToggled()) {
+                    module.onAttackEvent(event);
+                }
+            }
+
         } else if (e instanceof PreMotionEvent) {
             final PreMotionEvent event = ((PreMotionEvent) e);
 
@@ -127,6 +149,14 @@ public final class EventHandler {
             for (final Module module : modules) {
                 if (module.isToggled()) {
                     module.onBlockCollide(event);
+                }
+            }
+        } else if (e instanceof WorldChangedEvent) {
+            final WorldChangedEvent event = ((WorldChangedEvent) e);
+
+            for (final Module module : modules) {
+                if (module.isToggled()) {
+                    module.onWorldChanged(event);
                 }
             }
         }
