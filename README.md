@@ -6,6 +6,7 @@ I am learning client development with this project, it is in no way meant to be 
 
 Some working features include:
 - MS device code flow auth
+- ViaVersion, Optifine 
 - Aura, AutoGap
 - Speed, Fly, Jesus, Sprint
 - ESP, Tracers, Xray, Nametags, Fullbright
