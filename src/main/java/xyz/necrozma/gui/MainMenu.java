@@ -1,5 +1,6 @@
 package xyz.necrozma.gui;
 
+import de.florianmichael.viamcp.gui.GuiProtocolSelector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
@@ -12,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.optifine.CustomPanorama;
 import net.optifine.CustomPanoramaProperties;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Project;
 import xyz.necrozma.Client;
@@ -151,7 +153,7 @@ public final class MainMenu extends GuiScreen {
 
         // Quit Button
         RenderUtil.roundedRect(x, y + fontRenderer.getHeight() + 2 + buttonHeight + gap, buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 35));
-        CustomFont.drawString("Quit", x + gap + 10, y + fontRenderer.getHeight() + buttonHeight + 10, new Color(255, 255, 255, 240).hashCode());
+        CustomFont.drawString("Quit", x + gap + 28, y + fontRenderer.getHeight() + buttonHeight + 10, new Color(255, 255, 255, 240).hashCode());
 
         // Hover effects
         if (mouseOver(x, y + fontRenderer.getHeight(), buttonWidth, buttonHeight + 2, mouseX, mouseY)) {

@@ -1,6 +1,7 @@
 package xyz.necrozma;
 
 
+import de.florianmichael.viamcp.ViaMCP;
 import lombok.Setter;
 import net.minecraft.util.Session;
 import tv.twitch.chat.Chat;
@@ -148,6 +149,17 @@ public enum Client implements Subscriber {
         tokenManager = new TokenManager("1.0.0");
         authService = new AuthenticationService(tokenManager);
         guiTheme = new GuiTheme();
+
+        try {
+            ViaMCP.create();
+
+            // In case you want a version slider like in the Minecraft options, you can use this code here, please choose one of those:
+
+            ViaMCP.INSTANCE.initAsyncSlider(); // For top left aligned slider
+            //ViaMCP.INSTANCE.initAsyncSlider(x, y, width (min. 110), height (recommended 20)); // For custom position and size slider
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         try {
             ircClient = new IRCClient(
