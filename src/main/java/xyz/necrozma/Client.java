@@ -162,6 +162,7 @@ public enum Client implements Subscriber {
             logger.error("Failed to initialize ViaMCP", e);
         }
 
+        /*
         try {
             chatClient = new WebSocketChatClient(
                     "ws://129.146.95.17:8765/chat",
@@ -202,6 +203,8 @@ public enum Client implements Subscriber {
         } catch (Exception e) {
             logger.error("Failed to initialize connected chat client", e);
         }
+
+         */
 
 
         strikeGUI = new StrikeGUI();
