@@ -11,6 +11,7 @@ import xyz.necrozma.event.impl.motion.*;
 import xyz.necrozma.event.impl.packet.EventPacket;
 // import xyz.necrozma.event.impl.packet.PacketSendEvent;
 import xyz.necrozma.event.impl.packet.PacketReceiveEvent;
+import xyz.necrozma.event.impl.render.BlurEvent;
 import xyz.necrozma.event.impl.render.Render2DEvent;
 import xyz.necrozma.event.impl.render.Render3DEvent;
 import xyz.necrozma.event.impl.update.EventUpdate;
@@ -166,5 +167,12 @@ public abstract class Module implements Subscriber {
 
     protected double random() {
         return ThreadLocalRandom.current().nextDouble(1);
+    }
+
+    public void onCanPlaceBlockEvent(CanPlaceBlockEvent event) {
+
+    }
+
+    public void onBlur(BlurEvent event) {
     }
 }

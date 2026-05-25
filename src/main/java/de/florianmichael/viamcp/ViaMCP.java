@@ -26,11 +26,16 @@ import com.viaversion.viaversion.protocols.v1_16_4to1_17.packet.ClientboundPacke
 import com.viaversion.viaversion.protocols.v1_16_4to1_17.packet.ServerboundPackets1_17;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.viamcp.gui.AsyncVersionSlider;
+import lombok.Getter;
+import lombok.Setter;
+import net.minecraft.client.Minecraft;
+import xyz.necrozma.Client;
 
 import java.io.File;
 
 public class ViaMCP {
     public final static int NATIVE_VERSION = 47;
+
     public static ViaMCP INSTANCE;
 
     public static void create() {
@@ -38,6 +43,18 @@ public class ViaMCP {
     }
 
     private AsyncVersionSlider asyncVersionSlider;
+
+    @Setter
+    private int version;
+
+    private static final Client client = Client.INSTANCE;
+
+    public int getVersion() {
+        final String ip = Client.ip;
+        if (ip != null && (ip.contains("hypixel.net") && !ip.contains("ruhypixel.net") || ip.contains("2606:4700::6810:4e15")))
+            return 756;
+        return version;
+    }
 
     public ViaMCP() {
         ViaLoadingBase.ViaLoadingBaseBuilder.create().runDirectory(new File("ViaMCP")).nativeVersion(NATIVE_VERSION).onProtocolReload(protocolVersion -> {
@@ -48,6 +65,10 @@ public class ViaMCP {
 
         // Add this line if you implement the transaction fixes into the game code
         // fixTransactions();
+    }
+
+    public static ViaMCP getInstance() {
+        return INSTANCE;
     }
 
     private void fixTransactions() {

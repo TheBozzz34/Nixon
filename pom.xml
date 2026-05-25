@@ -97,10 +97,10 @@
             <id>legui</id>
             <url>https://raw.github.com/SpinyOwl/repo/releases</url>
         </repository>
+
     </repositories>
 
     <dependencies>
-
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
@@ -378,6 +378,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.java-websocket</groupId>
+            <artifactId>Java-WebSocket</artifactId>
+            <version>1.5.6</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>2.0.17</version>
@@ -388,6 +394,29 @@
             <version>2.0.17</version>
         </dependency>
 
+        <dependency>
+            <groupId>local.viaversion</groupId>
+            <artifactId>viaversion</artifactId>
+            <version>5.9.1-downgraded</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libraries/ViaVersion-5.9.1-downgraded.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>local.viaversion</groupId>
+            <artifactId>viabackwards</artifactId>
+            <version>5.9.1-downgraded</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libraries/ViaBackwards-5.9.1-downgraded.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>local.viaversion</groupId>
+            <artifactId>viarewind</artifactId>
+            <version>4.1.1-downgraded</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libraries/ViaRewind-4.1.1-downgraded.jar</systemPath>
+        </dependency>
 
     </dependencies>
 

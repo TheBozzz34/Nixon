@@ -7,6 +7,8 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Random;
 import java.util.Map.Entry;
+
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentDurability;
@@ -38,6 +40,7 @@ public final class ItemStack
     public static final DecimalFormat DECIMALFORMAT = new DecimalFormat("#.###");
 
     /** Size of the stack. */
+    @Getter
     public int stackSize;
 
     /**

@@ -22,8 +22,8 @@ import xyz.necrozma.gui.guitheme.GuiTheme;
 import xyz.necrozma.gui.guitheme.Theme;
 import xyz.necrozma.gui.guitheme.ThemeUtil;
 import xyz.necrozma.gui.strikeless.StrikeGUI;
-import xyz.necrozma.irc.IRCClient;
-import xyz.necrozma.irc.IRCEventListener;
+import xyz.necrozma.chat.WebSocketChatClient;
+import xyz.necrozma.chat.WebSocketChatListener;
 import xyz.necrozma.login.AuthenticationResult;
 import xyz.necrozma.notification.NotificationType;
 import xyz.necrozma.pathing.Path;
@@ -57,7 +57,11 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 
 @Getter
@@ -70,6 +74,7 @@ public enum Client implements Subscriber {
     private Xray xray;
 
     private final Minecraft MC = Minecraft.getMinecraft();
+    private final Set<Module> modulesToEnableOnWorldJoin = new LinkedHashSet<>();
 
     private ModuleManager MM;
     private CommandManager CM;
@@ -78,7 +83,7 @@ public enum Client implements Subscriber {
     private StatsUtil SU;
     private TokenManager tokenManager;
     private AuthenticationService authService;
-    private IRCClient ircClient;
+    private WebSocketChatClient chatClient;
     public GuiTheme guiTheme;
     public static long timeJoinedServer;
     public static int totalKills;
@@ -113,7 +118,7 @@ public enum Client implements Subscriber {
             name = "Nixon",
             version = "1.0.0",
             commandPrefix = "#",
-            IRCPrefix = ";",
+            chatPrefix = ";",
             clientPrefix = "&7[&cNixon&7]&r ",
             author = "Necrozma";
 
@@ -152,27 +157,23 @@ public enum Client implements Subscriber {
 
         try {
             ViaMCP.create();
-
-            // In case you want a version slider like in the Minecraft options, you can use this code here, please choose one of those:
-
-            ViaMCP.INSTANCE.initAsyncSlider(); // For top left aligned slider
-            //ViaMCP.INSTANCE.initAsyncSlider(x, y, width (min. 110), height (recommended 20)); // For custom position and size slider
+            ViaMCP.INSTANCE.initAsyncSlider();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Failed to initialize ViaMCP", e);
         }
 
         try {
-            ircClient = new IRCClient(
-                    "10.0.0.177",
-                    6667,
+            chatClient = new WebSocketChatClient(
+                    "ws://129.146.95.17:8765/chat",
+                    -1,
                     "JavaBot123",
                     "JavaBot123",
-                    "#chat",
-                    new IRCEventListener() {
+                    "global",
+                    new WebSocketChatListener() {
                         @Override
                         public void onMessage(String channel, String sender, String message) {
                             //System.out.println("[" + channel + "] <" + sender + ">: " + message);
-                            ChatUtil.sendMessage("&f[&bIRC&f] &7<" + sender + "> " + message);
+                            ChatUtil.sendMessage("&f[&bCHAT&f] &7<" + sender + "> " + message);
                         }
 
                         @Override
@@ -182,18 +183,24 @@ public enum Client implements Subscriber {
 
                         @Override
                         public void onConnected() {
-                            System.out.println("Connected to IRC.");
+                            System.out.println("Connected to chat server.");
+                            try {
+                                if (Client.INSTANCE.getChatClient() != null) {
+                                    Client.INSTANCE.getChatClient().sendMessage("Connected from Nixon client.");
+                                }
+                            } catch (IOException e) {
+                                logger.warn("Failed to send connected chat join message", e);
+                            }
                         }
 
                         @Override
                         public void onDisconnected() {
-                            System.out.println("Disconnected from IRC.");
+                            System.out.println("Disconnected from chat server.");
                         }
                     }
             );
-            ircClient.sendMessage("Hello from Java!");
         } catch (Exception e) {
-            logger.error("Failed to initialize IRC client", e);
+            logger.error("Failed to initialize connected chat client", e);
         }
 
 
@@ -229,6 +236,7 @@ public enum Client implements Subscriber {
         final String config = FileUtil.loadFile("settings.txt");
         if (config == null) return;
         final String[] configLines = config.split("\r\n");
+        modulesToEnableOnWorldJoin.clear();
 
         for (final Module m : Client.INSTANCE.getMM().getModules().values()) {
             if (m.isToggled()) {
@@ -278,7 +286,7 @@ public enum Client implements Subscriber {
                         final Module module = Objects.requireNonNull(getMM().getModuleFromString(split[1]));
 
                         if (!module.isToggled()) {
-                            module.toggle();
+                            queueOrEnableStartupModule(module);
                         }
                     }
                 }
@@ -339,7 +347,8 @@ public enum Client implements Subscriber {
 
         for (final Module m : getMM().getModules().values()) {
             final String moduleName = m.getName();
-            configBuilder.append("Toggle_").append(moduleName).append("_").append(m.isToggled()).append("\r\n");
+            final boolean shouldBeEnabled = m.isToggled() || modulesToEnableOnWorldJoin.contains(m);
+            configBuilder.append("Toggle_").append(moduleName).append("_").append(shouldBeEnabled).append("\r\n");
 
             for (final Settings s : m.getSettings()) {
                 if (s instanceof BooleanSetting) {
@@ -356,6 +365,34 @@ public enum Client implements Subscriber {
         }
 
         FileUtil.saveFile("settings.txt", true, configBuilder.toString());
+    }
+
+    private void queueOrEnableStartupModule(final Module module) {
+        if (isPlayerContextReady()) {
+            module.toggle();
+            return;
+        }
+
+        modulesToEnableOnWorldJoin.add(module);
+    }
+
+    private void enableQueuedStartupModules() {
+        if (modulesToEnableOnWorldJoin.isEmpty() || !isPlayerContextReady()) {
+            return;
+        }
+
+        final List<Module> queuedModules = new ArrayList<>(modulesToEnableOnWorldJoin);
+        modulesToEnableOnWorldJoin.clear();
+
+        for (final Module module : queuedModules) {
+            if (!module.isToggled()) {
+                module.toggle();
+            }
+        }
+    }
+
+    private boolean isPlayerContextReady() {
+        return MC.thePlayer != null && MC.theWorld != null;
     }
 
 
@@ -407,9 +444,9 @@ public enum Client implements Subscriber {
             logger.error("Failed to close Discord RPC");
         }
 
-        if (ircClient != null) {
-            ircClient.close();
-            System.out.println("IRC client disconnected.");
+        if (chatClient != null) {
+            chatClient.close();
+            System.out.println("Connected chat client disconnected.");
         }
 
         saveConfig();
@@ -418,5 +455,8 @@ public enum Client implements Subscriber {
 
     @Subscribe
     private final Listener<Event> EventListener = new Listener<>(EventHandler::handle);
+
+    @Subscribe
+    private final Listener<EventUpdate> startupModuleEnableListener = new Listener<>(event -> enableQueuedStartupModules());
 
 }

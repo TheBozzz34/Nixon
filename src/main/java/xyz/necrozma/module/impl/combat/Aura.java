@@ -141,7 +141,9 @@ public final class Aura extends Module {
     public void onWorldChanged(final WorldChangedEvent event) {
         if (this.disableOnWorldChange.isEnabled()) {
             Client.INSTANCE.getNM().registerNotification("Disabled " + this.getName() + " due to world change.");
-            this.setToggled(false);
+            if (this.isToggled()) {
+                this.toggle();
+            }
         }
     }
 
@@ -745,6 +747,11 @@ public final class Aura extends Module {
 
     @Override
     public void onEnable() {
+        if (mc.thePlayer == null) {
+            target = null;
+            return;
+        }
+
         /*
          * For the first rotation to be properly rounded we can set our last
          * rotations to our current rotations in order to round everything properly.

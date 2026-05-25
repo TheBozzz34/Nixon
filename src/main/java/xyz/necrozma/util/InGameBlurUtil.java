@@ -9,6 +9,8 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL20;
+import xyz.necrozma.Client;
+import xyz.necrozma.event.impl.render.BlurEvent;
 
 
 import static org.lwjgl.opengl.GL11.*;
@@ -39,13 +41,11 @@ public class InGameBlurUtil {
         StencilUtil.initStencilToWrite();
         StencilUtil.bindWriteStencilBuffer();
 
-        /*
+
         if (callEvent) {
             final BlurEvent eventBlur = new BlurEvent();
-            eventBlur.call();
+            Client.BUS.post(eventBlur);
         }
-
-         */
 
         if (backTrackBlurOnScreen) {
             ShaderUtil.drawQuads();

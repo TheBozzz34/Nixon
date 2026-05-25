@@ -10,6 +10,7 @@ import xyz.necrozma.event.impl.input.MoveButtonEvent;
 import xyz.necrozma.event.impl.motion.*;
 import xyz.necrozma.event.impl.packet.EventPacket;
 import xyz.necrozma.event.impl.packet.PacketReceiveEvent;
+import xyz.necrozma.event.impl.render.BlurEvent;
 import xyz.necrozma.event.impl.render.Render2DEvent;
 import xyz.necrozma.event.impl.render.Render3DEvent;
 import xyz.necrozma.event.impl.update.EventUpdate;
@@ -158,6 +159,22 @@ public final class EventHandler {
             for (final Module module : modules) {
                 if (module.isToggled()) {
                     module.onBlockCollide(event);
+                }
+            }
+        } else if (e instanceof CanPlaceBlockEvent) {
+            final CanPlaceBlockEvent event = ((CanPlaceBlockEvent) e);
+
+            for (final Module module : modules) {
+                if (module.isToggled()) {
+                    module.onCanPlaceBlockEvent(event);
+                }
+            }
+        } else if (e instanceof BlurEvent) {
+            final BlurEvent event = ((BlurEvent) e);
+
+            for (final Module module : modules) {
+                if (module.isToggled()) {
+                    module.onBlur(event);
                 }
             }
         } else if (e instanceof WorldChangedEvent) {

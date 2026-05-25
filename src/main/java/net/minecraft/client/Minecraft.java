@@ -42,6 +42,7 @@ import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.*;
 //import net.minecraft.client.gui.GuiIngame;
+import xyz.necrozma.event.impl.motion.CanPlaceBlockEvent;
 import xyz.necrozma.event.impl.render.OpenGUIEvent;
 import xyz.necrozma.gui.IngameGUI;
 import net.minecraft.client.gui.achievement.GuiAchievement;
@@ -2192,6 +2193,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             {
                 this.rightClickMouse();
             }
+
+            final CanPlaceBlockEvent canPlaceBlockEvent = new CanPlaceBlockEvent();
+            Client.BUS.post(canPlaceBlockEvent);
 
             this.sendClickBlockToController(this.currentScreen == null && this.gameSettings.keyBindAttack.isKeyDown() && this.inGameHasFocus);
         }

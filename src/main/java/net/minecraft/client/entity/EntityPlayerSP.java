@@ -49,9 +49,10 @@ import net.minecraft.world.World;
 import xyz.necrozma.Client;
 import xyz.necrozma.command.CommandManager;
 import xyz.necrozma.event.impl.motion.MoveEvent;
+import xyz.necrozma.event.impl.motion.PostMotionEvent;
 import xyz.necrozma.event.impl.motion.PreMotionEvent;
 import xyz.necrozma.event.impl.update.EventUpdate;
-import xyz.necrozma.irc.IRCClient;
+import xyz.necrozma.chat.WebSocketChatClient;
 import xyz.necrozma.util.ChatUtil;
 
 public class EntityPlayerSP extends AbstractClientPlayer
@@ -280,6 +281,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
                 this.lastReportedPitch = this.rotationPitch;
             }
         }
+
+        final PostMotionEvent eventPostMotionUpdate = new PostMotionEvent();
+        Client.BUS.post(eventPostMotionUpdate);
     }
 
     /**
@@ -311,15 +315,21 @@ public class EntityPlayerSP extends AbstractClientPlayer
         }
 
 
-        if (message.startsWith(IRCClient.IRC_PREFIX))
+        if (message.startsWith(WebSocketChatClient.CHAT_PREFIX))
         {
             try {
-                Client.INSTANCE.getIrcClient().sendMessage(message.substring(IRCClient.IRC_PREFIX.length()));
-                ChatUtil.sendMessage("&f[&bIRC&f] &7<" + Client.INSTANCE.getUsername() + "> " + message.substring(IRCClient.IRC_PREFIX.length()));
+                final WebSocketChatClient chatClient = Client.INSTANCE.getChatClient();
+                if (chatClient == null) {
+                    System.err.println("Failed to send connected chat message: chat client is null.");
+                    return;
+                }
+
+                final String outgoingMessage = message.substring(WebSocketChatClient.CHAT_PREFIX.length());
+                chatClient.sendMessage(outgoingMessage);
             }
             catch (Exception e)
             {
-                System.err.println("Failed to send IRC message: " + e.getMessage());
+                System.err.println("Failed to send connected chat message: " + e.getMessage());
             }
             return;
         }
