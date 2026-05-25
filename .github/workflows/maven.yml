@@ -8,6 +8,10 @@
 
 name: Java CI with Maven
 
+permissions:
+  contents: write    # Required for dependency submission/graph updates
+  security-events: write  # Required for uploading code scanning results
+  
 on:
   push:
     branches: [ "main" ]
