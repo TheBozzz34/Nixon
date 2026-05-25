@@ -50,6 +50,8 @@ import java.util.Set;
 
 @ModuleInfo(name = "Scaffold", description = "Bridges automatically for you", category = Category.MOVEMENT)
 public class Scaffold extends Module {
+    private static final double PREDICTION_DISTANCE_MULTIPLIER = 1.35D;
+    private static final double EDGE_MOTION_RISK_MULTIPLIER = 2.0D;
 
 
     private static final Minecraft minecraft = Client.INSTANCE.getMC();
@@ -109,6 +111,20 @@ public class Scaffold extends Module {
     TimeUtil timer3 = new TimeUtil();
 
     private static final Client client = Client.INSTANCE;
+
+    private static final class PlacementTarget {
+        private final Vec3 targetBlock;
+        private final EnumFacingOffset facing;
+        private final BlockPos blockFace;
+        private final double score;
+
+        private PlacementTarget(final Vec3 targetBlock, final EnumFacingOffset facing, final BlockPos blockFace, final double score) {
+            this.targetBlock = targetBlock;
+            this.facing = facing;
+            this.blockFace = blockFace;
+            this.score = score;
+        }
+    }
 
     @Override
     public void onUpdateAlwaysInGui() {
@@ -222,6 +238,9 @@ public class Scaffold extends Module {
         if (mc.thePlayer.onGround || (mc.gameSettings.keyBindJump.isKeyDown() && !sameY.isEnabled()))
             startY = mc.thePlayer.posY;
 
+        if (blocksPlaced > eagle.getValue()) blocksPlaced = 1;
+        updateBridgeSneakState();
+
         final int blockSlot = BlockUtil.findBlock() - 36;
 
         if (blockSlot < 0 || blockSlot > 9)
@@ -249,17 +268,10 @@ public class Scaffold extends Module {
         }
 
         resetPlacementTarget();
-        placePossibilities = getPlacePossibilities();
-
-        if (placePossibilities.isEmpty()) {
-            placePossibilities = getPlacePossibilitiesPredicted();
-        }
-
+        placePossibilities = getCombinedPlacePossibilities();
 
         if (placePossibilities.isEmpty())
             return;
-
-        placePossibilities.sort(Comparator.comparingDouble(this::getPlacementScore));
 
         if (!selectBestPlacementTarget())
             return;
@@ -269,11 +281,8 @@ public class Scaffold extends Module {
 
         if (sameY.isEnabled() && mc.thePlayer.posY < startY) startY = mc.thePlayer.posY;
 
-        updateBridgeSneakState();
-
-        if (blocksPlaced > eagle.getValue()) blocksPlaced = 1;
-
         if (!rotations.is("None")) {
+            this.calculateRotations();
             event.setYaw(yaw);
             event.setPitch(pitch);
 
@@ -707,9 +716,10 @@ public class Scaffold extends Module {
 
         final boolean edgeRisk = isBridgeEdgeRisk();
         final double randomisedDelay = randomisePlaceDelay.isEnabled() && !mc.gameSettings.keyBindJump.isKeyDown() ? Math.random() * 3 : 0;
-        final double requiredDelay = Math.max(0, placeDelay.getValue() + randomisedDelay - (edgeRisk ? 1.0 : 0.0));
+        final double failureCompensation = Math.min(placeDelay.getValue() + randomisedDelay, failedPlacementTicks * 0.35);
+        final double requiredDelay = Math.max(0, placeDelay.getValue() + randomisedDelay - (edgeRisk ? 1.0 : 0.0) - failureCompensation);
         final boolean timingReady = ticksOnAir >= requiredDelay;
-        final boolean movementStateReady = mc.thePlayer.onGround || offGroundTicks <= 5 || mc.thePlayer.fallDistance > 0 || edgeRisk;
+        final boolean movementStateReady = mc.thePlayer.onGround || offGroundTicks <= 7 || mc.thePlayer.fallDistance > 0 || edgeRisk || failedPlacementTicks > 0;
 
         boolean placed = false;
         if (movementStateReady && timingReady && (lookingAtBlock || this.rayCast.is("Off"))) {
@@ -839,22 +849,30 @@ public class Scaffold extends Module {
     }
 
     private boolean selectBestPlacementTarget() {
+        PlacementTarget bestTarget = null;
+
         for (final Vec3 candidate : placePossibilities) {
-            final EnumFacingOffset candidateFacing = getEnumFacing(candidate);
-            if (candidateFacing == null || candidateFacing.getEnumFacing() == null) {
-                continue;
-            }
-
             final BlockPos candidatePos = new BlockPos(candidate.xCoord, candidate.yCoord, candidate.zCoord);
-            final BlockPos candidateFace = candidatePos.add(candidateFacing.getOffset().xCoord, candidateFacing.getOffset().yCoord, candidateFacing.getOffset().zCoord);
+            final List<EnumFacingOffset> facings = getEnumFacingOptions(candidatePos);
 
-            if (mc.theWorld.getBlockState(candidateFace).getBlock() instanceof BlockAir) {
-                continue;
+            for (final EnumFacingOffset candidateFacing : facings) {
+                final BlockPos candidateFace = candidatePos.add(candidateFacing.getOffset().xCoord, candidateFacing.getOffset().yCoord, candidateFacing.getOffset().zCoord);
+
+                if (mc.theWorld.getBlockState(candidateFace).getBlock() instanceof BlockAir) {
+                    continue;
+                }
+
+                final double score = getPlacementScore(candidate, candidateFacing, candidateFace);
+                if (bestTarget == null || score < bestTarget.score) {
+                    bestTarget = new PlacementTarget(candidate, candidateFacing, candidateFace, score);
+                }
             }
+        }
 
-            targetBlock = candidate;
-            enumFacing = candidateFacing;
-            blockFace = candidateFace;
+        if (bestTarget != null) {
+            targetBlock = bestTarget.targetBlock;
+            enumFacing = bestTarget.facing;
+            blockFace = bestTarget.blockFace;
             return true;
         }
 
@@ -911,16 +929,70 @@ public class Scaffold extends Module {
         return null;
     }
 
+    private List<EnumFacingOffset> getEnumFacingOptions(final BlockPos pos) {
+        final List<EnumFacingOffset> facings = new ArrayList<>(6);
+
+        if (!(mc.theWorld.getBlockState(pos.down()).getBlock() instanceof BlockAir)) {
+            facings.add(new EnumFacingOffset(EnumFacing.UP, new Vec3(0, -1, 0)));
+        }
+
+        if (!(mc.theWorld.getBlockState(pos.east()).getBlock() instanceof BlockAir)) {
+            facings.add(new EnumFacingOffset(EnumFacing.WEST, new Vec3(1, 0, 0)));
+        }
+
+        if (!(mc.theWorld.getBlockState(pos.west()).getBlock() instanceof BlockAir)) {
+            facings.add(new EnumFacingOffset(EnumFacing.EAST, new Vec3(-1, 0, 0)));
+        }
+
+        if (!(mc.theWorld.getBlockState(pos.north()).getBlock() instanceof BlockAir)) {
+            facings.add(new EnumFacingOffset(EnumFacing.SOUTH, new Vec3(0, 0, -1)));
+        }
+
+        if (!(mc.theWorld.getBlockState(pos.south()).getBlock() instanceof BlockAir)) {
+            facings.add(new EnumFacingOffset(EnumFacing.NORTH, new Vec3(0, 0, 1)));
+        }
+
+        if (!(mc.theWorld.getBlockState(pos.up()).getBlock() instanceof BlockAir)) {
+            facings.add(new EnumFacingOffset(EnumFacing.DOWN, new Vec3(0, 1, 0)));
+        }
+
+        return facings;
+    }
+
     private List<Vec3> getPlacePossibilitiesPredicted() {
         return collectPlacePossibilities(
-                mc.thePlayer.posX + mc.thePlayer.motionX,
+                mc.thePlayer.posX + mc.thePlayer.motionX * PREDICTION_DISTANCE_MULTIPLIER,
                 mc.thePlayer.posY,
-                mc.thePlayer.posZ + mc.thePlayer.motionZ
+                mc.thePlayer.posZ + mc.thePlayer.motionZ * PREDICTION_DISTANCE_MULTIPLIER
         );
     }
 
     private List<Vec3> getPlacePossibilities() {
         return collectPlacePossibilities(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
+    }
+
+    private List<Vec3> getCombinedPlacePossibilities() {
+        final List<Vec3> direct = getPlacePossibilities();
+        final List<Vec3> predicted = getPlacePossibilitiesPredicted();
+        if (predicted.isEmpty()) {
+            direct.sort(Comparator.comparingDouble(this::getPlacementScore));
+            return direct;
+        }
+
+        final Set<BlockPos> combined = new LinkedHashSet<>(direct.size() + predicted.size());
+        for (final Vec3 candidate : direct) {
+            combined.add(new BlockPos(candidate.xCoord, candidate.yCoord, candidate.zCoord));
+        }
+        for (final Vec3 candidate : predicted) {
+            combined.add(new BlockPos(candidate.xCoord, candidate.yCoord, candidate.zCoord));
+        }
+
+        final List<Vec3> merged = new ArrayList<>(combined.size());
+        for (final BlockPos candidate : combined) {
+            merged.add(new Vec3(candidate.getX(), candidate.getY(), candidate.getZ()));
+        }
+        merged.sort(Comparator.comparingDouble(this::getPlacementScore));
+        return merged;
     }
 
     private List<Vec3> collectPlacePossibilities(final double centerX, final double centerY, final double centerZ) {
@@ -975,6 +1047,36 @@ public class Scaffold extends Module {
         return dx * dx + dz * dz + dy * dy;
     }
 
+    private double getPlacementScore(final Vec3 candidate, final EnumFacingOffset facing, final BlockPos clickedBlock) {
+        double score = getPlacementScore(candidate);
+
+        if (facing.getEnumFacing() == EnumFacing.UP) {
+            score -= 0.35;
+        } else if (facing.getEnumFacing() == EnumFacing.DOWN) {
+            score += 0.25;
+        }
+
+        final float[] faceRotations = BlockUtil.getDirectionToBlock(clickedBlock.getX(), clickedBlock.getY(), clickedBlock.getZ(), facing.getEnumFacing());
+        final float yawDelta = Math.abs(MathHelper.wrapAngleTo180_float(faceRotations[0] - yaw));
+        score += yawDelta * 0.0125;
+
+        if (MoveUtil.isMoving()) {
+            final double direction = MoveUtil.getDirection();
+            final double dirX = -Math.sin(direction);
+            final double dirZ = Math.cos(direction);
+            final double toCandidateX = candidate.xCoord + 0.5 - mc.thePlayer.posX;
+            final double toCandidateZ = candidate.zCoord + 0.5 - mc.thePlayer.posZ;
+            final double forwardDot = dirX * toCandidateX + dirZ * toCandidateZ;
+            if (forwardDot < 0) {
+                score += Math.abs(forwardDot) * 0.75;
+            } else {
+                score -= Math.min(0.35, forwardDot * 0.2);
+            }
+        }
+
+        return score;
+    }
+
     private Vec3 getPlacementReference() {
         final double targetY = mc.thePlayer.posY - 1;
         if (!MoveUtil.isMoving()) {
@@ -982,7 +1084,7 @@ public class Scaffold extends Module {
         }
 
         final double direction = MoveUtil.getDirection();
-        final double lookAhead = 0.9;
+        final double lookAhead = 0.9 + Math.min(0.75, MoveUtil.getSpeed() * 2.4);
         final double x = mc.thePlayer.posX - Math.sin(direction) * lookAhead;
         final double z = mc.thePlayer.posZ + Math.cos(direction) * lookAhead;
         return new Vec3(x, targetY, z);
@@ -998,7 +1100,13 @@ public class Scaffold extends Module {
         }
 
         final Vec3 reference = getPlacementReference();
-        return isAirBelow(reference.xCoord, mc.thePlayer.posY, reference.zCoord);
+        if (isAirBelow(reference.xCoord, mc.thePlayer.posY, reference.zCoord)) {
+            return true;
+        }
+
+        final double projectedX = mc.thePlayer.posX + mc.thePlayer.motionX * EDGE_MOTION_RISK_MULTIPLIER;
+        final double projectedZ = mc.thePlayer.posZ + mc.thePlayer.motionZ * EDGE_MOTION_RISK_MULTIPLIER;
+        return isAirBelow(projectedX, mc.thePlayer.posY, projectedZ);
     }
 
     private boolean isAirBelow(final double x, final double y, final double z) {
