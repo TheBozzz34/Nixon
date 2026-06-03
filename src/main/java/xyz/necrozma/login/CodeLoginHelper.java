@@ -2,11 +2,13 @@ package xyz.necrozma.login;
 
 
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JOptionPane;
 
 public class CodeLoginHelper {
     private static final String CLIENT_ID = "17b88a38-2d92-4552-80b3-cd98b5b66cea";
@@ -17,16 +19,21 @@ public class CodeLoginHelper {
     public static AuthTokens getTokensFromWebLogin() throws IOException {
         // Step 1: Get device code
         DeviceCodeResponse deviceCode = getDeviceCode();
+        String browserUrl = deviceCode.verificationUriComplete != null && !deviceCode.verificationUriComplete.trim().isEmpty()
+                ? deviceCode.verificationUriComplete
+                : deviceCode.verificationUri;
 
         // Step 2: Display user code and open browser
-        System.out.println("Please visit: " + deviceCode.verificationUri);
+        System.out.println("Please visit: " + browserUrl);
         System.out.println("Enter code: " + deviceCode.userCode);
+        showLoginDialog(deviceCode.userCode, browserUrl);
         System.out.println("Opening browser...");
 
         try {
-            Desktop.getDesktop().browse(URI.create(deviceCode.verificationUri));
+            Desktop.getDesktop().browse(URI.create(browserUrl));
         } catch (Exception e) {
-            System.err.println("Could not open browser automatically. Please manually visit: " + deviceCode.verificationUri);
+            System.err.println("Could not open browser automatically. Please manually visit: " + browserUrl);
+            showBrowserFallbackDialog(browserUrl);
         }
 
         // Step 3: Poll for tokens
@@ -66,12 +73,11 @@ public class CodeLoginHelper {
             }
 
             String responseStr = response.toString();
-            System.out.println("Device code response: " + responseStr); // Debug output
-
             DeviceCodeResponse deviceCodeResponse = new DeviceCodeResponse();
             deviceCodeResponse.deviceCode = extractJsonValue(responseStr, "device_code");
             deviceCodeResponse.userCode = extractJsonValue(responseStr, "user_code");
             deviceCodeResponse.verificationUri = extractJsonValue(responseStr, "verification_uri");
+            deviceCodeResponse.verificationUriComplete = extractJsonValue(responseStr, "verification_uri_complete");
             deviceCodeResponse.expiresIn = Integer.parseInt(extractJsonValue(responseStr, "expires_in"));
             deviceCodeResponse.interval = Integer.parseInt(extractJsonValue(responseStr, "interval"));
 
@@ -86,18 +92,26 @@ public class CodeLoginHelper {
     private static AuthTokens pollForTokens(DeviceCodeResponse deviceCode) throws IOException {
         long startTime = System.currentTimeMillis();
         long timeoutMs = deviceCode.expiresIn * 1000L;
-        int pollInterval = deviceCode.interval * 1000; // Convert to milliseconds
+        int pollInterval = Math.max(1, deviceCode.interval) * 1000; // Convert to milliseconds
+        boolean firstPoll = true;
 
         while (System.currentTimeMillis() - startTime < timeoutMs) {
-            try {
-                Thread.sleep(pollInterval);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new IOException("Polling interrupted");
+            if (!firstPoll) {
+                try {
+                    Thread.sleep(pollInterval);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new IOException("Polling interrupted");
+                }
             }
+            firstPoll = false;
 
             try {
                 return requestTokens(deviceCode.deviceCode);
+            } catch (SlowDownException e) {
+                pollInterval += 5000;
+                System.out.println("Authorization pending. Polling slightly slower...");
+                continue;
             } catch (AuthorizationPendingException e) {
                 // User hasn't completed authorization yet, continue polling
                 System.out.println("Waiting for user to complete authorization...");
@@ -145,8 +159,7 @@ public class CodeLoginHelper {
                 if ("authorization_pending".equals(error)) {
                     throw new AuthorizationPendingException("Authorization pending");
                 } else if ("slow_down".equals(error)) {
-                    // Should increase polling interval, but for simplicity we'll just continue
-                    throw new AuthorizationPendingException("Slow down");
+                    throw new SlowDownException("Slow down");
                 } else if ("expired_token".equals(error)) {
                     throw new IOException("Device code expired");
                 } else if ("access_denied".equals(error)) {
@@ -211,6 +224,7 @@ public class CodeLoginHelper {
         String deviceCode;
         String userCode;
         String verificationUri;
+        String verificationUriComplete;
         int expiresIn;
         int interval;
     }
@@ -218,6 +232,45 @@ public class CodeLoginHelper {
     private static class AuthorizationPendingException extends IOException {
         public AuthorizationPendingException(String message) {
             super(message);
+        }
+    }
+
+    private static class SlowDownException extends AuthorizationPendingException {
+        public SlowDownException(String message) {
+            super(message);
+        }
+    }
+
+    private static void showLoginDialog(String userCode, String browserUrl) {
+        copyCodeToClipboard(userCode);
+        String message = "Microsoft sign-in required.\n\n" +
+                "A browser window will open for authentication.\n" +
+                "If prompted, use this code: " + userCode + "\n\n" +
+                "The code was copied to your clipboard.\n" +
+                "Sign-in page: " + browserUrl;
+        try {
+            JOptionPane.showMessageDialog(null, message, "Microsoft Sign-In", JOptionPane.INFORMATION_MESSAGE);
+        } catch (HeadlessException ignored) {
+            // Fall back to console output only
+        }
+    }
+
+    private static void showBrowserFallbackDialog(String browserUrl) {
+        try {
+            JOptionPane.showMessageDialog(null,
+                    "Could not open your browser automatically.\nPlease open this URL manually:\n" + browserUrl,
+                    "Microsoft Sign-In",
+                    JOptionPane.WARNING_MESSAGE);
+        } catch (HeadlessException ignored) {
+            // Fall back to console output only
+        }
+    }
+
+    private static void copyCodeToClipboard(String userCode) {
+        try {
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(userCode), null);
+        } catch (Exception ignored) {
+            // Clipboard failures are non-fatal
         }
     }
 
