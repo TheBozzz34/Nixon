@@ -3,7 +3,6 @@ package xyz.necrozma;
 
 import de.florianmichael.viamcp.ViaMCP;
 import lombok.Setter;
-import net.minecraft.util.Session;
 import tv.twitch.chat.Chat;
 import xyz.necrozma.auth.AuthenticationService;
 import xyz.necrozma.discord.IPCClient;
@@ -24,7 +23,6 @@ import xyz.necrozma.gui.guitheme.ThemeUtil;
 import xyz.necrozma.gui.strikeless.StrikeGUI;
 import xyz.necrozma.chat.WebSocketChatClient;
 import xyz.necrozma.chat.WebSocketChatListener;
-import xyz.necrozma.login.AuthenticationResult;
 import xyz.necrozma.notification.NotificationType;
 import xyz.necrozma.pathing.Path;
 import lombok.Getter;
@@ -210,9 +208,6 @@ public enum Client implements Subscriber {
         strikeGUI = new StrikeGUI();
         xray = new Xray();
         xray.addBlocks();
-
-
-        authenticateUser();
 
 
         try {
@@ -402,41 +397,6 @@ public enum Client implements Subscriber {
     public final void onRender() {
         if (!MC.inGameHasFocus) return;
     }
-
-    private void authenticateUser() {
-        System.out.println("Starting authentication process...");
-
-        if (authService.authenticate()) {
-            System.out.println("Authentication successful!");
-
-            final AuthenticationResult result = authService.getLastAuthResult();
-            if (result != null) {
-                String usernameIn = result.getMinecraftUsername();
-                String playerIDIn = result.getUuid();
-                String tokenIn = result.getAccessToken();
-                String sessionTypeIn = "legacy";
-
-                if (usernameIn == null || playerIDIn == null || tokenIn == null) {
-                    System.err.println("Authentication result contains null values");
-                    return;
-                }
-
-                System.out.println("Creating Minecraft session...");
-                username = usernameIn;
-                MC.setSession(new Session(
-                        usernameIn,
-                        playerIDIn,
-                        tokenIn,
-                        sessionTypeIn));
-
-                System.out.println("Session created successfully!");
-            } else {
-                System.err.println("Authentication result is null");
-            }
-        }
-    }
-
-
     public final void shutdown() {
         BUS.unsubscribe(this);
 
