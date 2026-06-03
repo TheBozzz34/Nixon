@@ -205,7 +205,7 @@ public class AuthenticationService {
                     "legacy"
             );
 
-            Minecraft.getMinecraft().setSession(session);
+            applySession(session);
             LOGGER.info("Minecraft session created successfully");
 
             return true;
@@ -338,7 +338,7 @@ public class AuthenticationService {
             this.lastAuthResult = null;
 
             // Reset Minecraft session to default
-            Minecraft.getMinecraft().setSession(new Session("Player", "", "", "legacy"));
+            applySession(new Session("Player", "", "", "legacy"));
 
             LOGGER.info("User logged out successfully");
         } catch (final Exception e) {
@@ -366,6 +366,17 @@ public class AuthenticationService {
     public boolean forceRefresh() {
         tokenManager.clearAuthTokens();
         return authenticate();
+    }
+
+    private void applySession(final Session session) {
+        final Minecraft minecraft = Minecraft.getMinecraft();
+
+        if (minecraft.isCallingFromMinecraftThread()) {
+            minecraft.setSession(session);
+            return;
+        }
+
+        minecraft.addScheduledTask(() -> minecraft.setSession(session));
     }
 
     /**
