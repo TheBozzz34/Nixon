@@ -113,7 +113,7 @@ public final class MainMenu extends GuiScreen {
         y = (sr.getScaledHeight() / 2.0F) - (screenHeight / 2.0F) - 6;
 
         // Box
-        RenderUtil.roundedRect(x - 10, y + fontRenderer.getHeight() + buttonHeight * 2 + gap * 2 + 2 - 108, 170, 120, 10, new Color(0, 0, 0, 35));
+        RenderUtil.roundedRect(x - 10, y + fontRenderer.getHeight() + buttonHeight * 2 + gap * 2 + 2 - 108, 170, 145, 10, new Color(0, 0, 0, 35));
 
         if (easterEgg) {
             fontRenderer.drawString("RICE", x, UIUtil.logoPosition, new Color(255, 255, 255, 150).getRGB());
@@ -155,6 +155,12 @@ public final class MainMenu extends GuiScreen {
         RenderUtil.roundedRect(x, y + fontRenderer.getHeight() + 2 + buttonHeight + gap, buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 35));
         CustomFont.drawString("Quit", x + gap + 28, y + fontRenderer.getHeight() + buttonHeight + 10, new Color(255, 255, 255, 240).hashCode());
 
+        final float accountButtonY = y + fontRenderer.getHeight() + 2 + (buttonHeight + gap) * 2;
+
+        // Account Manager Button
+        RenderUtil.roundedRect(x, accountButtonY, buttonWidth * 2 + gap, buttonHeight + 2, 10, new Color(255, 255, 255, 35));
+        CustomFont.drawCenteredString("Account Manager", x + (buttonWidth * 2 + gap) / 2.0F, accountButtonY + 6, new Color(255, 255, 255, 240).hashCode());
+
         // Hover effects
         if (mouseOver(x, y + fontRenderer.getHeight(), buttonWidth, buttonHeight + 2, mouseX, mouseY)) {
             RenderUtil.roundedRect(x, y + fontRenderer.getHeight(), buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 55));
@@ -170,6 +176,10 @@ public final class MainMenu extends GuiScreen {
 
         if (mouseOver(x, y + fontRenderer.getHeight() + 2 + buttonHeight + gap, buttonWidth, buttonHeight + 2, mouseX, mouseY)) {
             RenderUtil.roundedRect(x, y + fontRenderer.getHeight() + 2 + buttonHeight + gap, buttonWidth, buttonHeight + 2, 10, new Color(255, 255, 255, 55));
+        }
+
+        if (mouseOver(x, accountButtonY, buttonWidth * 2 + gap, buttonHeight + 2, mouseX, mouseY)) {
+            RenderUtil.roundedRect(x, accountButtonY, buttonWidth * 2 + gap, buttonHeight + 2, 10, new Color(255, 255, 255, 55));
         }
 
 
@@ -213,6 +223,11 @@ public final class MainMenu extends GuiScreen {
             Client.INSTANCE.shutdown();
             mc.shutdown();
             System.exit(0);
+        }
+
+        final float accountButtonY = y + fontRenderer.getHeight() + 2 + (buttonHeight + gap) * 2;
+        if (mouseOver(x, accountButtonY, buttonWidth * 2 + gap, buttonHeight + 2, mouseX, mouseY)) {
+            mc.displayGuiScreen(new AccountManagerGui(this));
         }
     }
 
