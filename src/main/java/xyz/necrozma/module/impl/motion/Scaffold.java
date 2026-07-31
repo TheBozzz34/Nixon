@@ -55,32 +55,14 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Automatic bridging.
- * <p>
- * The core is deliberately simple, because the previous implementation broke on the
- * interaction between its parts rather than on any single piece:
- * <ul>
- *     <li>A placement target is <i>locked</i> once chosen and kept until it is filled or
- *     becomes invalid. Re-picking the target every tick meant the smoothed rotation was
- *     always chasing a moving goal and frequently never satisfied the placement raycast,
- *     which is what made placing unreliable.</li>
- *     <li>Rotations are stepped exactly once per tick from {@link #onPreMotion}. They used
- *     to also be stepped from the render event, so at high frame rates the aim was
- *     randomised many times per tick and the placement raycast rarely lined up.</li>
- *     <li>Staying on the block is done with {@link SafeWalk}, not by holding sneak. Sneak
- *     costs 70% of movement speed; the ledge clamp it was being used for is now applied
- *     directly.</li>
- * </ul>
- */
+
 @ModuleInfo(name = "Scaffold", description = "Bridges automatically for you", category = Category.MOVEMENT)
 public class Scaffold extends Module {
 
     private static final double MOTION_PREDICTION = 1.35D;
-    private static final EnumFacing[] HORIZONTALS = {EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST};
 
-    /** Look-ahead distances along the movement direction, in blocks. */
-    private static final double[] LOOK_AHEAD = {0.55D, 1.05D, 1.6D};
+
+    private static final double[] LOOK_AHEAD = {0.35D, 0.7D};
 
     private static final Minecraft minecraft = Client.INSTANCE.getMC();
     private static final Client client = Client.INSTANCE;
@@ -454,7 +436,13 @@ public class Scaffold extends Module {
     }
 
     /**
-     * Positions worth filling, most important first.
+     * Positions the player actually needs to stand on, most important first.
+     * <p>
+     * Deliberately narrow. Anything reachable and empty that gets listed here will
+     * eventually be filled, because a target is only skipped once it is solid — so
+     * listing the surrounding ring paves a three wide path, and listing far look-ahead
+     * distances paves a strip out in front. Only the block underfoot and the one we are
+     * about to step onto belong here.
      */
     private List<BlockPos> collectTargets() {
         final Set<BlockPos> targets = new LinkedHashSet<>();
@@ -463,11 +451,13 @@ public class Scaffold extends Module {
         final double pz = mc.thePlayer.posZ;
         final int y = getBridgeY();
 
-        // Straight down: we are stood on nothing, or about to be.
+        // Underfoot: we are stood on nothing, or about to be.
         targets.add(new BlockPos(px, y, pz));
 
-        // Along the direction the player is actually walking.
         if (MoveUtil.isMoving()) {
+            // Just far enough ahead to get the block down before we step onto it. Sprinting
+            // covers roughly 0.28 blocks a tick, so this is about two ticks of travel.
+            // getDirection() already folds in strafing, so diagonals are covered.
             final double direction = MoveUtil.getDirection();
             final double dx = -Math.sin(direction);
             final double dz = Math.cos(direction);
@@ -475,20 +465,14 @@ public class Scaffold extends Module {
             for (final double ahead : LOOK_AHEAD) {
                 targets.add(new BlockPos(px + dx * ahead, y, pz + dz * ahead));
             }
-        }
 
-        // Along current momentum, which can differ from input after a turn.
-        targets.add(new BlockPos(px + mc.thePlayer.motionX * MOTION_PREDICTION, y, pz + mc.thePlayer.motionZ * MOTION_PREDICTION));
-
-        // The ring around the player, so diagonal gaps still get filled.
-        final BlockPos base = new BlockPos(px, y, pz);
-        for (final EnumFacing side : HORIZONTALS) {
-            targets.add(base.offset(side));
+            // Momentum can disagree with input just after a turn.
+            targets.add(new BlockPos(px + mc.thePlayer.motionX * MOTION_PREDICTION, y, pz + mc.thePlayer.motionZ * MOTION_PREDICTION));
         }
 
         // Manual sneak with Downwards on means the player wants to descend.
         if (downwards.isEnabled() && isManuallySneaking()) {
-            targets.add(base.down());
+            targets.add(new BlockPos(px, y, pz).down());
         }
 
         return new ArrayList<>(targets);
