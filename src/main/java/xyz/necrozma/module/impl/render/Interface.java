@@ -90,7 +90,9 @@ public final class Interface extends Module {
     public void onRender2DEvent(final Render2DEvent event) {
         final ScaledResolution sr = new ScaledResolution(mc);
 
-        final int posX = (mc.displayWidth / (mc.gameSettings.guiScale * 2));
+        // Use the resolved scale factor rather than the raw guiScale setting:
+        // guiScale is 0 when set to "Auto", which would divide by zero here.
+        final int posX = (mc.displayWidth / (sr.getScaleFactor() * 2));
         final int x = posX - 5, y = sr.getScaledHeight() - 55;
 
         if (armorHUD.isEnabled()) {
