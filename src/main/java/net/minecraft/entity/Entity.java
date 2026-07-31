@@ -616,7 +616,7 @@ public abstract class Entity implements ICommandSender
             double d3 = x;
             double d4 = y;
             double d5 = z;
-            boolean flag = this.onGround && this.isSneaking() && this instanceof EntityPlayer;
+            boolean flag = this.onGround && this instanceof EntityPlayer && (this.isSneaking() || xyz.necrozma.util.SafeWalk.shouldClamp(this));
 
             if (flag)
             {
