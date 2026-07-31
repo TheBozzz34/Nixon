@@ -32,6 +32,11 @@ public class TokenManager {
     private final Gson gson;
     private final SecretKey encryptionKey;
 
+    // In-memory cache so callers (e.g. per-frame GUI checks) don't re-read and
+    // re-decrypt auth.dat from disk on every call. Invalidated on save/clear.
+    private volatile AuthTokenData cachedTokenData;
+    private volatile boolean tokensCacheLoaded;
+
     public TokenManager(final String version) {
         this.version = version;
         this.gson = new Gson();
@@ -48,12 +53,14 @@ public class TokenManager {
      */
     public void saveAuthTokens(final String accessToken, final String refreshToken, final long expiresIn) {
         try {
+            final long savedAt = System.currentTimeMillis();
+
             final JsonObject authData = new JsonObject();
             authData.addProperty("version", version);
             authData.addProperty("accessToken", accessToken);
             authData.addProperty("refreshToken", refreshToken);
             authData.addProperty("expiresIn", expiresIn);
-            authData.addProperty("savedAt", System.currentTimeMillis());
+            authData.addProperty("savedAt", savedAt);
 
             final String jsonString = gson.toJson(authData);
             final String encryptedData = encrypt(jsonString);
@@ -61,6 +68,9 @@ public class TokenManager {
             final boolean success = FileUtil.saveFile(AUTH_CONFIG_FILE, true, encryptedData);
 
             if (success) {
+                // Keep the in-memory cache in sync with what we just persisted.
+                this.cachedTokenData = new AuthTokenData(accessToken, refreshToken, expiresIn, savedAt);
+                this.tokensCacheLoaded = true;
                 LOGGER.info("Authentication tokens saved successfully");
             } else {
                 LOGGER.warning("Failed to save authentication tokens");
@@ -77,11 +87,20 @@ public class TokenManager {
      * @return AuthTokenData containing the tokens, or null if not found/invalid
      */
     public AuthTokenData loadAuthTokens() {
+        // Serve from the in-memory cache when available. This avoids repeated disk
+        // reads, decryption and log spam when callers poll frequently (e.g. the
+        // Account Manager screen checks auth state every render frame).
+        if (tokensCacheLoaded) {
+            return cachedTokenData;
+        }
+
         try {
             final String encryptedData = FileUtil.loadFile(AUTH_CONFIG_FILE);
 
             if (encryptedData == null) {
                 LOGGER.info("No authentication tokens found");
+                this.cachedTokenData = null;
+                this.tokensCacheLoaded = true;
                 return null;
             }
 
@@ -102,6 +121,9 @@ public class TokenManager {
 
             final AuthTokenData tokenData = new AuthTokenData(accessToken, refreshToken, expiresIn, savedAt);
 
+            this.cachedTokenData = tokenData;
+            this.tokensCacheLoaded = true;
+
             LOGGER.info("Authentication tokens loaded successfully");
             return tokenData;
 
@@ -118,6 +140,10 @@ public class TokenManager {
     public void clearAuthTokens() {
         try {
             FileUtil.delete(AUTH_CONFIG_FILE);
+            // Reflect the cleared state in the cache so subsequent loads return
+            // null without touching the disk again.
+            this.cachedTokenData = null;
+            this.tokensCacheLoaded = true;
             LOGGER.info("Authentication tokens cleared");
         } catch (final Exception e) {
             LOGGER.log(Level.WARNING, "Error clearing authentication tokens", e);
